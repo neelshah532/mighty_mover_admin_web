@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -10,6 +10,7 @@ const Home = () => {
         sessionStorage.removeItem('user');
         // Redirect to login page
         navigate('/login');
+        message.success('You have been logged out');
     };
 
     return (

@@ -250,7 +250,7 @@
             { text: 'In Progress', value: 1 },
             { text: 'Delivered', value: 2 },
           ],
-          onFilter: (value: number, record: any) => record.shipstatus === value,
+          onFilter: (value: number, record:any) => record.shipstatus === value,
         },
         {
           title: 'Is Approved',
@@ -388,3 +388,5 @@
   export const DASHBOARD_STATS_REVENUE_VAL=10000000
   export const DASHBOARD_STATS_COSTS_MONEY_VAL=1000000
   export const DASHBOARD_STATS_PROFIT_VAL=DASHBOARD_STATS_REVENUE_VAL-DASHBOARD_STATS_COSTS_MONEY_VAL
+  export const COPYRIGHT="Copyright © 2024 Mighty Movers All rights reserved."
+  export const TERMS="Term & Conditions | Privacy & Policy"

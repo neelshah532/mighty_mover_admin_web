@@ -36,8 +36,6 @@ import {
     DASHBOARD_STATS_REVENUE,
     TERMS,
     COPYRIGHT,
-    DELIVERY_PARTNER,
-    DELIVERY_DATA_COL
 } from '../assets/constant/constant';
 import Loader from '../components/Loader';
 import type { TableColumnsType } from 'antd';
@@ -90,7 +88,7 @@ const Admin: React.FC = () => {
         const fetchdata = setTimeout(() => {
             settoggle(false);
         }, 2000);
-
+    
         return () => clearTimeout(fetchdata);
     }, []);
 
@@ -121,8 +119,6 @@ const Admin: React.FC = () => {
     const data: DataType[] = ORDER_TABLE;
     const payment_colums = PAYMENT_DATA;
     const payment_data = PAYMENT_DATA_COL;
-    const delivery_data=DELIVERY_PARTNER;
-    const delivery_data_col=DELIVERY_DATA_COL;
     const formatter = (value: number | string) => {
         if (typeof value === 'number') {
             return <CountUp end={value} duration={1} />;
@@ -153,7 +149,7 @@ const Admin: React.FC = () => {
     };
     const navigate = useNavigate();
 
-    const handleLogout = () => {
+       const handleLogout = () => {
         // Clear user session
         sessionStorage.removeItem('user');
         // Redirect to login page
@@ -163,38 +159,37 @@ const Admin: React.FC = () => {
 
     return (
         <>
-            {toggle ? (
-                <Loader />
-            ) : (
+        {
+            toggle?<Loader/>:(
                 <div className="w-full">
-                    <Layout className="w-full ">
-                        <Header className="fixed z-10 w-full">
-                            <Flex justify="space-between">
-                                <Flex>
-                                    {toggle ? (
-                                        <></>
-                                    ) : (
-                                        <Button
-                                            className="text-white mt-3 mr-2 text-2xl border-none font-semibold w-full"
-                                            onClick={handletoggle}
-                                        >
-                                            <IoMenu />
-                                        </Button>
-                                    )}
-                                </Flex>
+                <Layout className="w-full ">
+                    <Header className="fixed z-10 w-full">
+                        <Flex justify="space-between">
+                            <Flex>
+                                {toggle ? (
+                                    <></>
+                                ) : (
+                                    <Button
+                                        className="text-white mt-3 mr-2 text-2xl border-none font-semibold w-full"
+                                        onClick={handletoggle}
+                                    >
+                                        <IoMenu />
+                                    </Button>
+                                )}
+                            </Flex>
 
-                                <img src={logo} alt="logo" />
-                                <Flex gap="small" align="center" justify="flex-end">
-                                    <Avatar
-                                        src={
-                                            pic ? (
-                                                <img src={imageUrl} width={100} height={100} alt="avatar" />
-                                            ) : (
-                                                <UserOutlined />
-                                            )
-                                        }
-                                        className="rounded-full"
-                                    />
+                            <img src={logo} alt="logo" />
+                            <Flex gap="small" align="center" justify="flex-end">
+                                <Avatar
+                                    src={
+                                        pic ? (
+                                            <img src={imageUrl} width={100} height={100} alt="avatar" />
+                                        ) : (
+                                            <UserOutlined />
+                                        )
+                                    }
+                                    className="rounded-full"
+                                />
 
                                     <Popover
                                         title="Admin"

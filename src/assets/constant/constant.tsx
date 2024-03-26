@@ -1,3 +1,4 @@
+
   import { IoCashOutline } from "react-icons/io5";
   import { FaCcStripe } from "react-icons/fa";
   import { FaRegCreditCard } from "react-icons/fa";
@@ -378,6 +379,18 @@
       }
     }
   ];
+export const LOGIN_DATA_STRING = {
+    TITLE: 'Sign in to your account',
+    SUBTITLE: 'Welcome to Mighty Movers',
+    LOGIN: 'Sign In',
+    FORGOT_PASSWORD: '<PASSWORD>',
+    CREATE_ACCOUNT: 'Create Account',
+    SUBMIT: 'Submit',
+    EMAIL: 'Email',
+    PASSWORD: 'Password',
+    REMEMBER_ME: 'Remember Me',
+};
+
   export const POPOVER_PROFILE="Profile";
   export const POPOVER_LOGOUT="Logout";
   export const DASHBOARD_STATS_REVENUE="REVENUE";
@@ -388,3 +401,4 @@
   export const DASHBOARD_STATS_PROFIT_VAL=DASHBOARD_STATS_REVENUE_VAL-DASHBOARD_STATS_COSTS_MONEY_VAL;
   export const COPYRIGHT="Copyright © 2024 Mighty Movers All rights reserved.";
   export const TERMS="Term & Conditions | Privacy & Policy";
+

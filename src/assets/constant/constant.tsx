@@ -390,6 +390,7 @@ export const LOGIN_DATA_STRING = {
     PASSWORD: 'Password',
     REMEMBER_ME: 'Remember Me',
 };
+
   export const POPOVER_PROFILE="Profile";
   export const POPOVER_LOGOUT="Logout";
   export const DASHBOARD_STATS_REVENUE="REVENUE";

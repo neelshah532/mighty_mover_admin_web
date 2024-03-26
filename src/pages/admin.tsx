@@ -50,6 +50,9 @@ import { Input } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import type { GetProp, UploadProps } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { PieChart } from '../components/piechart';
+import { LineChart } from '../components/linechart';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -93,7 +96,6 @@ const Admin: React.FC = () => {
                 setImageUrl(url);
             });
         }
-    
     };
 
     const uploadButton = (
@@ -136,6 +138,15 @@ const Admin: React.FC = () => {
     };
     const handleUsernameChange = (e: ChangeEventHandler<HTMLInputElement>) => {
         setname(e.target.value);
+    };
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        // Clear user session
+        sessionStorage.removeItem('user');
+        // Redirect to login page
+        navigate('/login');
+        message.success('You have been logged out');
     };
 
     return (
@@ -224,7 +235,7 @@ const Admin: React.FC = () => {
                                 </Popover>
                                 <Popover title={POPOVER_LOGOUT}>
                                     <Button className="text-white font-semibold text-xl" danger>
-                                        <BiLogOut />
+                                        <BiLogOut onClick={handleLogout} />
                                     </Button>
                                 </Popover>
                             </Flex>
@@ -330,9 +341,11 @@ const Admin: React.FC = () => {
                             </Flex>
                             <div>
                                 <Flex gap="small" className="m-4">
-                                    <Card className="w-3/4"></Card>
+                                    <Card className="w-3/4">
+                                        <LineChart />
+                                    </Card>
                                     <Card className="w-1/4">
-                                        {/* <Pie options="" data="" /> */}
+                                        <PieChart />
                                     </Card>
                                 </Flex>
                             </div>

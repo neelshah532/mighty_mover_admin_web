@@ -36,8 +36,6 @@ import {
     DASHBOARD_STATS_REVENUE,
     TERMS,
     COPYRIGHT,
-    DELIVERY_PARTNER,
-    DELIVERY_DATA_COL
 } from '../assets/constant/constant';
 import Loader from '../components/Loader';
 import type { TableColumnsType } from 'antd';
@@ -90,7 +88,7 @@ const Admin: React.FC = () => {
         const fetchdata = setTimeout(() => {
             settoggle(false);
         }, 2000);
-
+    
         return () => clearTimeout(fetchdata);
     }, []);
 
@@ -121,8 +119,6 @@ const Admin: React.FC = () => {
     const data: DataType[] = ORDER_TABLE;
     const payment_colums = PAYMENT_DATA;
     const payment_data = PAYMENT_DATA_COL;
-    const delivery_data=DELIVERY_PARTNER;
-    const delivery_data_col=DELIVERY_DATA_COL;
     const formatter = (value: number | string) => {
         if (typeof value === 'number') {
             return <CountUp end={value} duration={1} />;
@@ -153,7 +149,7 @@ const Admin: React.FC = () => {
     };
     const navigate = useNavigate();
 
-    const handleLogout = () => {
+       const handleLogout = () => {
         // Clear user session
         sessionStorage.removeItem('user');
         // Redirect to login page
@@ -163,298 +159,280 @@ const Admin: React.FC = () => {
 
     return (
         <>
-            {toggle ? (
-                <Loader />
-            ) : (
+        {
+            toggle?<Loader/>:(
                 <div className="w-full">
-                    <Layout className="w-full ">
-                        <Header className="fixed z-10 w-full">
-                            <Flex justify="space-between">
-                                <Flex>
-                                    {toggle ? (
-                                        <></>
-                                    ) : (
-                                        <Button
-                                            className="text-white mt-3 mr-2 text-2xl border-none font-semibold w-full"
-                                            onClick={handletoggle}
-                                        >
-                                            <IoMenu />
-                                        </Button>
-                                    )}
-                                </Flex>
-
-                                <img src={logo} alt="logo" />
-                                <Flex gap="small" align="center" justify="flex-end">
-                                    <Avatar
-                                        src={
-                                            pic ? (
-                                                <img src={imageUrl} width={100} height={100} alt="avatar" />
-                                            ) : (
-                                                <UserOutlined />
-                                            )
-                                        }
-                                        className="rounded-full"
-                                    />
-
-                                    <Popover
-                                        title="Admin"
-                                        content={
-                                            toggle1 ? (
-                                                <div className="flex gap-4 items-center">
-                                                    {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
-                                                </div>
-                                            ) : (
-                                                'ADMIN'
-                                            )
-                                        }
+                <Layout className="w-full ">
+                    <Header className="fixed z-10 w-full">
+                        <Flex justify="space-between">
+                            <Flex>
+                                {toggle ? (
+                                    <></>
+                                ) : (
+                                    <Button
+                                        className="text-white mt-3 mr-2 text-2xl border-none font-semibold w-full"
+                                        onClick={handletoggle}
                                     >
-                                        <Button
-                                            className="text-white font-semibold text-xl text-center mt-5"
-                                            onClick={showModal}
-                                        >
-                                            <FaUser />
-                                        </Button>
-                                        <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                                            <Flex vertical>
-                                                <Upload
-                                                    name="avatar"
-                                                    listType="picture-card"
-                                                    className="avatar-uploader "
-                                                    showUploadList={false}
-                                                    action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                                    beforeUpload={beforeUpload}
-                                                    onChange={handleChange}
-                                                >
-                                                    {imageUrl ? (
-                                                        <img src={imageUrl} alt="avatar" width={100} height={100} />
-                                                    ) : (
-                                                        uploadButton
-                                                    )}
-                                                </Upload>
-                                                <Input
-                                                    size="large"
-                                                    placeholder="Username"
-                                                    prefix={<UserOutlined />}
-                                                    value={name}
-                                                    onChange={handleUsernameChange}
-                                                />
-                                                <br></br>
-                                                <Input
-                                                    size="large"
-                                                    placeholder="Password"
-                                                    prefix={<RiLockPasswordLine />}
-                                                />
-                                                <br></br>
-                                            </Flex>
-                                        </Modal>
-                                    </Popover>
-                                    <Popover title={POPOVER_LOGOUT}>
-                                        <Button
-                                            className="text-white font-semibold text-xl"
-                                            onClick={handleLogout}
-                                            danger
-                                        >
-                                            <BiLogOut />
-                                        </Button>
-                                    </Popover>
-                                </Flex>
+                                        <IoMenu />
+                                    </Button>
+                                )}
                             </Flex>
-                        </Header>
-                        <Layout>
-                            <Sider theme="dark" collapsed={collapse}>
-                                <Menu
-                                    className="mt-16"
-                                    theme="dark"
-                                    triggerSubMenuAction="hover"
-                                   
-                                    items={[
-                                        {
-                                            label: 'Dashboard',
-                                            key: 'Home',
-                                            icon: <FaHome />,
-                                        },
-                                        {
-                                            label: 'Order',
-                                            key: 'order',
-                                            icon: (
-                                                <Badge count={data.length} size="small">
-                                                    <MdOutlineContactPage />{' '}
-                                                </Badge>
-                                            ),
-                                        },
-                                        {
-                                            label: 'Delivery Partner',
-                                            key: 'delivery',
-                                            icon: <FaRegUserCircle />,
-                                        },
-                                        {
-                                            label: 'Payment Details',
-                                            key: 'payment',
-                                            icon: <MdOutlinePayment />,
-                                            // children: [
-                                            //   {
-                                            //     label: "Stripe",
-                                            //     key: " stripe",
-                                            //     icon: <FaStripe />,
-                                            //   },
-                                            //   {
-                                            //     label: "Credit/Debit Card",
-                                            //     key: "card",
-                                            //     icon: <BsCreditCard2FrontFill />,
-                                            //   },
-                                            //   {
-                                            //     label: "Cash",
-                                            //     key: "cash",
-                                            //     icon: <IoCashOutline />,
-                                            //   },
-                                            //   {
-                                            //     label: "UPI",
-                                            //     key: "upi",
-                                            //     icon: <MdOutlinePhonelinkRing />,
-                                            //   },
-                                            // ],
-                                        },
-                                        {
-                                            label: 'Settings',
-                                            key: 'settings',
-                                            icon: <IoMdSettings />,
-                                        },
-                                    ]}
-                                ></Menu>
-                            </Sider>
-                            <div className="w-full ">
-                                <Content className="bg-gray-200 mt-16 p-1">
-                                    <Flex gap="small" className="m-4">
-                                        <Card
-                                            bordered={false}
-                                            className="w-full transition-all duration-300 hover:scale-105"
-                                        >
-                                            <Statistic
-                                                title={DASHBOARD_STATS_REVENUE}
-                                                value={DASHBOARD_STATS_REVENUE_VAL}
-                                                valueStyle={{ color: '#3f8600' }}
-                                                prefix={<ArrowUpOutlined />}
-                                                formatter={formatter}
-                                                suffix="Rs"
+
+                            <img src={logo} alt="logo" />
+                            <Flex gap="small" align="center" justify="flex-end">
+                                <Avatar
+                                    src={
+                                        pic ? (
+                                            <img src={imageUrl} width={100} height={100} alt="avatar" />
+                                        ) : (
+                                            <UserOutlined />
+                                        )
+                                    }
+                                    className="rounded-full"
+                                />
+
+                                <Popover
+                                    title="Admin"
+                                    content={
+                                        toggle1 ? (
+                                            <div className="flex gap-4 items-center">
+                                                {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
+                                            </div>
+                                        ) : (
+                                            'ADMIN'
+                                        )
+                                    }
+                                >
+                                    <Button
+                                        className="text-white font-semibold text-xl text-center mt-5"
+                                        onClick={showModal}
+                                    >
+                                        <FaUser />
+                                    </Button>
+                                    <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                                        <Flex vertical>
+                                            <Upload
+                                                name="avatar"
+                                                listType="picture-card"
+                                                className="avatar-uploader "
+                                                showUploadList={false}
+                                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                                                beforeUpload={beforeUpload}
+                                                onChange={handleChange}
+                                            >
+                                                {imageUrl ? (
+                                                    <img src={imageUrl} alt="avatar" width={100} height={100} />
+                                                ) : (
+                                                    uploadButton
+                                                )}
+                                            </Upload>
+                                            <Input
+                                                size="large"
+                                                placeholder="Username"
+                                                prefix={<UserOutlined />}
+                                                value={name}
+                                                onChange={handleUsernameChange}
                                             />
-                                        </Card>
-                                        <Card
-                                            bordered={false}
-                                            className="w-full transition-all duration-300 hover:scale-105"
-                                        >
-                                            <Statistic
-                                                title={DASHBOARD_STATS_COSTS_MONEY}
-                                                value={DASHBOARD_STATS_COSTS_MONEY_VAL}
-                                                valueStyle={{ color: '#cf1322' }}
-                                                prefix={<ArrowDownOutlined />}
-                                                formatter={formatter}
-                                                suffix="Rs"
+                                            <br></br>
+                                            <Input
+                                                size="large"
+                                                placeholder="Password"
+                                                prefix={<RiLockPasswordLine />}
                                             />
-                                        </Card>
-                                        <Card
-                                            bordered={false}
-                                            className="w-full transition-all duration-300 hover:scale-105"
-                                        >
-                                            <Statistic
-                                                title={DASHBOARD_STATS_PROFIT}
-                                                value={DASHBOARD_STATS_PROFIT_VAL}
-                                                valueStyle={{ color: color }}
-                                                formatter={formatter}
-                                                prefix={prefix}
-                                                suffix="Rs"
-                                            />
-                                        </Card>
-                                    </Flex>
-                                    <div>
-                                        <Flex gap="small" className="m-4">
-                                            <Card className="w-3/4"></Card>
-                                            <Card className="w-1/4">{/* <Pie options="" data="" /> */}</Card>
+                                            <br></br>
                                         </Flex>
-                                    </div>
-                                    <div className="grid grid-cols-4 m-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2">
-                                        {DASHBOARD_CONTENT.map((item, index) => (
-                                            <>
-                                                <div key={index}>
-                                                    <Card
-                                                        title={item.TOTAL_ORDER}
-                                                        hoverable
-                                                        className="p-4 transition hover:scale-105"
-                                                    >
-                                                        {item.VAL}
-                                                    </Card>
-                                                </div>
-                                            </>
-                                        ))}
-                                    </div>
-                                    <div>
-                                        {columns.length === 0 ? (
-                                            <Empty />
-                                        ) : (
-                                            <>
-                                                <Card title="Order" className="m-2 random:w-1/2">
-                                                    <Table
-                                                        rowClassName="text-center"
-                                                        dataSource={data}
-                                                        pagination={{ pageSize: 4 }}
-                                                        columns={columns}
-                                                        bordered
-                                                        sticky
-                                                        className="w-full"
-                                                    ></Table>
-                                                </Card>
-                                            </>
-                                        )}
-                                    </div>
-                                    <div>
-                                        {payment_colums.length === 0 ? (
-                                            <Empty />
-                                        ) : (
-                                            <>
-                                                <Card title="Payment" className="m-2">
-                                                    <Table
-                                                        rowClassName="text-center"
-                                                        dataSource={payment_colums}
-                                                        pagination={{ pageSize: 2 }}
-                                                        columns={payment_data}
-                                                        bordered
-                                                        sticky
-                                                        className="w-full"
-                                                    ></Table>
-                                                </Card>
-                                            </>
-                                        )}
-                                    </div>
-                                    <div>
-                                        {payment_colums.length === 0 ? (
-                                            <Empty />
-                                        ) : (
-                                            <>
-                                                <Card title="Delivery Partner" className="m-2">
-                                                    <Table
-                                                        rowClassName="text-center"
-                                                        dataSource={delivery_data}
-                                                        pagination={{ pageSize: 2 }}
-                                                        columns={delivery_data_col}
-                                                        bordered
-                                                        sticky
-                                                        className="w-full"
-                                                    ></Table>
-                                                </Card>
-                                            </>
-                                        )}
-                                    </div>
-                                    <Divider></Divider>
-                                    <Flex justify="space-between" className="ml-4 mr-4 mb-4 text-gray-400">
-                                        <div className="hover:text-gray-600">{COPYRIGHT}</div>
-                                        <div className="hover:text-gray-600">{TERMS}</div>
+                                    </Modal>
+                                </Popover>
+                                <Popover title={POPOVER_LOGOUT}>
+                                    <Button className="text-white font-semibold text-xl"  onClick={handleLogout} danger>
+                                        <BiLogOut />
+                                    </Button>
+                                </Popover>
+                            </Flex>
+                        </Flex>
+                    </Header>
+                    <Layout>
+                        <Sider theme="dark" collapsed={collapse}>
+                            <Menu
+                                className="mt-16"
+                                theme="dark"
+                                triggerSubMenuAction="hover"
+                                // onClick={({ key }) => {
+                                //   if (key === "collapse") {
+                                //     setcollapse(!collapse);
+                                //   }
+                                // }}
+                                items={[
+                                    {
+                                        label: 'Dashboard',
+                                        key: 'Home',
+                                        icon: <FaHome />,
+                                    },
+                                    {
+                                        label: 'Order',
+                                        key: 'order',
+                                        icon: (
+                                            <Badge count={data.length} size="small">
+                                                <MdOutlineContactPage />{' '}
+                                            </Badge>
+                                        ),
+                                    },
+                                    {
+                                        label: 'Delivery Partner',
+                                        key: 'delivery',
+                                        icon: <FaRegUserCircle />,
+                                    },
+                                    {
+                                        label: 'Payment Details',
+                                        key: 'payment',
+                                        icon: <MdOutlinePayment />,
+                                        // children: [
+                                        //   {
+                                        //     label: "Stripe",
+                                        //     key: " stripe",
+                                        //     icon: <FaStripe />,
+                                        //   },
+                                        //   {
+                                        //     label: "Credit/Debit Card",
+                                        //     key: "card",
+                                        //     icon: <BsCreditCard2FrontFill />,
+                                        //   },
+                                        //   {
+                                        //     label: "Cash",
+                                        //     key: "cash",
+                                        //     icon: <IoCashOutline />,
+                                        //   },
+                                        //   {
+                                        //     label: "UPI",
+                                        //     key: "upi",
+                                        //     icon: <MdOutlinePhonelinkRing />,
+                                        //   },
+                                        // ],
+                                    },
+                                    {
+                                        label: 'Settings',
+                                        key: 'settings',
+                                        icon: <IoMdSettings />,
+                                    },
+                                ]}
+                            ></Menu>
+                        </Sider>
+                        <div className="w-full ">
+                            <Content className="bg-gray-200 mt-16 p-1">
+                                <Flex gap="small" className="m-4">
+                                    <Card
+                                        bordered={false}
+                                        className="w-full transition-all duration-300 hover:scale-105"
+                                    >
+                                        <Statistic
+                                            title={DASHBOARD_STATS_REVENUE}
+                                            value={DASHBOARD_STATS_REVENUE_VAL}
+                                            valueStyle={{ color: '#3f8600' }}
+                                            prefix={<ArrowUpOutlined />}
+                                            formatter={formatter}
+                                            suffix="Rs"
+                                        />
+                                    </Card>
+                                    <Card
+                                        bordered={false}
+                                        className="w-full transition-all duration-300 hover:scale-105"
+                                    >
+                                        <Statistic
+                                            title={DASHBOARD_STATS_COSTS_MONEY}
+                                            value={DASHBOARD_STATS_COSTS_MONEY_VAL}
+                                            valueStyle={{ color: '#cf1322' }}
+                                            prefix={<ArrowDownOutlined />}
+                                            formatter={formatter}
+                                            suffix="Rs"
+                                        />
+                                    </Card>
+                                    <Card
+                                        bordered={false}
+                                        className="w-full transition-all duration-300 hover:scale-105"
+                                    >
+                                        <Statistic
+                                            title={DASHBOARD_STATS_PROFIT}
+                                            value={DASHBOARD_STATS_PROFIT_VAL}
+                                            valueStyle={{ color: color }}
+                                            formatter={formatter}
+                                            prefix={prefix}
+                                            suffix="Rs"
+                                        />
+                                    </Card>
+                                </Flex>
+                                <div>
+                                    <Flex gap="small" className="m-4">
+                                        <Card className="w-3/4"></Card>
+                                        <Card className="w-1/4">{/* <Pie options="" data="" /> */}</Card>
                                     </Flex>
-                                </Content>
-                            </div>
-                        </Layout>
+                                </div>
+                                <div className="grid grid-cols-4 m-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2">
+                                    {DASHBOARD_CONTENT.map((item, index) => (
+                                        <>
+                                            <div key={index}>
+                                                <Card
+                                                    title={item.TOTAL_ORDER}
+                                                    hoverable
+                                                    className="p-4 transition hover:scale-105"
+                                                >
+                                                    {item.VAL}
+                                                </Card>
+                                            </div>
+                                        </>
+                                    ))}
+                                </div>
+                                <div>
+                                    {columns.length === 0 ? (
+                                        <Empty />
+                                    ) : (
+                                        <>
+                                            <Card title="Order" className="m-2 random:w-1/2">
+                                                <Table
+                                                    rowClassName="text-center"
+                                                    dataSource={data}
+                                                    pagination={{ pageSize: 4 }}
+                                                    columns={columns}
+                                                    bordered
+                                                    sticky
+                                                    className="w-full"
+                                                ></Table>
+                                            </Card>
+                                        </>
+                                    )}
+                                </div>
+                                <div>
+                                    {payment_colums.length === 0 ? (
+                                        <Empty />
+                                    ) : (
+                                        <>
+                                            <Card title="Payment" className="m-2">
+                                                <Table
+                                                    rowClassName="text-center"
+                                                    dataSource={payment_colums}
+                                                    pagination={{ pageSize: 2 }}
+                                                    columns={payment_data}
+                                                    bordered
+                                                    sticky
+                                                    className="w-full"
+                                                ></Table>
+                                            </Card>
+                                        </>
+                                    )}
+                                </div>
+                                <Divider></Divider>
+                                <Flex justify="space-between" className="ml-4 mr-4 mb-4 text-gray-400">
+                                    <div className="hover:text-gray-600">{COPYRIGHT}</div>
+                                    <div className="hover:text-gray-600">{TERMS}</div>
+                                </Flex>
+                            </Content>
+                        </div>
                     </Layout>
-                    <FloatButton.BackTop />
-                </div>
-            )}
+                </Layout>
+                <FloatButton.BackTop />
+            </div>
+            )
+        }
+           
         </>
     );
 };

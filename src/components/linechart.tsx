@@ -14,14 +14,6 @@ enum paymenttype {
     cash = 'Cash',
     upi = 'UPI',
 }
-enum deliverypartner {
-    active = 'active',
-    inactive = 'inactive',
-}
-enum vehicletype {
-    'two-wheeler' = 'Two-Wheeler',
-    'four-wheeler' = 'Four-Wheeler',
-}
 export const DASHBOARD_CONTENT = [
     {
         TOTAL_ORDER: 'Total Order',
@@ -185,7 +177,7 @@ export const DATA_COL = [
     {
         title: 'Date',
         dataIndex: 'date',
-        sorter: (a: any, b: any) => new Date(a.date) - new Date(b.date),
+        sorter: (a: any, b: any) => a.date - b.date,
     },
     {
         title: 'Transaction Id',
@@ -510,9 +502,9 @@ export const PAYMENT_DATA_COL = [
     },
 ];
 export const LOGIN_DATA_STRING = {
-    TITLE: 'Login to your account',
+    TITLE: 'Sign in to your account',
     SUBTITLE: 'Welcome to Mighty Movers',
-    LOGIN: 'Login',
+    LOGIN: 'Sign In',
     FORGOT_PASSWORD: '<PASSWORD>',
     CREATE_ACCOUNT: 'Create Account',
     SUBMIT: 'Submit',
@@ -520,7 +512,6 @@ export const LOGIN_DATA_STRING = {
     PASSWORD: 'Password',
     REMEMBER_ME: 'Remember Me',
 };
-
 export const POPOVER_PROFILE = 'Profile';
 export const POPOVER_LOGOUT = 'Logout';
 export const DASHBOARD_STATS_REVENUE = 'REVENUE';
@@ -532,136 +523,6 @@ export const DASHBOARD_STATS_PROFIT_VAL = DASHBOARD_STATS_REVENUE_VAL - DASHBOAR
 export const COPYRIGHT = 'Copyright © 2024 Mighty Movers All rights reserved.';
 export const TERMS = 'Term & Conditions | Privacy & Policy';
 
-export const DELIVERY_PARTNER = [
-    {
-        key: '1',
-        first: 'John Brown',
-        date: '2023-11-24T09:21:17+05:30',
-        contact: '9499657878',
-        address: '1476 Muba River',
-        email: 'ki@cis.gd',
-        vehicleType: vehicletype['two-wheeler'],
-        vehicle: 15632801903,
-        status: deliverypartner.active,
-    },
-    {
-        key: '2',
-        first: 'John Brown',
-        date: '2023-11-24T09:21:17+05:30',
-        contact: '9499657878',
-        address: '1476 Muba River',
-        email: 'onleaj@coduki.hr',
-        vehicleType: vehicletype['four-wheeler'],
-        vehicle: 45101328544,
-        status: deliverypartner.inactive,
-    },
-    {
-        key: '3',
-        first: 'John Brown',
-        date: '2023-11-24T09:21:17+05:30',
-        contact: '9499657878',
-        address: '1476 Muba River',
-        email: 'bup@hubev.co.uk',
-        vehicleType: vehicletype['four-wheeler'],
-        vehicle: 46175602429,
-        status: deliverypartner.active,
-    },
-    {
-        key: '4',
-        first: 'John Brown',
-        date: '2023-11-24T09:21:17+05:30',
-        contact: '9499657878',
-        address: '1476 Muba River',
-        email: 'kunuluot@luljap.kg',
-        vehicleType: vehicletype['four-wheeler'],
-        vehicle: 43839695137,
-        status: deliverypartner.active,
-    },
-];
-export const DELIVERY_DATA_COL = [
-    {
-        title: 'Index',
-        dataIndex: 'key',
-    },
-    {
-        title: 'Name',
-        dataIndex: 'first',
-    },
-    {
-        title: 'Date of Joining',
-        dataIndex: 'date',
-    },
-    {
-        title: 'Contact',
-        dataIndex: 'contact',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-    },
-    {
-        title: 'Vehicle Type',
-        dataIndex: 'vehicleType',
-        filters: [
-            { text: 'Two-Wheeler', value: 'Two-Wheeler' },
-            { text: 'Four-Wheeler', value: 'Four-Wheeler' },
-        ],
-        onFilter: (value: boolean, record: any) => record.vehicleType === value,
-    },
-    {
-        title: 'Vehicle Number',
-        dataIndex: 'vehicle',
-    },
-    {
-        title: 'Status',
-        dataIndex: 'status',
-        filters: [
-            { text: 'Active', value: 'active' },
-            { text: 'InActive', value: 'inactive' },
-        ],
-        onFilter: (value: boolean, record: any) => record.status === value,
-
-        render: (status: string) => {
-            if (status === 'active') {
-                return (
-                    <div
-                        style={{
-                            padding: '5px',
-                            borderRadius: '5px',
-                            color: 'white',
-                            textAlign: 'center',
-                            fontWeight: '600',
-                            fontSize: 'medium',
-                        }}
-                        className="bg-green-500"
-                    >
-                        Active
-                    </div>
-                );
-            } else {
-                return (
-                    <div
-                        style={{
-                            padding: '5px',
-                            borderRadius: '5px',
-                            color: 'white',
-                            textAlign: 'center',
-                            fontWeight: '600',
-                            fontSize: 'medium',
-                        }}
-                        className="bg-red-500"
-                    >
-                        Inactive
-                    </div>
-                );
-            }
-        },
-    },
-];
 export const PIE_DATA = {
     labels: ['COSTS', 'PROFIT_VAL', 'REVENUE_VAL'],
     datasets: [

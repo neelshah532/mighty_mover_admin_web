@@ -266,7 +266,6 @@ const Admin: React.FC = () => {
                                     className="mt-16"
                                     theme="dark"
                                     triggerSubMenuAction="hover"
-                                   
                                     items={[
                                         {
                                             label: 'Dashboard',
@@ -367,8 +366,12 @@ const Admin: React.FC = () => {
                                     </Flex>
                                     <div>
                                         <Flex gap="small" className="m-4">
-                                            <Card className="w-3/4"></Card>
-                                            <Card className="w-1/4">{/* <Pie options="" data="" /> */}</Card>
+                                            <Card className="w-3/4">
+                                                <LineChart />
+                                            </Card>
+                                            <Card className="w-1/4">
+                                                <PieChart />
+                                            </Card>
                                         </Flex>
                                     </div>
                                     <div className="grid grid-cols-4 m-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2">

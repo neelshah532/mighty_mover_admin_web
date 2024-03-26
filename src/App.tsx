@@ -1,11 +1,11 @@
-import  { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Pages from './components/pages';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useLayoutEffect(() => {
         const user = sessionStorage.getItem('user');
@@ -13,8 +13,7 @@ function App() {
             setIsLoggedIn(true);
         }
         setIsLoading(false);
-    },
-     []);
+    }, []);
 
     if (isLoading) {
         return (

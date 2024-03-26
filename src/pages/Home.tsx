@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +17,7 @@ const Home = () => {
             <h2>Welcome to Home</h2>
             <Button type="primary" onClick={handleLogout}>
                 Logout
-            </Button>
+            </Button> 
         </div>
     );
 };

@@ -1,11 +1,11 @@
 interface DataType {
     key: React.Key,
     orderid: string,
-    date: number,
+    date: string,
     transid: string,
     customer:string,
     paystatus:boolean,
     shipstatus:number,
     isapproved:boolean
   }
-export type {DataType}
+export type {DataType};

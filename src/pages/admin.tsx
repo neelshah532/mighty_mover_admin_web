@@ -3,7 +3,7 @@ import { Content, Header } from 'antd/es/layout/layout';
 import { useState } from 'react';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { FloatButton, Avatar, Divider } from 'antd';
-import { Pie } from 'react-chartjs-2';
+// import { Pie } from 'react-chartjs-2';
 import { Badge } from 'antd';
 import { Button, Card, Layout, Menu, Popover, Table } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
@@ -79,7 +79,7 @@ const Admin: React.FC = () => {
     const [pic, setpic] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
     const prefix = DASHBOARD_STATS_PROFIT_VAL >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
-    let color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
+    const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
 
     const handleChange: UploadProps['onChange'] = (info) => {
         if (info.file.status === 'uploading') {
@@ -93,6 +93,7 @@ const Admin: React.FC = () => {
                 setImageUrl(url);
             });
         }
+    
     };
 
     const uploadButton = (
@@ -177,7 +178,7 @@ const Admin: React.FC = () => {
                                                 {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
                                             </div>
                                         ) : (
-                                            'profile'
+                                            'ADMIN'
                                         )
                                     }
                                 >

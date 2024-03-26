@@ -1,6 +1,6 @@
 import { Content, Header } from 'antd/es/layout/layout';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { FloatButton, Avatar, Divider } from 'antd';
 // import { Pie } from 'react-chartjs-2';
@@ -12,6 +12,8 @@ import { message } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { FaHome } from 'react-icons/fa';
 import { MdOutlineContactPage } from 'react-icons/md';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import logo from '../assets/Images/Group 1.svg';
 
@@ -35,6 +37,7 @@ import {
     TERMS,
     COPYRIGHT,
 } from '../assets/constant/constant';
+import Loader from '../components/Loader';
 import type { TableColumnsType } from 'antd';
 import { Flex } from 'antd';
 import { DataType } from '../assets/dto/data.type';
@@ -50,6 +53,7 @@ import { Input } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import type { GetProp, UploadProps } from 'antd';
+import { useNavigate } from 'react-router-dom';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -72,14 +76,21 @@ const beforeUpload = (file: FileType) => {
 const Admin: React.FC = () => {
     const [collapse, setcollapse] = useState(false);
     const [name, setname] = useState('');
-    const [toggle, settoggle] = useState(false);
+    const [toggle, settoggle] = useState(true);
     const [toggle1, settoggle1] = useState(false);
-
     const [loading, setLoading] = useState(false);
     const [pic, setpic] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
     const prefix = DASHBOARD_STATS_PROFIT_VAL >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
     const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
+
+    useEffect(() => {
+        const fetchdata = setTimeout(() => {
+            settoggle(false);
+        }, 2000);
+    
+        return () => clearTimeout(fetchdata);
+    }, []);
 
     const handleChange: UploadProps['onChange'] = (info) => {
         if (info.file.status === 'uploading') {
@@ -93,7 +104,6 @@ const Admin: React.FC = () => {
                 setImageUrl(url);
             });
         }
-    
     };
 
     const uploadButton = (
@@ -137,12 +147,23 @@ const Admin: React.FC = () => {
     const handleUsernameChange = (e: ChangeEventHandler<HTMLInputElement>) => {
         setname(e.target.value);
     };
+    const navigate = useNavigate();
+
+       const handleLogout = () => {
+        // Clear user session
+        sessionStorage.removeItem('user');
+        // Redirect to login page
+        navigate('/login');
+        message.success('You have been logged out');
+    };
 
     return (
         <>
-            <div className="w-full">
-                <Layout className="container border-red-400" style={{ width: '100%' }}>
-                    <Header>
+        {
+            toggle?<Loader/>:(
+                <div className="w-full">
+                <Layout className="w-full ">
+                    <Header className="fixed z-10 w-full">
                         <Flex justify="space-between">
                             <Flex>
                                 {toggle ? (
@@ -223,7 +244,7 @@ const Admin: React.FC = () => {
                                     </Modal>
                                 </Popover>
                                 <Popover title={POPOVER_LOGOUT}>
-                                    <Button className="text-white font-semibold text-xl" danger>
+                                    <Button className="text-white font-semibold text-xl"  onClick={handleLogout} danger>
                                         <BiLogOut />
                                     </Button>
                                 </Popover>
@@ -233,6 +254,7 @@ const Admin: React.FC = () => {
                     <Layout>
                         <Sider theme="dark" collapsed={collapse}>
                             <Menu
+                                className="mt-16"
                                 theme="dark"
                                 triggerSubMenuAction="hover"
                                 // onClick={({ key }) => {
@@ -295,108 +317,122 @@ const Admin: React.FC = () => {
                                 ]}
                             ></Menu>
                         </Sider>
-                        <Content style={{ height: 'auto' }} className="bg-gray-200">
-                            <Flex gap="small" className="m-4">
-                                <Card bordered={false} className="w-full transition-all duration-300 hover:scale-105">
-                                    <Statistic
-                                        title={DASHBOARD_STATS_REVENUE}
-                                        value={DASHBOARD_STATS_REVENUE_VAL}
-                                        valueStyle={{ color: '#3f8600' }}
-                                        prefix={<ArrowUpOutlined />}
-                                        formatter={formatter}
-                                        suffix="Rs"
-                                    />
-                                </Card>
-                                <Card bordered={false} className="w-full transition-all duration-300 hover:scale-105">
-                                    <Statistic
-                                        title={DASHBOARD_STATS_COSTS_MONEY}
-                                        value={DASHBOARD_STATS_COSTS_MONEY_VAL}
-                                        valueStyle={{ color: '#cf1322' }}
-                                        prefix={<ArrowDownOutlined />}
-                                        formatter={formatter}
-                                        suffix="Rs"
-                                    />
-                                </Card>
-                                <Card bordered={false} className="w-full transition-all duration-300 hover:scale-105">
-                                    <Statistic
-                                        title={DASHBOARD_STATS_PROFIT}
-                                        value={DASHBOARD_STATS_PROFIT_VAL}
-                                        valueStyle={{ color: color }}
-                                        formatter={formatter}
-                                        prefix={prefix}
-                                        suffix="Rs"
-                                    />
-                                </Card>
-                            </Flex>
-                            <div>
+                        <div className="w-full ">
+                            <Content className="bg-gray-200 mt-16 p-1">
                                 <Flex gap="small" className="m-4">
-                                    <Card className="w-3/4"></Card>
-                                    <Card className="w-1/4">
-                                        {/* <Pie options="" data="" /> */}
+                                    <Card
+                                        bordered={false}
+                                        className="w-full transition-all duration-300 hover:scale-105"
+                                    >
+                                        <Statistic
+                                            title={DASHBOARD_STATS_REVENUE}
+                                            value={DASHBOARD_STATS_REVENUE_VAL}
+                                            valueStyle={{ color: '#3f8600' }}
+                                            prefix={<ArrowUpOutlined />}
+                                            formatter={formatter}
+                                            suffix="Rs"
+                                        />
+                                    </Card>
+                                    <Card
+                                        bordered={false}
+                                        className="w-full transition-all duration-300 hover:scale-105"
+                                    >
+                                        <Statistic
+                                            title={DASHBOARD_STATS_COSTS_MONEY}
+                                            value={DASHBOARD_STATS_COSTS_MONEY_VAL}
+                                            valueStyle={{ color: '#cf1322' }}
+                                            prefix={<ArrowDownOutlined />}
+                                            formatter={formatter}
+                                            suffix="Rs"
+                                        />
+                                    </Card>
+                                    <Card
+                                        bordered={false}
+                                        className="w-full transition-all duration-300 hover:scale-105"
+                                    >
+                                        <Statistic
+                                            title={DASHBOARD_STATS_PROFIT}
+                                            value={DASHBOARD_STATS_PROFIT_VAL}
+                                            valueStyle={{ color: color }}
+                                            formatter={formatter}
+                                            prefix={prefix}
+                                            suffix="Rs"
+                                        />
                                     </Card>
                                 </Flex>
-                            </div>
-                            <div className="grid grid-cols-4 m-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2">
-                                {DASHBOARD_CONTENT.map((item, index) => (
-                                    <>
-                                        <div key={index}>
-                                            <Card
-                                                title={item.TOTAL_ORDER}
-                                                hoverable
-                                                className="p-4 transition hover:scale-105"
-                                            >
-                                                {item.VAL}
+                                <div>
+                                    <Flex gap="small" className="m-4">
+                                        <Card className="w-3/4"></Card>
+                                        <Card className="w-1/4">{/* <Pie options="" data="" /> */}</Card>
+                                    </Flex>
+                                </div>
+                                <div className="grid grid-cols-4 m-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2">
+                                    {DASHBOARD_CONTENT.map((item, index) => (
+                                        <>
+                                            <div key={index}>
+                                                <Card
+                                                    title={item.TOTAL_ORDER}
+                                                    hoverable
+                                                    className="p-4 transition hover:scale-105"
+                                                >
+                                                    {item.VAL}
+                                                </Card>
+                                            </div>
+                                        </>
+                                    ))}
+                                </div>
+                                <div>
+                                    {columns.length === 0 ? (
+                                        <Empty />
+                                    ) : (
+                                        <>
+                                            <Card title="Order" className="m-2 random:w-1/2">
+                                                <Table
+                                                    rowClassName="text-center"
+                                                    dataSource={data}
+                                                    pagination={{ pageSize: 4 }}
+                                                    columns={columns}
+                                                    bordered
+                                                    sticky
+                                                    className="w-full"
+                                                ></Table>
                                             </Card>
-                                        </div>
-                                    </>
-                                ))}
-                            </div>
-                            <div>
-                                {columns.length === 0 ? (
-                                    <Empty />
-                                ) : (
-                                    <>
-                                        <Card title="Order" className="m-2 random:w-1/2">
-                                            <Table
-                                                dataSource={data}
-                                                pagination={{ pageSize: 4 }}
-                                                columns={columns}
-                                                bordered
-                                                sticky
-                                                className="w-full"
-                                            ></Table>
-                                        </Card>
-                                    </>
-                                )}
-                            </div>
-                            <div>
-                                {payment_colums.length === 0 ? (
-                                    <Empty />
-                                ) : (
-                                    <>
-                                        <Card title="Payment" className="m-2">
-                                            <Table
-                                                dataSource={payment_colums}
-                                                pagination={{ pageSize: 2 }}
-                                                columns={payment_data}
-                                                bordered
-                                                sticky
-                                                className="w-full"
-                                            ></Table>
-                                        </Card>
-                                    </>
-                                )}
-                            </div>
-                            <Divider></Divider>
-                            <Flex justify="space-between" className="ml-4 mr-4 mb-4 text-gray-400">
-                                <div className="hover:text-gray-600">{COPYRIGHT}</div>
-                                <div className="hover:text-gray-600">{TERMS}</div>
-                            </Flex>
-                        </Content>
+                                        </>
+                                    )}
+                                </div>
+                                <div>
+                                    {payment_colums.length === 0 ? (
+                                        <Empty />
+                                    ) : (
+                                        <>
+                                            <Card title="Payment" className="m-2">
+                                                <Table
+                                                    rowClassName="text-center"
+                                                    dataSource={payment_colums}
+                                                    pagination={{ pageSize: 2 }}
+                                                    columns={payment_data}
+                                                    bordered
+                                                    sticky
+                                                    className="w-full"
+                                                ></Table>
+                                            </Card>
+                                        </>
+                                    )}
+                                </div>
+                                <Divider></Divider>
+                                <Flex justify="space-between" className="ml-4 mr-4 mb-4 text-gray-400">
+                                    <div className="hover:text-gray-600">{COPYRIGHT}</div>
+                                    <div className="hover:text-gray-600">{TERMS}</div>
+                                </Flex>
+                            </Content>
+                        </div>
                     </Layout>
                 </Layout>
                 <FloatButton.BackTop />
             </div>
+            )
+        }
+           
         </>
     );
 };

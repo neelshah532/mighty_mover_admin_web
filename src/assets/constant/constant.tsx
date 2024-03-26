@@ -380,9 +380,9 @@
     }
   ];
 export const LOGIN_DATA_STRING = {
-    TITLE: 'Sign in to your account',
+    TITLE: 'Login to your account',
     SUBTITLE: 'Welcome to Mighty Movers',
-    LOGIN: 'Sign In',
+    LOGIN: 'Login',
     FORGOT_PASSWORD: '<PASSWORD>',
     CREATE_ACCOUNT: 'Create Account',
     SUBMIT: 'Submit',

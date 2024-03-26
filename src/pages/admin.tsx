@@ -56,6 +56,10 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import type { GetProp, UploadProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
+
+import { PieChart } from '../components/piechart';
+import { LineChart } from '../components/linechart';
+
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -350,6 +354,157 @@ const Admin: React.FC = () => {
                                                 formatter={formatter}
                                                 suffix="Rs"
                                             />
+
+                                            <br></br>
+                                        </Flex>
+                                    </Modal>
+                                </Popover>
+                                <Popover title={POPOVER_LOGOUT}>
+                                    <Button className="text-white font-semibold text-xl" danger>
+                                        <BiLogOut onClick={handleLogout} />
+                                    </Button>
+                                </Popover>
+                            </Flex>
+                        </Flex>
+                    </Header>
+                    <Layout>
+                        <Sider theme="dark" collapsed={collapse}>
+                            <Menu
+                                theme="dark"
+                                triggerSubMenuAction="hover"
+                                // onClick={({ key }) => {
+                                //   if (key === "collapse") {
+                                //     setcollapse(!collapse);
+                                //   }
+                                // }}
+                                items={[
+                                    {
+                                        label: 'Dashboard',
+                                        key: 'Home',
+                                        icon: <FaHome />,
+                                    },
+                                    {
+                                        label: 'Order',
+                                        key: 'order',
+                                        icon: (
+                                            <Badge count={data.length} size="small">
+                                                <MdOutlineContactPage />{' '}
+                                            </Badge>
+                                        ),
+                                    },
+                                    {
+                                        label: 'Delivery Partner',
+                                        key: 'delivery',
+                                        icon: <FaRegUserCircle />,
+                                    },
+                                    {
+                                        label: 'Payment Details',
+                                        key: 'payment',
+                                        icon: <MdOutlinePayment />,
+                                        // children: [
+                                        //   {
+                                        //     label: "Stripe",
+                                        //     key: " stripe",
+                                        //     icon: <FaStripe />,
+                                        //   },
+                                        //   {
+                                        //     label: "Credit/Debit Card",
+                                        //     key: "card",
+                                        //     icon: <BsCreditCard2FrontFill />,
+                                        //   },
+                                        //   {
+                                        //     label: "Cash",
+                                        //     key: "cash",
+                                        //     icon: <IoCashOutline />,
+                                        //   },
+                                        //   {
+                                        //     label: "UPI",
+                                        //     key: "upi",
+                                        //     icon: <MdOutlinePhonelinkRing />,
+                                        //   },
+                                        // ],
+                                    },
+                                    {
+                                        label: 'Settings',
+                                        key: 'settings',
+                                        icon: <IoMdSettings />,
+                                    },
+                                ]}
+                            ></Menu>
+                        </Sider>
+                        <Content style={{ height: 'auto' }} className="bg-gray-200">
+                            <Flex gap="small" className="m-4">
+                                <Card bordered={false} className="w-full transition-all duration-300 hover:scale-105">
+                                    <Statistic
+                                        title={DASHBOARD_STATS_REVENUE}
+                                        value={DASHBOARD_STATS_REVENUE_VAL}
+                                        valueStyle={{ color: '#3f8600' }}
+                                        prefix={<ArrowUpOutlined />}
+                                        formatter={formatter}
+                                        suffix="Rs"
+                                    />
+                                </Card>
+                                <Card bordered={false} className="w-full transition-all duration-300 hover:scale-105">
+                                    <Statistic
+                                        title={DASHBOARD_STATS_COSTS_MONEY}
+                                        value={DASHBOARD_STATS_COSTS_MONEY_VAL}
+                                        valueStyle={{ color: '#cf1322' }}
+                                        prefix={<ArrowDownOutlined />}
+                                        formatter={formatter}
+                                        suffix="Rs"
+                                    />
+                                </Card>
+                                <Card bordered={false} className="w-full transition-all duration-300 hover:scale-105">
+                                    <Statistic
+                                        title={DASHBOARD_STATS_PROFIT}
+                                        value={DASHBOARD_STATS_PROFIT_VAL}
+                                        valueStyle={{ color: color }}
+                                        formatter={formatter}
+                                        prefix={prefix}
+                                        suffix="Rs"
+                                    />
+                                </Card>
+                            </Flex>
+                            <div>
+                                <Flex gap="small" className="m-4">
+                                    <Card className="w-3/4">
+                                        <LineChart />
+                                    </Card>
+                                    <Card className="w-1/4">
+                                        <PieChart />
+                                    </Card>
+                                </Flex>
+                            </div>
+                            <div className="grid grid-cols-4 m-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2">
+                                {DASHBOARD_CONTENT.map((item, index) => (
+                                    <>
+                                        <div key={index}>
+                                            <Card
+                                                title={item.TOTAL_ORDER}
+                                                hoverable
+                                                className="p-4 transition hover:scale-105"
+                                            >
+                                                {item.VAL}
+                                            </Card>
+                                        </div>
+                                    </>
+                                ))}
+                            </div>
+                            <div>
+                                {columns.length === 0 ? (
+                                    <Empty />
+                                ) : (
+                                    <>
+                                        <Card title="Order" className="m-2 random:w-1/2">
+                                            <Table
+                                                dataSource={data}
+                                                pagination={{ pageSize: 4 }}
+                                                columns={columns}
+                                                bordered
+                                                sticky
+                                                className="w-full"
+                                            ></Table>
+
                                         </Card>
                                         <Card
                                             bordered={false}

@@ -61,12 +61,12 @@
           TOTAL_ORDER:"Total Vehicle",
           VAL:"VAL"
       },
-  ]
+  ];
   export const ORDER_TABLE=[
     {
       key: '1',
       orderid: 'John Brown',
-      date: 32,
+      date: "2023-11-24T09:21:17+05:30",
       transid: 'NA',
       customer:"NA",
       totalprice:101,
@@ -78,7 +78,7 @@
     {
       key: '2',
       orderid: 'Jim Green',
-      date: 42,
+      date: "2024-07-12T19:47:28+05:30",
       transid: 'NA',
       customer:"Utkarsh",
       totalprice:101,
@@ -89,7 +89,7 @@
     {
       key: '3',
       orderid: 'Joe Black',
-      date: 32,
+      date: "2023-04-17T22:46:12+05:30",
       transid: 'NA',
       customer:"NA",
       totalprice:101,
@@ -100,7 +100,7 @@
     {
       key: '4',
       orderid: 'Jim Red',
-      date: 32,
+      date: "2024-01-18T13:44:19+05:30",
       transid: 'NA',
       customer:"NA",
       totalprice:101,
@@ -112,7 +112,7 @@
     {
         key: '5',
         orderid: 'Jim Red',
-        date: 32,
+        date: "2024-10-04T02:31:36+05:30",
         transid: 'NA',
         customer:"NA",
         totalprice:101,
@@ -124,7 +124,7 @@
       {
         key: '6',
         orderid: 'Jim Red',
-        date: 32,
+        date: "2023-07-04T18:15:44+05:30",
         transid: 'NA',
         customer:"Neel",
         totalprice:101,
@@ -136,7 +136,7 @@
       {
         key: '7',
         orderid: 'Jim Red',
-        date: 32,
+        date: "2024-04-30T13:55:27+05:30",
         transid: '123abc',
         customer:"Prit",
         totalprice:101,
@@ -148,7 +148,7 @@
       {
         key: '8',
         orderid: 'Jim Red',
-        date: 32,
+        date: "2023-11-17T08:50:17+05:30",
         transid: '54ASJD',
         customer:"NA",
         totalprice:102,
@@ -157,7 +157,7 @@
         isapproved:true
 
       },
-    ]
+    ];
     const customerNames = Array.from(new Set(ORDER_TABLE.map(item => item.customer)))
     .map(name => ({ text: name,value:name }));
     const transid = Array.from(new Set(ORDER_TABLE.map(item => item.transid)))
@@ -208,10 +208,10 @@
           render:(paystatus:boolean)=>{
             if(paystatus===false){
 
-              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-red-600">Pending</div>
+              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-red-600">Pending</div>;
             }
             else{
-              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-green-500">Paid</div>
+              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-green-500">Paid</div>;
 
             }
           },
@@ -226,21 +226,20 @@
           title: 'Shipping Status',
           dataIndex: 'shipstatus',
           render:(shipstatus:number)=>{
-            console.log(shipstatus)
             if(shipstatus===0){
 
-              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-red-600">Cancel</div>
+              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-red-600">Cancel</div>;
             }
             else if(shipstatus===1){
-              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-amber-500">In Progress</div>
+              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-amber-500">In Progress</div>;
 
             }
             else if(shipstatus===3){
-              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-purple-600">Pending</div>
+              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-purple-600">Pending</div>;
 
             }
             else{
-              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-green-500">Delivered</div>
+              return <div style={{"padding":"3px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-green-500">Delivered</div>;
 
             }
           },
@@ -258,10 +257,10 @@
           render:(isapproved:boolean)=>{
             if(isapproved===false){
 
-              return <div style={{"padding":"5px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-red-600">Pending</div>
+              return <div style={{"padding":"5px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-red-600">Pending</div>;
             }
             else{
-              return <div style={{"padding":"5px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-green-500">Paid</div>
+              return <div style={{"padding":"5px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-green-500">Paid</div>;
 
             }
           },
@@ -315,7 +314,7 @@
 
     }
 
-  ]
+  ];
 
   export const PAYMENT_DATA_COL=[
     {
@@ -326,19 +325,18 @@
       title:"Image",
       dataIndex:"image",
       render:(image:string)=>{
-        console.log(image)
         if(image==="Stripe"){
-          return <div style={{"display":"flex","justifyContent":"center","alignItems":"center"}}><FaCcStripe style={{fontSize:"xxx-large"}}/></div>
+          return <div style={{"display":"flex","justifyContent":"center","alignItems":"center"}}><FaCcStripe style={{fontSize:"xxx-large"}}/></div>;
         }
         else if(image==="Credit_Debit"){
-          return <div style={{"display":"flex","justifyContent":"center","alignItems":"center"}}><FaRegCreditCard style={{fontSize:"xxx-large"}}/></div>
+          return <div style={{"display":"flex","justifyContent":"center","alignItems":"center"}}><FaRegCreditCard style={{fontSize:"xxx-large"}}/></div>;
         }
         else if(image==="Cash"){
-          return <div style={{"display":"flex","justifyContent":"center","alignItems":"center"}}><IoCashOutline style={{fontSize:"xxx-large"}}/></div>
+          return <div style={{"display":"flex","justifyContent":"center","alignItems":"center"}}><IoCashOutline style={{fontSize:"xxx-large"}}/></div>;
 
         }
         else{
-          return <div style={{"display":"flex","justifyContent":"center","alignItems":"center"}}><MdSpeakerPhone style={{fontSize:"xxx-large"}}/></div>
+          return <div style={{"display":"flex","justifyContent":"center","alignItems":"center"}}><MdSpeakerPhone style={{fontSize:"xxx-large"}}/></div>;
 
         }
       
@@ -353,7 +351,7 @@
       title:"Amount",
       dataIndex:"amount",
       render:(amount:number)=>{
-        return <div className="font-semibold">Rs {amount}</div>
+        return <div className="font-semibold">Rs {amount}</div>;
       }
     },
     {
@@ -370,23 +368,23 @@
       dataIndex:"status",
       render:(status:boolean)=>{
         if(status===true){
-          return <div style={{"padding":"5px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-green-500">Paid</div>
+          return <div style={{"padding":"5px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-green-500">Paid</div>;
 
         }
         else{
-          return <div style={{"padding":"5px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-red-500">Pending</div>
+          return <div style={{"padding":"5px","borderRadius":"5px","color":"white","textAlign":"center","fontWeight":"600","fontSize":"medium"}} className="bg-red-500">Pending</div>;
 
         }
       }
     }
-  ]
-  export const POPOVER_PROFILE="Profile"
-  export const POPOVER_LOGOUT="Logout"
-  export const DASHBOARD_STATS_REVENUE="REVENUE"
-  export const DASHBOARD_STATS_COSTS_MONEY="COSTS"
-  export const DASHBOARD_STATS_PROFIT="PROFIT"
-  export const DASHBOARD_STATS_REVENUE_VAL=10000000
-  export const DASHBOARD_STATS_COSTS_MONEY_VAL=1000000
-  export const DASHBOARD_STATS_PROFIT_VAL=DASHBOARD_STATS_REVENUE_VAL-DASHBOARD_STATS_COSTS_MONEY_VAL
-  export const COPYRIGHT="Copyright © 2024 Mighty Movers All rights reserved."
-  export const TERMS="Term & Conditions | Privacy & Policy"
+  ];
+  export const POPOVER_PROFILE="Profile";
+  export const POPOVER_LOGOUT="Logout";
+  export const DASHBOARD_STATS_REVENUE="REVENUE";
+  export const DASHBOARD_STATS_COSTS_MONEY="COSTS";
+  export const DASHBOARD_STATS_PROFIT="PROFIT";
+  export const DASHBOARD_STATS_REVENUE_VAL=10000000;
+  export const DASHBOARD_STATS_COSTS_MONEY_VAL=1000000;
+  export const DASHBOARD_STATS_PROFIT_VAL=DASHBOARD_STATS_REVENUE_VAL-DASHBOARD_STATS_COSTS_MONEY_VAL;
+  export const COPYRIGHT="Copyright © 2024 Mighty Movers All rights reserved.";
+  export const TERMS="Term & Conditions | Privacy & Policy";

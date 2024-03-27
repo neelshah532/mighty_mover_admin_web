@@ -58,6 +58,7 @@ import type { GetProp, UploadProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { PieChart } from '../components/piechart';
 import { LineChart } from '../components/linechart';
+import Settings from '../components/Settings';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -425,6 +426,7 @@ const Admin: React.FC = () => {
                                         </>
                                     )}
                                 </div>
+
                                 <div>
                                     {payment_colums.length === 0 ? (
                                         <Empty />
@@ -444,6 +446,9 @@ const Admin: React.FC = () => {
                                         </>
                                     )}
                                 </div>
+                                <div>
+                                    <Settings />
+                                </div>
                                 <Divider></Divider>
                                 <Flex justify="space-between" className="ml-4 mr-4 mb-4 text-gray-400">
                                     <div className="hover:text-gray-600">{COPYRIGHT}</div>
@@ -456,6 +461,7 @@ const Admin: React.FC = () => {
                 <FloatButton.BackTop />
             </div>
             {/* )} */}
+
         </>
     );
 };

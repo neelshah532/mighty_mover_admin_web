@@ -662,3 +662,42 @@ export const DELIVERY_DATA_COL = [
         },
     },
 ];
+export const PIE_DATA = {
+    labels: ['COSTS', 'PROFIT_VAL', 'REVENUE_VAL'],
+    datasets: [
+        {
+            label: '# of Votes',
+            data: [DASHBOARD_STATS_COSTS_MONEY_VAL, DASHBOARD_STATS_PROFIT_VAL, DASHBOARD_STATS_REVENUE_VAL],
+            backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)'],
+            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
+            borderWidth: 1,
+        },
+    ],
+};
+
+export const LINE_CHART_LABELS = ORDER_TABLE.map((orderdata) => {
+    return orderdata.date.substring(0, 10);
+});
+const getRandomNumber = (min: number, max: number): number => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const generateRandomData = (length: number, min: number, max: number): number[] => {
+    const data: number[] = [];
+    for (let i = 0; i < length; i++) {
+        data.push(getRandomNumber(min, max));
+    }
+    return data;
+};
+
+export const LINE_CHART = {
+    labels: LINE_CHART_LABELS,
+    datasets: [
+        {
+            label: 'Dataset 1',
+            data: generateRandomData(LINE_CHART_LABELS.length, -1000, 1000),
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+    ],
+};

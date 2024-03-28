@@ -707,30 +707,17 @@ export const LINE_CHART = {
 
 export const SETTINGS_STRING = {
     section1: [
-        // {
-        //     label: "Store name",
-        //     name: "store_name",
-        //     message: "Please input your store name!",
-        //     placeholder: "Enter Store Name",
-        //     req: true
-        // }, 
         {
-            label: "Select Timezone",
-            name: "timezone",
-            message: "Please Enter timezone!",
-            placeholder: "Enter Timezone",
-            req: false
-        }, {
-            label: "Currency",
-            name: "currency",
-            message: "Please input your currency!",
-            placeholder: "Enter Currency",
+            label: "Per KM fee",
+            name: "per_km_fee",
+            message: "Please Enter per KM fee!",
+            placeholder: "Enter per KM fee!",
             req: true
         }, {
-            label: "Minimum Payout for Delivery Boy",
-            name: "minimum_payout",
-            message: "Please input minimum payout!",
-            placeholder: "Enter Payout for Delivery Boy",
+            label: "Extra fee",
+            name: "extra_fee",
+            message: "Please Enter Extra fee!",
+            placeholder: "Enter Extra fee",
             req: true
         }
     ]

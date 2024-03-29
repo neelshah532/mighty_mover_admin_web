@@ -701,3 +701,11 @@ export const LINE_CHART = {
         },
     ],
 };
+export const PURCHASE_ORDER_STATUS="Purchase Order Status"
+export const DELIVERED="Delivered"
+export const INPROGRESS="In Progress"
+export const NOTDELIVERED="Not Active"
+export const MONTHLY_DATA=" You need a bit more effort to hit monthly target"
+export const MONTHLY_TARGET=" Monthly Target"
+
+

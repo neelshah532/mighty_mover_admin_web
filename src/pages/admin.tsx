@@ -12,7 +12,6 @@ import { message } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { FaHome } from 'react-icons/fa';
 import { MdOutlineContactPage } from 'react-icons/md';
-// import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 import logo from '../assets/Images/Group 1.svg';
@@ -125,6 +124,8 @@ const Admin: React.FC = () => {
     const payment_data = PAYMENT_DATA_COL;
     const delivery_data = DELIVERY_PARTNER;
     const delivery_data_col = DELIVERY_DATA_COL;
+    const delivery_data = DELIVERY_PARTNER;
+    const delivery_data_col = DELIVERY_DATA_COL;
     const formatter = (value: number | string) => {
         if (typeof value === 'number') {
             return <CountUp end={value} duration={1} />;
@@ -165,19 +166,16 @@ const Admin: React.FC = () => {
 
     return (
         <>
-            {/* {toggle ? (
-                <Loader />
-            ) : ( */}
             <div className="w-full">
-                <Layout className="w-fit ">
-                    <Header className="fixed z-10 w-full">
+                <Layout className="w-full ">
+                    <Header className="fixed z-10 w-full bg-white">
                         <Flex justify="space-between">
                             <Flex>
-                                {toggle1 ? (
+                                {toggle ? (
                                     <></>
                                 ) : (
                                     <Button
-                                        className="text-white mt-3 mr-2 text-2xl border-none font-semibold w-full"
+                                        className="text-white mt-3 mr-2 text-2xl border-none font-semibold w-full bg-orange-400 hover:bg-orange-300 transition-all duration-300"
                                         onClick={handletoggle}
                                     >
                                         <IoMenu />

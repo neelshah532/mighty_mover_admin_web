@@ -1,24 +1,28 @@
 import { Content, Header } from 'antd/es/layout/layout';
-
-import { useEffect, useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import { RiLockPasswordLine } from 'react-icons/ri';
-import { FloatButton, Avatar, Divider, Tooltip } from 'antd';
-// import { Pie } from 'react-chartjs-2';
-import { Badge } from 'antd';
-import { Button, Card, Layout, Menu, Popover, Table, Row, Col } from 'antd';
+import { Button, Card, Layout, Menu, Table } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { Statistic } from 'antd';
-import { message } from 'antd';
+import {
+    Statistic,
+    message,
+    Badge,
+    FloatButton,
+    Divider,
+    Tooltip,
+    Flex,
+    Progress,
+    Empty,
+    Modal,
+    Input,
+    Upload,
+    ProgressProps,
+} from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { FaHome } from 'react-icons/fa';
-import { MdOutlineContactPage } from 'react-icons/md';
-import 'react-loading-skeleton/dist/skeleton.css';
-
+import { MdOutlineContactPage, MdOutlinePayment } from 'react-icons/md';
 import logo from '../assets/Images/Group 1.svg';
-
 import { FaRegUserCircle } from 'react-icons/fa';
-import { MdOutlinePayment } from 'react-icons/md';
-
 import {
     DASHBOARD_CONTENT,
     POPOVER_LOGOUT,
@@ -44,25 +48,19 @@ import {
     MONTHLY_DATA,
     MONTHLY_TARGET,
 } from '../assets/constant/constant';
-import type { TableColumnsType } from 'antd';
-import { Flex, Progress } from 'antd';
-import { DataType } from '../assets/dto/data.type';
-import { Empty } from 'antd';
 import { IoMdSettings } from 'react-icons/io';
 import { IoMenu } from 'react-icons/io5';
 import { BiLogOut } from 'react-icons/bi';
 import { FaUser } from 'react-icons/fa';
 import CountUp from 'react-countup';
-import { Modal } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Upload } from 'antd';
 import type { GetProp, UploadProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { PieChart } from '../components/piechart';
 import { LineChart } from '../components/linechart';
-import type { ProgressProps } from 'antd';
+import { ColumnProps } from 'antd/es/table';
+import { DeliveryPartner, Order } from '../assets/dto/data.type';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -88,7 +86,7 @@ const Admin: React.FC = () => {
     // const [toggle, settoggle] = useState(true);
     const [toggle1, settoggle1] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [pic, setpic] = useState(false);
+    // const [pic, setpic] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
     const prefix = DASHBOARD_STATS_PROFIT_VAL >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
     const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
@@ -124,12 +122,12 @@ const Admin: React.FC = () => {
         </div>
     );
 
-    const columns: TableColumnsType<DataType> = DATA_COL;
-    const data: DataType[] = ORDER_TABLE;
+    const columns: ColumnProps<Order>[] = DATA_COL;
+    const data: Order[] = ORDER_TABLE;
     const payment_colums = PAYMENT_DATA;
     const payment_data = PAYMENT_DATA_COL;
     const delivery_data = DELIVERY_PARTNER;
-    const delivery_data_col = DELIVERY_DATA_COL;
+    const delivery_data_col: ColumnProps<DeliveryPartner>[] = DELIVERY_DATA_COL;
     const formatter = (value: number | string) => {
         if (typeof value === 'number') {
             return <CountUp end={value} duration={1} />;
@@ -146,7 +144,7 @@ const Admin: React.FC = () => {
     };
 
     const handleOk = () => {
-        setpic(true);
+        // setpic(true);
         message.info(`Update Success`);
         settoggle1(true);
         setIsModalOpen(false);
@@ -155,7 +153,7 @@ const Admin: React.FC = () => {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    const handleUsernameChange = (e: ChangeEventHandler<HTMLInputElement>) => {
+    const handleUsernameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setname(e.target.value);
     };
     const twoColors: ProgressProps['strokeColor'] = {

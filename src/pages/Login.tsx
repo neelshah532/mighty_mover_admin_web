@@ -18,7 +18,8 @@ const Login: React.FC = () => {
     useEffect(() => {
         const user = sessionStorage.getItem('user');
         if (user) {
-            navigate('/home');
+            navigate('/dashboard');
+            // message.error('you dont have permission');
         }
     }, [navigate]);
 
@@ -38,7 +39,6 @@ const Login: React.FC = () => {
     };
 
     return (
-       
         <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
             <div className="w-full max-w-md p-8 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg dark:border dark:border-gray-700">
                 <div className="bg-blue-500 py-4 px-4 rounded-t-lg text-white">

@@ -221,8 +221,9 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#dc2626"
                         }}
-                        className="bg-red-600"
+                        
                     >
                         Pending
                     </div>
@@ -237,8 +238,9 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#22c55e"
                         }}
-                        className="bg-green-500"
+                      
                     >
                         Paid
                     </div>
@@ -265,8 +267,9 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#dc2626"
                         }}
-                        className="bg-red-600"
+                        
                     >
                         Cancel
                     </div>
@@ -281,8 +284,9 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#f59e0b"
                         }}
-                        className="bg-amber-500"
+                        
                     >
                         In Progress
                     </div>
@@ -297,8 +301,9 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#9333ea"
                         }}
-                        className="bg-purple-600"
+                        
                     >
                         Pending
                     </div>
@@ -313,8 +318,10 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#22c55e"
+
                         }}
-                        className="bg-green-500"
+                       
                     >
                         Delivered
                     </div>
@@ -343,8 +350,10 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#dc2626"
+
                         }}
-                        className="bg-red-600"
+                       
                     >
                         Pending
                     </div>
@@ -359,8 +368,10 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#22c55e"
+
                         }}
-                        className="bg-green-500"
+                        
                     >
                         Paid
                     </div>
@@ -483,8 +494,9 @@ export const PAYMENT_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#22c55e"
                         }}
-                        className="bg-green-500"
+                        
                     >
                         Paid
                     </div>
@@ -499,8 +511,9 @@ export const PAYMENT_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#dc2626 "
                         }}
-                        className="bg-red-500"
+                    
                     >
                         Pending
                     </div>
@@ -636,8 +649,10 @@ export const DELIVERY_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#22c55e"
+
                         }}
-                        className="bg-green-500"
+                       
                     >
                         Active
                     </div>
@@ -652,8 +667,8 @@ export const DELIVERY_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor:"#dc2626"
                         }}
-                        className="bg-red-500"
                     >
                         Inactive
                     </div>
@@ -707,5 +722,6 @@ export const INPROGRESS="In Progress"
 export const NOTDELIVERED="Not Active"
 export const MONTHLY_DATA=" You need a bit more effort to hit monthly target"
 export const MONTHLY_TARGET=" Monthly Target"
+
 
 

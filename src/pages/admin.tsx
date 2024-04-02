@@ -61,6 +61,7 @@ import { PieChart } from '../components/piechart';
 import { LineChart } from '../components/linechart';
 import { ColumnProps } from 'antd/es/table';
 import { DeliveryPartner, Order } from '../assets/dto/data.type';
+import { DoughnutChart } from '../components/DoughnutChart';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -171,9 +172,7 @@ const Admin: React.FC = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        // Clear user session
-        sessionStorage.removeItem('user');
-        // Redirect to login page
+        localStorage.removeItem('user');
         navigate('/login');
         message.success('You have been logged out');
     };
@@ -390,7 +389,7 @@ const Admin: React.FC = () => {
                                 </div>
                                 <div className=" row-start-2 col-start-1 row-end-3 col-end-3 w-full h-full">
                                     <Card bordered={false} className="w-full flex-1 h-full">
-                                        Doughtnut
+                                        {/* <DoughnutChart /> */}
                                     </Card>
                                 </div>
                             </div>

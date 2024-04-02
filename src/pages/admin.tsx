@@ -85,7 +85,7 @@ const beforeUpload = (file: FileType) => {
 const Admin: React.FC = () => {
     const [collapse, setcollapse] = useState(false);
     const [name, setname] = useState('');
-    const [toggle, settoggle] = useState(true);
+    // const [toggle, settoggle] = useState(true);
     const [toggle1, settoggle1] = useState(false);
     const [loading, setLoading] = useState(false);
     const [pic, setpic] = useState(false);

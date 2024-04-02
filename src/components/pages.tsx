@@ -7,7 +7,7 @@ function Pages() {
     return (
         <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/home" element={<Admin />} />
+            <Route path="/dashboard" element={<Admin />} />
             <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
     );

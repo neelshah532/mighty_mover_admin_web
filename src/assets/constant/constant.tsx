@@ -180,12 +180,14 @@ export const DATA_COL = [
         dataIndex: 'orderid',
         filters: orderid,
         filterSearch: true,
-        onFilter: (value: string, record: any) => record.orderid.toLowerCase().includes(value.toLowerCase()),
+        onFilter: (value: string, record: Record<string, any>) =>
+            record.orderid.toLowerCase().includes(value.toLowerCase()),
     },
     {
         title: 'Date',
         dataIndex: 'date',
-        sorter: (a: any, b: any) => new Date(a.date) - new Date(b.date),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        sorter: (a: any, b: any) => Number(new Date(a.date)) - Number(new Date(b.date)),
     },
     {
         title: 'Transaction Id',
@@ -205,7 +207,7 @@ export const DATA_COL = [
     {
         title: 'Total Price',
         dataIndex: 'totalprice',
-        sorter: (a: any, b: any) => a.totalprice - b.totalprice,
+        sorter: (a: any, b: any) => Number(a.totalprice) - Number(b.totalprice),
     },
     {
         title: 'Payment Status',
@@ -221,9 +223,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#dc2626"
+                            backgroundColor: '#dc2626',
                         }}
-                        
                     >
                         Pending
                     </div>
@@ -238,9 +239,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#22c55e"
+                            backgroundColor: '#22c55e',
                         }}
-                      
                     >
                         Paid
                     </div>
@@ -267,9 +267,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#dc2626"
+                            backgroundColor: '#dc2626',
                         }}
-                        
                     >
                         Cancel
                     </div>
@@ -284,9 +283,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#f59e0b"
+                            backgroundColor: '#f59e0b',
                         }}
-                        
                     >
                         In Progress
                     </div>
@@ -301,9 +299,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#9333ea"
+                            backgroundColor: '#9333ea',
                         }}
-                        
                     >
                         Pending
                     </div>
@@ -318,10 +315,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#22c55e"
-
+                            backgroundColor: '#22c55e',
                         }}
-                       
                     >
                         Delivered
                     </div>
@@ -350,10 +345,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#dc2626"
-
+                            backgroundColor: '#dc2626',
                         }}
-                       
                     >
                         Pending
                     </div>
@@ -368,10 +361,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#22c55e"
-
+                            backgroundColor: '#22c55e',
                         }}
-                        
                     >
                         Paid
                     </div>
@@ -494,9 +485,8 @@ export const PAYMENT_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#22c55e"
+                            backgroundColor: '#22c55e',
                         }}
-                        
                     >
                         Paid
                     </div>
@@ -511,9 +501,8 @@ export const PAYMENT_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#dc2626 "
+                            backgroundColor: '#dc2626 ',
                         }}
-                    
                     >
                         Pending
                     </div>
@@ -526,12 +515,9 @@ export const LOGIN_DATA_STRING = {
     TITLE: 'Login to your account',
     SUBTITLE: 'Welcome to Mighty Movers',
     LOGIN: 'Login',
-    FORGOT_PASSWORD: '<PASSWORD>',
-    CREATE_ACCOUNT: 'Create Account',
-    SUBMIT: 'Submit',
+    SUBMIT: 'Login',
     EMAIL: 'Email',
     PASSWORD: 'Password',
-    REMEMBER_ME: 'Remember Me',
 };
 
 export const POPOVER_PROFILE = 'Profile';
@@ -649,10 +635,8 @@ export const DELIVERY_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#22c55e"
-
+                            backgroundColor: '#22c55e',
                         }}
-                       
                     >
                         Active
                     </div>
@@ -667,7 +651,7 @@ export const DELIVERY_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor:"#dc2626"
+                            backgroundColor: '#dc2626',
                         }}
                     >
                         Inactive
@@ -716,12 +700,9 @@ export const LINE_CHART = {
         },
     ],
 };
-export const PURCHASE_ORDER_STATUS="Purchase Order Status"
-export const DELIVERED="Delivered"
-export const INPROGRESS="In Progress"
-export const NOTDELIVERED="Not Active"
-export const MONTHLY_DATA=" You need a bit more effort to hit monthly target"
-export const MONTHLY_TARGET=" Monthly Target"
-
-
-
+export const PURCHASE_ORDER_STATUS = 'Purchase Order Status';
+export const DELIVERED = 'Delivered';
+export const INPROGRESS = 'In Progress';
+export const NOTDELIVERED = 'Not Active';
+export const MONTHLY_DATA = ' You need a bit more effort to hit monthly target';
+export const MONTHLY_TARGET = ' Monthly Target';

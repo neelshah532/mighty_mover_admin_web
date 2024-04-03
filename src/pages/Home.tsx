@@ -6,7 +6,7 @@ const Home = () => {
 
     const handleLogout = () => {
         // Clear user session
-        sessionStorage.removeItem('user');
+        localStorage.removeItem('user');
         // Redirect to login page
         navigate('/login');
         message.success('You have been logged out');

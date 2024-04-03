@@ -1,24 +1,40 @@
-'use client';
 import React from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import { PieChart, Pie, Legend } from 'recharts';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+const data01 = [
+    { name: 'Group A', value: 400, fill: '#519DE9' },
+    { name: 'Group B', value: 300, fill: '#7CC674' },
+    { name: 'Group C', value: 400, fill: '#F4C145' },
+];
 
-export const data = {
-    labels: ['Red', 'Blue', 'Yellow'],
-    datasets: [
-        {
-            label: '# of Votes',
-            data: [12, 19, 3],
-            backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-            borderWidth: 1,
-            radius: '50%',
-        },
-    ],
-};
+export default function App() {
+    const style = {
+        top: 40,
 
-export function DoughnutChart() {
-    return <Doughnut data={data}  />;
+        left: 380,
+        lineHeight: '30px',
+    };
+    return (
+        <PieChart width={1000} height={200}>
+            <Pie
+                dataKey="value"
+                data={data01}
+                cx={200}
+                cy={100}
+                innerRadius={40}
+                outerRadius={70}
+                fill="#2967ff"
+                isAnimationActive={true}
+                label
+            />
+            <Legend
+                iconSize={10}
+                width={120}
+                height={140}
+                layout="vertical"
+                verticalAlign="middle"
+                wrapperStyle={style}
+            />
+        </PieChart>
+    );
 }

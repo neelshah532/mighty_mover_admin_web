@@ -34,15 +34,13 @@
 // export default App;
 
 import Login from './pages/Login';
-import {  Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import Admin from './pages/admin';
 import PublicRoute from './utils/PublicRoute';
+import '.././src/App.css';
 function App() {
-  
     return (
-      
-
         <Routes>
             <Route element={<ProtectedRoutes />}>
                 <Route path="/" element={<Admin />} />

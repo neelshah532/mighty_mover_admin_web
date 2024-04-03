@@ -694,8 +694,6 @@ export const MONTHLY_DATA = ' You need a bit more effort to hit monthly target';
 export const MONTHLY_TARGET = ' Monthly Target';
 
 
-
-
 export const SETTINGS_STRING = {
     section1: [
         {
@@ -713,4 +711,23 @@ export const SETTINGS_STRING = {
         }
     ]
 
+}
+
+
+export const BLOG_SETTINGS_STRING = {
+    settings: [
+        {
+            label: "Author Name",
+            name: "author_name",
+            message: "Please Enter Author Name!",
+            placeholder: "Enter Author Name",
+            req: true
+        }, {
+            label: "Title",
+            name: "title",
+            message: "Please Enter Title!",
+            placeholder: "Enter Title",
+            req: true
+        }
+    ]
 }

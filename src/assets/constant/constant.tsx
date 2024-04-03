@@ -2,26 +2,9 @@ import { IoCashOutline } from 'react-icons/io5';
 import { FaCcStripe } from 'react-icons/fa';
 import { FaRegCreditCard } from 'react-icons/fa';
 import { MdSpeakerPhone } from 'react-icons/md';
-enum shipdata {
-    'cancel',
-    'inprogess',
-    'pending',
-    'delivered',
-}
-enum paymenttype {
-    stripe = 'Stripe',
-    credit_debit = 'Credit_Debit',
-    cash = 'Cash',
-    upi = 'UPI',
-}
-enum deliverypartner {
-    active = 'active',
-    inactive = 'inactive',
-}
-enum vehicletype {
-    'two-wheeler' = 'Two-Wheeler',
-    'four-wheeler' = 'Four-Wheeler',
-}
+import { ColumnProps } from 'antd/es/table';
+import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype } from '../dto/data.type';
+
 export const DASHBOARD_CONTENT = [
     {
         TOTAL_ORDER: 'Total Order',
@@ -72,7 +55,7 @@ export const DASHBOARD_CONTENT = [
         VAL: 'VAL',
     },
 ];
-export const ORDER_TABLE = [
+export const ORDER_TABLE: Order[] = [
     {
         key: '1',
         orderid: 'John Brown',
@@ -174,38 +157,42 @@ const orderid = Array.from(new Set(ORDER_TABLE.map((item) => item.orderid))).map
     text: name,
     value: name,
 }));
-export const DATA_COL = [
+export const DATA_COL: ColumnProps<Order>[] = [
     {
         title: 'Order Id',
         dataIndex: 'orderid',
         filters: orderid,
         filterSearch: true,
-        onFilter: (value: string, record: any) => record.orderid.toLowerCase().includes(value.toLowerCase()),
+        onFilter: (value: React.Key | boolean, record: Order) =>
+            typeof value === 'string' && record.orderid.toLowerCase().includes(value.toLowerCase()),
     },
     {
         title: 'Date',
         dataIndex: 'date',
-        sorter: (a: any, b: any) => new Date(a.date) - new Date(b.date),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        sorter: (a: Order, b: Order) => Number(new Date(a.date)) - Number(new Date(b.date)),
     },
     {
         title: 'Transaction Id',
         dataIndex: 'transid',
         filters: transid,
         filterSearch: true,
-        onFilter: (value: string, record: any) => record.transid.toLowerCase().includes(value.toLowerCase()),
+        onFilter: (value: React.Key | boolean, record: Order) =>
+            typeof value === 'string' && record.transid.toLowerCase().includes(value.toLowerCase()),
     },
     {
         title: 'Customer',
         dataIndex: 'customer',
         filters: customerNames,
         filterSearch: true,
-        sorter: (a: any, b: any) => a.customer.localeCompare(b.customer),
-        onFilter: (value: string, record: any) => record.customer.toLowerCase().includes(value.toLowerCase()),
+        sorter: (a: Order, b: Order) => a.customer.localeCompare(b.customer),
+        onFilter: (value: React.Key | boolean, record: Order) =>
+            typeof value === 'string' && record.customer.toLowerCase().includes(value.toLowerCase()),
     },
     {
         title: 'Total Price',
         dataIndex: 'totalprice',
-        sorter: (a: any, b: any) => a.totalprice - b.totalprice,
+        sorter: (a: Order, b: Order) => a.totalprice - b.totalprice,
     },
     {
         title: 'Payment Status',
@@ -221,8 +208,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#dc2626',
                         }}
-                        className="bg-red-600"
                     >
                         Pending
                     </div>
@@ -237,8 +224,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#22c55e',
                         }}
-                        className="bg-green-500"
                     >
                         Paid
                     </div>
@@ -249,7 +236,7 @@ export const DATA_COL = [
             { text: 'Pending', value: false },
             { text: 'Paid', value: true },
         ],
-        onFilter: (value: boolean, record: any) => record.paystatus === value,
+        onFilter: (value: React.Key | boolean, record: Order) => record.paystatus === value,
     },
     {
         title: 'Shipping Status',
@@ -265,8 +252,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#dc2626',
                         }}
-                        className="bg-red-600"
                     >
                         Cancel
                     </div>
@@ -281,8 +268,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#f59e0b',
                         }}
-                        className="bg-amber-500"
                     >
                         In Progress
                     </div>
@@ -297,8 +284,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#9333ea',
                         }}
-                        className="bg-purple-600"
                     >
                         Pending
                     </div>
@@ -313,8 +300,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#22c55e',
                         }}
-                        className="bg-green-500"
                     >
                         Delivered
                     </div>
@@ -327,7 +314,7 @@ export const DATA_COL = [
             { text: 'In Progress', value: 1 },
             { text: 'Delivered', value: 2 },
         ],
-        onFilter: (value: number, record: any) => record.shipstatus === value,
+        onFilter: (value: React.Key | boolean, record: Order) => record.shipstatus === value,
     },
     {
         title: 'Is Approved',
@@ -343,8 +330,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#dc2626',
                         }}
-                        className="bg-red-600"
                     >
                         Pending
                     </div>
@@ -359,8 +346,8 @@ export const DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#22c55e',
                         }}
-                        className="bg-green-500"
                     >
                         Paid
                     </div>
@@ -371,7 +358,7 @@ export const DATA_COL = [
             { text: 'Pending', value: false },
             { text: 'Paid', value: true },
         ],
-        onFilter: (value: boolean, record: any) => record.isapproved === value,
+        onFilter: (value: React.Key | boolean, record: Order) => record.isapproved === value,
     },
 ];
 
@@ -483,8 +470,8 @@ export const PAYMENT_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#22c55e',
                         }}
-                        className="bg-green-500"
                     >
                         Paid
                     </div>
@@ -499,8 +486,8 @@ export const PAYMENT_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#dc2626 ',
                         }}
-                        className="bg-red-500"
                     >
                         Pending
                     </div>
@@ -513,12 +500,9 @@ export const LOGIN_DATA_STRING = {
     TITLE: 'Login to your account',
     SUBTITLE: 'Welcome to Mighty Movers',
     LOGIN: 'Login',
-    FORGOT_PASSWORD: '<PASSWORD>',
-    CREATE_ACCOUNT: 'Create Account',
-    SUBMIT: 'Submit',
+    SUBMIT: 'Login',
     EMAIL: 'Email',
     PASSWORD: 'Password',
-    REMEMBER_ME: 'Remember Me',
 };
 
 export const POPOVER_PROFILE = 'Profile';
@@ -532,7 +516,7 @@ export const DASHBOARD_STATS_PROFIT_VAL = DASHBOARD_STATS_REVENUE_VAL - DASHBOAR
 export const COPYRIGHT = 'Copyright © 2024 Mighty Movers All rights reserved.';
 export const TERMS = 'Term & Conditions | Privacy & Policy';
 
-export const DELIVERY_PARTNER = [
+export const DELIVERY_PARTNER: DeliveryPartner[] = [
     {
         key: '1',
         first: 'John Brown',
@@ -578,7 +562,7 @@ export const DELIVERY_PARTNER = [
         status: deliverypartner.active,
     },
 ];
-export const DELIVERY_DATA_COL = [
+export const DELIVERY_DATA_COL: ColumnProps<DeliveryPartner>[] = [
     {
         title: 'Index',
         dataIndex: 'key',
@@ -610,7 +594,8 @@ export const DELIVERY_DATA_COL = [
             { text: 'Two-Wheeler', value: 'Two-Wheeler' },
             { text: 'Four-Wheeler', value: 'Four-Wheeler' },
         ],
-        onFilter: (value: boolean, record: any) => record.vehicleType === value,
+        onFilter: (value: React.Key | boolean, record: DeliveryPartner) =>
+            typeof value === 'string' && record.vehicleType === value,
     },
     {
         title: 'Vehicle Number',
@@ -623,7 +608,7 @@ export const DELIVERY_DATA_COL = [
             { text: 'Active', value: 'active' },
             { text: 'InActive', value: 'inactive' },
         ],
-        onFilter: (value: boolean, record: any) => record.status === value,
+        onFilter: (value: React.Key | boolean, record: DeliveryPartner) => record.status === value,
 
         render: (status: string) => {
             if (status === 'active') {
@@ -636,8 +621,8 @@ export const DELIVERY_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#22c55e',
                         }}
-                        className="bg-green-500"
                     >
                         Active
                     </div>
@@ -652,8 +637,8 @@ export const DELIVERY_DATA_COL = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
+                            backgroundColor: '#dc2626',
                         }}
-                        className="bg-red-500"
                     >
                         Inactive
                     </div>
@@ -701,6 +686,12 @@ export const LINE_CHART = {
         },
     ],
 };
+export const PURCHASE_ORDER_STATUS = 'Purchase Order Status';
+export const DELIVERED = 'Delivered';
+export const INPROGRESS = 'In Progress';
+export const NOTDELIVERED = 'Not Active';
+export const MONTHLY_DATA = ' You need a bit more effort to hit monthly target';
+export const MONTHLY_TARGET = ' Monthly Target';
 
 
 

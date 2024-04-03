@@ -44,4 +44,13 @@ export const userData = [
         createdAt: '2021-01-01',
         updatedAt: '2021-01-01',
     },
+    {
+        id: 6,
+        username: 'user',
+        email: 'user',
+        password: 'user',
+        role: 'user',
+        createdAt: '2021-01-01',
+        updatedAt: '2021-01-01',
+    },
 ];

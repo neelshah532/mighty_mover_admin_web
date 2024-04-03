@@ -12,7 +12,11 @@ export default {
       },
       sceens:{
         "random":"1087px"
-      }
+      },
+      width: {
+        'random': '50%',
+        "one-third":"30%",
+      },
     },
   },
   plugins: [],

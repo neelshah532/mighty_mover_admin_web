@@ -8,15 +8,16 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-       "login-url":"url('../assets/Images/delivery-tracking-service-shipping-logistic_24640-49701.jpg')"
+        "login-url": "url('../assets/Images/delivery-tracking-service-shipping-logistic_24640-49701.jpg')"
       },
-      sceens:{
-        "random":"1087px"
+      sceens: {
+        "random": "1087px"
       },
       width: {
         'random': '50%',
-        "one-third":"30%",
+        "one-third": "30%",
       },
+
     },
   },
   plugins: [],

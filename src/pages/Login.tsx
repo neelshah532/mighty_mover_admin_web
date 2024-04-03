@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Input, Form, message } from 'antd'; // Import message from antd
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -15,24 +15,19 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    useEffect(() => {
-        const user = sessionStorage.getItem('user');
-        if (user) {
-            navigate('/dashboard');
-            // message.error('you dont have permission');
-        }
-    }, [navigate]);
-
     const onFinish = (values: User) => {
         const user = userData.find((u) => u.email === values.email && u.password === values.password);
         if (user) {
-            sessionStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('user', JSON.stringify(user));
             if (user.role === 'admin') {
-                navigate('/dashboard');
+                navigate('/');
+                message.success('Login successfully');
+            } else if (user.role === 'user') {
+                navigate('/login');
+                message.error('you dont have permission');
             } else {
                 navigate('/login');
             }
-            message.success('Login successfully');
         } else {
             message.error('Invalid email or password');
         }

@@ -1,7 +1,7 @@
 import { Content, Header } from 'antd/es/layout/layout';
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { RiLockPasswordLine } from 'react-icons/ri';
-import { Button, Card, Layout, Menu, Table } from 'antd';
+import { Avatar, Button, Card, Layout, Menu, Table } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import {
     Statistic,
@@ -55,7 +55,7 @@ import { FaUser } from 'react-icons/fa';
 import CountUp from 'react-countup';
 import { UserOutlined } from '@ant-design/icons';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import type { GetProp, UploadProps } from 'antd';
+import type { GetProp, UploadProps, UploadFile } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { PieChart } from '../components/piechart';
 import { LineChart } from '../components/linechart';
@@ -65,35 +65,21 @@ import DoughnutChart from '../components/DoughnutChart';
 import Loader from '../components/Loader';
 import Settings from '../components/Settings';
 import Blog from '../components/Blog';
+import ImgCrop from 'antd-img-crop';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
-const getBase64 = (img: FileType, callback: (url: string) => void) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result as string));
-    reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file: FileType) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
-};
 
 const Admin: React.FC = () => {
     const [collapse, setcollapse] = useState(false);
     const [name, setname] = useState('');
     const [toggle, settoggle] = useState(true);
     const [toggle1, settoggle1] = useState(false);
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     // const [pic, setpic] = useState(false);
+    const [pic, setPic] = useState<string | null>(null);
     const [imageUrl, setImageUrl] = useState<string>();
     const prefix = DASHBOARD_STATS_PROFIT_VAL >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />;
     const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     useEffect(() => {
         const fetchdata = setTimeout(() => {
@@ -102,29 +88,6 @@ const Admin: React.FC = () => {
 
         return () => clearTimeout(fetchdata);
     }, []);
-
-    const handleChange: UploadProps['onChange'] = (info) => {
-        if (info.file.status === 'uploading') {
-            setLoading(true);
-            return;
-        }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            getBase64(info.file.originFileObj as FileType, (url) => {
-                setLoading(false);
-                setImageUrl(url);
-            });
-        }
-    };
-
-    const uploadButton = (
-        <div>
-            <button style={{ border: 0, background: 'none' }} type="button">
-                {loading ? <LoadingOutlined /> : <PlusOutlined />}
-                <div style={{ marginTop: 8 }}>Upload</div>
-            </button>
-        </div>
-    );
 
     const columns: ColumnProps<Order>[] = DATA_COL;
     const data: Order[] = ORDER_TABLE;
@@ -143,15 +106,105 @@ const Admin: React.FC = () => {
     };
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
+    // const showModal = () => {
+    //     setIsModalOpen(true);
+    // };
 
+    // const getBase64 = (img: FileType, callback: (url: string) => void) => {
+    //     const reader = new FileReader();
+    //     reader.addEventListener('load', () => callback(reader.result as string));
+    //     reader.readAsDataURL(img);
+    // };
+
+    // const beforeUpload = (file: FileType) => {
+    //     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    //     if (!isJpgOrPng) {
+    //         message.error('You can only upload JPG/PNG file!');
+    //     }
+    //     const isLt2M = file.size / 1024 / 1024 < 2;
+    //     if (!isLt2M) {
+    //         message.error('Image must smaller than 2MB!');
+    //     }
+    //     return isJpgOrPng && isLt2M;
+    // };
+    // const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+    //     setFileList(newFileList);
+    // };
     const handleOk = () => {
         // setpic(true);
         message.info(`Update Success`);
         settoggle1(true);
         setIsModalOpen(false);
+    };
+    // const handleChange: UploadProps['onChange'] = (info) => {
+    //     if (info.file.status === 'uploading') {
+    //         setLoading(true);
+    //         return;
+    //     }
+    //     if (info.file.status === 'done') {
+    //         // Get this url from response in real world.
+    //         getBase64(info.file.originFileObj as FileType, (url) => {
+    //             setLoading(false);
+    //             setImageUrl(url);
+    //         });
+    //     }
+    // };
+
+    const handleUploadChange = ({ fileList }: { fileList: UploadFile[] }) => {
+        const allowedTypes = ['image/jpeg', 'image/png']; // Define allowed image types
+        const maxSize = 2 * 1024 * 1024; // Define max size in bytes (2MB)
+
+        // Check if any file exceeds the maximum allowed size or is of an invalid type
+        const isInvalidFile = fileList.some(
+            (file) => file.size && (file.size > maxSize || (file.type && !allowedTypes.includes(file.type)))
+        );
+
+        if (isInvalidFile) {
+            // If any file is invalid, show an error message to the admin
+            message.error('Invalid file! Please make sure the file is a JPEG or PNG image and does not exceed 2MB.');
+        } else {
+            // Otherwise, update the file list and set the profile picture
+            setFileList(fileList);
+            if (fileList.length > 0 && fileList[0].originFileObj) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    setPic(e.target?.result as string);
+                };
+                reader.readAsDataURL(fileList[0].originFileObj);
+            } else {
+                setPic(null);
+            }
+        }
+    };
+
+    const beforeUpload = (file: FileType) => {
+        const allowedTypes = ['image/jpeg', 'image/png']; // Define allowed image types
+        const maxSize = 2 * 1024 * 1024; // Define max size in bytes (2MB)
+
+        // Check if the file type is allowed and if it exceeds the maximum allowed size
+        if (!allowedTypes.includes(file.type)) {
+            message.error('You can only upload JPG/PNG files!');
+            return false;
+        }
+        if (file.size > maxSize) {
+            message.error('Image must be smaller than 2MB!');
+            return false;
+        }
+        return true;
+    };
+    const onPreview = async (file: UploadFile) => {
+        let src = file.url as string;
+        if (!src) {
+            src = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file.originFileObj as FileType);
+                reader.onload = () => resolve(reader.result as string);
+            });
+        }
+        const image = new Image();
+        image.src = src;
+        const imgWindow = window.open(src);
+        imgWindow?.document.write(image.outerHTML);
     };
 
     const handleCancel = () => {
@@ -212,16 +265,10 @@ const Admin: React.FC = () => {
                                 <img src={logo} alt="logo" />
                                 <Flex gap="small" align="center" justify="flex-end">
                                     {/* <Avatar
-                                    src={
-                                        pic ? (
-                                            <img src={imageUrl} width={100} height={100} alt="avatar" />
-                                        ) : (
-                                            <UserOutlined className='bg-black text'/>
-                                        )
-                                    }
-                                    className="rounded-full"
-                                /> */}
-
+                                        src={pic || <UserOutlined />}
+                                        icon={!pic ? <FaUser /> : undefined}
+                                        className="rounded-full"
+                                    /> */}
                                     <Tooltip
                                         title={
                                             toggle1 ? (
@@ -234,14 +281,25 @@ const Admin: React.FC = () => {
                                         }
                                     >
                                         <Button
-                                            className="text-white font-semibold bg-black text-xl text-center mt-5"
-                                            onClick={showModal}
+                                            className="text-white font-semibold bg-black text-xl text-center mt-5 "
+                                            onClick={() => setIsModalOpen(true)}
                                         >
-                                            <FaUser />
+                                            {/* <FaUser /> */}
+                                            {fileList.length === 0 ? (
+                                                <FaUser />
+                                            ) : (
+                                                <Avatar
+                                                    src={pic || <UserOutlined />}
+                                                    icon={!pic ? <FaUser /> : undefined}
+                                                    className="rounded-md w-10 h-10 bg-white "
+                                                    alt="avatar"
+                                                />
+                                            )}
                                         </Button>
-                                        <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+
+                                        <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
                                             <Flex vertical>
-                                                <Upload
+                                                {/* <Upload
                                                     name="avatar"
                                                     listType="picture-card"
                                                     className="avatar-uploader "
@@ -255,7 +313,23 @@ const Admin: React.FC = () => {
                                                     ) : (
                                                         uploadButton
                                                     )}
-                                                </Upload>
+                                                </Upload> */}
+                                                <ImgCrop rotationSlider aspectSlider>
+                                                    <Upload
+                                                        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                                                        listType="picture-card"
+                                                        className="avatar-uploader "
+                                                        fileList={fileList}
+                                                        onChange={handleUploadChange}
+                                                        onPreview={onPreview}
+                                                        beforeUpload={beforeUpload}
+                                                    >
+                                                        {fileList.length < 1 && <div>{<PlusOutlined />}</div>}
+
+                                                        {/* <img src={imageUrl} alt="avatar" width={100} height={100} /> */}
+                                                    </Upload>
+                                                </ImgCrop>
+
                                                 <Input
                                                     size="large"
                                                     placeholder="Username"
@@ -270,6 +344,18 @@ const Admin: React.FC = () => {
                                                     prefix={<RiLockPasswordLine />}
                                                 />
                                                 <br></br>
+                                                <div className="flex justify-end mt-4">
+                                                    <Button className="mr-2" onClick={handleCancel}>
+                                                        Cancel
+                                                    </Button>
+                                                    <Button
+                                                        type="primary"
+                                                        onClick={handleOk}
+                                                        className="bg-blue-500 hover:bg-blue-600"
+                                                    >
+                                                        OK
+                                                    </Button>
+                                                </div>
                                             </Flex>
                                         </Modal>
                                     </Tooltip>
@@ -533,7 +619,6 @@ const Admin: React.FC = () => {
                 </div>
             )}
             {/* )} */}
-
         </>
     );
 };

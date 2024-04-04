@@ -273,8 +273,8 @@ export const DATA_COL: ColumnProps<Order>[] = [
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            border:"1px solid #f59e0b",
-                            backgroundColor:""
+                            border: "1px solid #f59e0b",
+                            backgroundColor: ""
                         }}
                     >
                         In Progress
@@ -720,6 +720,30 @@ export const SETTINGS_STRING = {
             name: "extra_fee",
             message: "Please Enter Extra fee!",
             placeholder: "Enter Extra fee",
+            req: true
+        }, {
+            label: "Instagram",
+            name: "instagram",
+            message: "Please Paste Instagram Link!",
+            placeholder: "Enter or Paste Instagram Link",
+            req: true
+        }, {
+            label: "Facebook",
+            name: "facebook",
+            message: "Please Paste Facebook Link!",
+            placeholder: "Enter or Paste Facebook Link",
+            req: true
+        }, {
+            label: "Linked In",
+            name: "linked_in",
+            message: "Please Paste LinkenIn Link!",
+            placeholder: "Enter or Paste LinkedIn Link",
+            req: true
+        }, {
+            label: "Twitter",
+            name: "twitter",
+            message: "Please Paste Twitter Link!",
+            placeholder: "Enter or Paste Twitter Link",
             req: true
         }
     ]

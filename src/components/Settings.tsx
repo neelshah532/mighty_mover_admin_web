@@ -48,24 +48,25 @@ const Settings: React.FC = () => (
                     layout="vertical"
                 >
 
-                    <div className='grid grid-cols-2 w-full gap-2 p-4'>
-                        {SETTINGS_STRING.section1.map((item) => (
-                            <Form.Item<FieldType>
-                                label={item.label}
-                                name={item.name}
-                                rules={[{ required: item.req, message: item.message }]}
-                            >
-                                <Input placeholder={item.placeholder} />
+                    <div className='w-full flex justify-center'>
+                        <div className='flex flex-col w-1/2 gap-2 p-4'>
+                            {SETTINGS_STRING.section1.map((item) => (
+                                <Form.Item<FieldType>
+                                    label={item.label}
+                                    name={item.name}
+                                    rules={[{ required: item.req, message: item.message }]}
+                                >
+                                    <Input placeholder={item.placeholder} />
+                                </Form.Item>
+                            ))}
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit" className='bg-blue-500 w-full'>
+                                    Submit
+                                </Button>
                             </Form.Item>
-                        ))}
+                        </div>
                     </div>
-                    <div className='flex justify-center'>
-                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                            <Button type="primary" htmlType="submit" className='bg-blue-500'>
-                                Submit
-                            </Button>
-                        </Form.Item>
-                    </div>
+
                 </Form>
             </div>
         </div>

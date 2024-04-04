@@ -84,7 +84,7 @@ const Admin: React.FC = () => {
     useEffect(() => {
         const fetchdata = setTimeout(() => {
             settoggle(false);
-        }, 2000);
+        }, 0);
 
         return () => clearTimeout(fetchdata);
     }, []);

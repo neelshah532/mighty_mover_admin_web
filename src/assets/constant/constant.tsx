@@ -204,11 +204,12 @@ export const DATA_COL: ColumnProps<Order>[] = [
                         style={{
                             padding: '3px',
                             borderRadius: '5px',
-                            color: 'white',
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor: '#dc2626',
+                            border: '1px solid #dc2626',
+                            color: "#dc2626",
+                            backgroundColor: "#FDF4F5"
                         }}
                     >
                         Pending
@@ -220,11 +221,14 @@ export const DATA_COL: ColumnProps<Order>[] = [
                         style={{
                             padding: '3px',
                             borderRadius: '5px',
-                            color: 'white',
+
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor: '#22c55e',
+                            border: '1px solid #22c55e',
+                            color: "#22c55e",
+                            backgroundColor: "#F2FCF7"
+
                         }}
                     >
                         Paid
@@ -248,11 +252,12 @@ export const DATA_COL: ColumnProps<Order>[] = [
                         style={{
                             padding: '3px',
                             borderRadius: '5px',
-                            color: 'white',
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor: '#dc2626',
+                            border: '1px solid #dc2626',
+                            color: "#dc2626",
+                            backgroundColor: "#FDF4F5"
                         }}
                     >
                         Cancel
@@ -264,11 +269,12 @@ export const DATA_COL: ColumnProps<Order>[] = [
                         style={{
                             padding: '3px',
                             borderRadius: '5px',
-                            color: 'white',
+                            color: '#f59e0b',
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor: '#f59e0b',
+                            border:"1px solid #f59e0b",
+                            backgroundColor:""
                         }}
                     >
                         In Progress
@@ -296,11 +302,13 @@ export const DATA_COL: ColumnProps<Order>[] = [
                         style={{
                             padding: '3px',
                             borderRadius: '5px',
-                            color: 'white',
+
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor: '#22c55e',
+                            border: '1px solid #22c55e',
+                            color: "#22c55e",
+                            backgroundColor: "#F2FCF7"
                         }}
                     >
                         Delivered
@@ -324,13 +332,14 @@ export const DATA_COL: ColumnProps<Order>[] = [
                 return (
                     <div
                         style={{
-                            padding: '5px',
+                            padding: '3px',
                             borderRadius: '5px',
-                            color: 'white',
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor: '#dc2626',
+                            border: '1px solid #dc2626',
+                            color: "#dc2626",
+                            backgroundColor: "#FDF4F5"
                         }}
                     >
                         Pending
@@ -340,13 +349,14 @@ export const DATA_COL: ColumnProps<Order>[] = [
                 return (
                     <div
                         style={{
-                            padding: '5px',
+                            padding: '3px',
                             borderRadius: '5px',
-                            color: 'white',
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor: '#22c55e',
+                            border: '1px solid #dc2626',
+                            color: "#dc2626",
+                            backgroundColor: "#FDF4F5"
                         }}
                     >
                         Paid
@@ -464,13 +474,15 @@ export const PAYMENT_DATA_COL = [
                 return (
                     <div
                         style={{
-                            padding: '5px',
+                            padding: '3px',
                             borderRadius: '5px',
-                            color: 'white',
+
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor: '#22c55e',
+                            border: '1px solid #22c55e',
+                            color: "#22c55e",
+                            backgroundColor: "#F2FCF7"
                         }}
                     >
                         Paid
@@ -480,13 +492,14 @@ export const PAYMENT_DATA_COL = [
                 return (
                     <div
                         style={{
-                            padding: '5px',
+                            padding: '3px',
                             borderRadius: '5px',
-                            color: 'white',
                             textAlign: 'center',
                             fontWeight: '600',
                             fontSize: 'medium',
-                            backgroundColor: '#dc2626 ',
+                            border: '1px solid #dc2626',
+                            color: "#dc2626",
+                            backgroundColor: "#FDF4F5"
                         }}
                     >
                         Pending
@@ -692,3 +705,42 @@ export const INPROGRESS = 'In Progress';
 export const NOTDELIVERED = 'Not Active';
 export const MONTHLY_DATA = ' You need a bit more effort to hit monthly target';
 export const MONTHLY_TARGET = ' Monthly Target';
+
+
+export const SETTINGS_STRING = {
+    section1: [
+        {
+            label: "Per KM fee",
+            name: "per_km_fee",
+            message: "Please Enter per KM fee!",
+            placeholder: "Enter per KM fee!",
+            req: true
+        }, {
+            label: "Extra fee",
+            name: "extra_fee",
+            message: "Please Enter Extra fee!",
+            placeholder: "Enter Extra fee",
+            req: true
+        }
+    ]
+
+}
+
+
+export const BLOG_SETTINGS_STRING = {
+    settings: [
+        {
+            label: "Author Name",
+            name: "author_name",
+            message: "Please Enter Author Name!",
+            placeholder: "Enter Author Name",
+            req: true
+        }, {
+            label: "Title",
+            name: "title",
+            message: "Please Enter Title!",
+            placeholder: "Enter Title",
+            req: true
+        }
+    ]
+}

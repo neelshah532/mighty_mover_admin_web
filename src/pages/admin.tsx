@@ -63,6 +63,8 @@ import { ColumnProps } from 'antd/es/table';
 import { DeliveryPartner, Order } from '../assets/dto/data.type';
 import DoughnutChart from '../components/DoughnutChart';
 import Loader from '../components/Loader';
+import Settings from '../components/Settings';
+import Blog from '../components/Blog';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -494,6 +496,13 @@ const Admin: React.FC = () => {
                                     )}
                                 </div>
                                 <div>
+                                    <Settings />
+                                </div>
+                                <Divider /> {/* remove divider during final submission*/}
+                                <div>
+                                    <Blog />
+                                </div>
+                                <div>
                                     {payment_colums.length === 0 ? (
                                         <Empty />
                                     ) : (
@@ -519,11 +528,12 @@ const Admin: React.FC = () => {
                                 <Divider></Divider>
                             </Content>
                         </Layout>
-                    <FloatButton.BackTop />
+                        <FloatButton.BackTop />
                     </Layout>
                 </div>
             )}
             {/* )} */}
+
         </>
     );
 };

@@ -17,9 +17,7 @@ export default {
         'random': '50%',
         "one-third": "30%",
       },
-      fontFamily: {
-        inter: ['Inter', 'sans-serif'],
-      },
+     
 
     },
   },

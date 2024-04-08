@@ -22,7 +22,6 @@ import DoughnutChart from '../components/DoughnutChart';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import CountUp from 'react-countup';
 
-import Statistic from 'antd/es/statistic/Statistic';
 import { ProgressProps } from 'antd';
 export default function Dashboard() {
     const twoColors: ProgressProps['strokeColor'] = {
@@ -61,7 +60,9 @@ export default function Dashboard() {
                                 {DASHBOARD_STATS_REVENUE}
                             </div>
                             <div className="flex justify-start w-full text-[24px] font-bold gap-1 items-center">
-                                <div style={{ fontWeight: '700' }}>{DASHBOARD_STATS_REVENUE_VAL / 1000}</div>
+                                <div style={{ fontWeight: '700' }}>{
+                                DASHBOARD_STATS_REVENUE_VAL / 1000
+                                }</div>
                                 <div style={{ fontWeight: '700' }}>{'K'}</div>
                                 <div>{prefix}</div>
                             </div>

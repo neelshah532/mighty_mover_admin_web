@@ -11,7 +11,7 @@ import Settings from '../components/Settings';
 import Blog from '../components/Blog';
 import Payment_page from '../components/Payment_page';
 import Delivery_partner from '../components/Delivery_partner';
-import Header_page from '../components/Header_page';
+import Header_page from '../components/Header';
 import Sider_page from '../components/Sider_page';
 import Dashboard from '../components/Dashboard';
 

@@ -24,7 +24,6 @@ export default function Sider_page() {
                             overflow: 'auto',
                             height: '100vh',
                             // position: 'fixed',
-                           
                             left: 0,
                             top: 0,
                             bottom: 0,
@@ -39,6 +38,7 @@ export default function Sider_page() {
                                     label: 'Dashboard',
                                     key: 'Home',
                                     icon: <FaHome />,
+                                    
                                 },
                                 {
                                     label: 'Order',

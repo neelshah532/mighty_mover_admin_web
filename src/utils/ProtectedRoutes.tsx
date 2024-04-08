@@ -17,4 +17,4 @@ const ProtectedRoutes = () => {
     return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
-export default ProtectedRoutes;
+export default ProtectedRoutes; 

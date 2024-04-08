@@ -10,31 +10,32 @@ const data01 = [
 export default function App() {
     const style = {
         top: 40,
-
         left: 380,
         lineHeight: '30px',
     };
     return (
-        <PieChart width={1000} height={200}>
-            <Pie
-                dataKey="value"
-                data={data01}
-                cx={200}
-                cy={100}
-                innerRadius={40}
-                outerRadius={70}
-                fill="#2967ff"
-                isAnimationActive={true}
-                label
-            />
-            <Legend
-                iconSize={10}
-                width={120}
-                height={140}
-                layout="vertical"
-                verticalAlign="middle"
-                wrapperStyle={style}
-            />
-        </PieChart>
+        <div style={{ width: '634px', height: '357px' }}>
+            <PieChart width={634} height={357}>
+                <Legend
+                    iconSize={10}
+                    width={120}
+                    height={140}
+                    layout="vertical"
+                    verticalAlign="middle"
+                    wrapperStyle={style}
+                />
+                <Pie
+                    dataKey="value"
+                    data={data01}
+                    cx={317}
+                    cy={178.5}
+                    innerRadius={80}
+                    outerRadius={120}
+                    fill="#2967ff"
+                    isAnimationActive={true}
+                    label
+                />
+            </PieChart>
+        </div>
     );
 }

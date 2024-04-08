@@ -15,7 +15,7 @@ export default function Sider_page() {
     const data: Order[] = ORDER_TABLE;
 
   return (
-    <div>
+    <div >
            <Sider
                         theme="light"
                         collapsed={collapse}
@@ -24,6 +24,7 @@ export default function Sider_page() {
                             overflow: 'auto',
                             height: '100vh',
                             // position: 'fixed',
+                           
                             left: 0,
                             top: 0,
                             bottom: 0,

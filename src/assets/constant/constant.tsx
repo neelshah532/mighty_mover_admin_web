@@ -3,7 +3,10 @@ import { FaCcStripe } from 'react-icons/fa';
 import { FaRegCreditCard } from 'react-icons/fa';
 import { MdSpeakerPhone } from 'react-icons/md';
 import { ColumnProps } from 'antd/es/table';
-import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype } from '../dto/data.type';
+import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User } from '../dto/data.type';
+
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 export const DASHBOARD_CONTENT = [
     {
@@ -768,3 +771,104 @@ export const BLOG_SETTINGS_STRING = {
         }
     ]
 }
+
+
+export const USER_TABLE: User[] = [
+    {
+        index: 1,
+        name: "Utkarsh",
+        email: "utkarsh@solguruz.com",
+        number: 9898989898,
+        action: true
+    }, {
+        index: 2,
+        name: "Rahul",
+        email: "rahul@solguruz.com",
+        number: 1212121212,
+        action: true
+    }, {
+        index: 3,
+        name: "Tushar",
+        email: "tushar@solguruz.com",
+        number: 3535313234,
+        action: true
+    }, {
+        index: 4,
+        name: "Neel",
+        email: "neel@solguruz.com",
+        number: 7894561237,
+        action: true
+    }, {
+        index: 5,
+        name: "Prit",
+        email: "prit@solguruz.com",
+        number: 1234567891,
+        action: true
+    }, {
+        index: 6,
+        name: "Ketan",
+        email: "ketan@solguruz.com",
+        number: 1212121212,
+        action: true
+    }, {
+        index: 7,
+        name: "Suraj",
+        email: "suraj@solguruz.com",
+        number: 3535313234,
+        action: true
+    }, {
+        index: 8,
+        name: "Aayush",
+        email: "aayush@solguruz.com",
+        number: 7894561237,
+        action: true
+    }
+]
+
+
+export const USER_DATA_COL = [
+    {
+        title: "Sr no.",
+        dataIndex: "index"
+    },
+    {
+        title: "Name",
+        dataIndex: "name"
+    },
+    {
+        title: "Email",
+        dataIndex: "email"
+    },
+    {
+        title: "Number",
+        dataIndex: "number"
+    },
+    {
+        title: "Action",
+        dataIndex: "action",
+        render: (_,record:User[]) => (
+            <div className='flex gap-2'>
+                <div>
+                    <button onClick={() => handleEdit(record)}>
+                        <FaEdit />
+                    </button>
+                </div>
+                <div>
+                    <button onClick={() => handleDelete(record.index)}>
+                        <MdDelete />
+                    </button>
+                </div>
+            </div>
+        )
+    }
+];
+
+const handleEdit = (record:User[]) => {
+    console.log("Edit user:", record);
+};
+
+const handleDelete = (index:number) => {
+    console.log(index);
+    USER_TABLE.splice(index-1, 1)
+    console.log(USER_TABLE)
+};

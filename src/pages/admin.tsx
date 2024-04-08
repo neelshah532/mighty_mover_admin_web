@@ -45,6 +45,7 @@ import Payment_page from '../components/Payment_page';
 import Delivery_partner from '../components/Delivery_partner';
 import Header_page from '../components/Header_page';
 import Sider_page from '../components/Sider_page';
+import UserPage from '../components/UserTable';
 
 const Admin: React.FC = () => {
     const [toggle, settoggle] = useState(true);
@@ -235,6 +236,9 @@ const Admin: React.FC = () => {
                                 <Divider /> {/* remove divider during final submission*/}
                                 <div>
                                     <Blog />
+                                </div>
+                                <div>
+                                    <UserPage/>
                                 </div>
                                 <div>
                                     <Delivery_partner />

@@ -41,6 +41,7 @@ import PublicRoute from './utils/PublicRoute';
 import '.././src/App.css';
 function App() {
     return (
+        <>
         <Routes>
             <Route element={<ProtectedRoutes />}>
                 <Route path="/" element={<Admin />} />
@@ -50,6 +51,7 @@ function App() {
             </Route>
             {/* <Route path="*" element={<Navigate to="/login" />} /> */}
         </Routes>
+        </>
     );
 }
 

@@ -4,5 +4,5 @@ import { PIE_DATA } from '../assets/constant/constant';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export function PieChart() {
-    return <Pie data={PIE_DATA}/>;
+    return <Pie data={PIE_DATA} width={200} height={400}/>;
 }

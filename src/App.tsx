@@ -39,12 +39,14 @@ import ProtectedRoutes from './utils/ProtectedRoutes';
 import Admin from './pages/admin';
 import PublicRoute from './utils/PublicRoute';
 import '.././src/App.css';
+import Settings from './components/Settings';
 function App() {
     return (
         <>
         <Routes>
             <Route element={<ProtectedRoutes />}>
                 <Route path="/" element={<Admin />} />
+                <Route path='/set' element={<Settings/>}/>
             </Route>
             <Route element={<PublicRoute />}>
                 <Route path="/login" element={<Login />} />

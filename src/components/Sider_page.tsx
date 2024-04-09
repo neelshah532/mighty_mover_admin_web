@@ -41,7 +41,7 @@ export default function Sider_page() {
                         <></>
                     ) : (
                         <Button
-                            className="text-white mt-3 mr-2 text-2xl border-none font-semibold w-full bg-black"
+                            className="text-white mt-3 text-2xl border-none w-[30%] bg-black text-center flex justify-content"
                             onClick={handletoggle}
                         >
                             <IoMenu />

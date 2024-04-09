@@ -9,17 +9,17 @@ const { Content } = Layout;
 const FixedLayout: React.FC = () => {
     return (
         <>
-            <Layout>
-                <Header_page />
-                <Layout >
-                    <Sider_page />
-                    <Content >
-                        <div>
+            <Layout style={{ minHeight: '100vh' }}>
+                <Sider_page />
+                <Layout className="site-layout">
+                    <Header_page />
+                    <Content style={{ margin: '0 16px', marginTop: 16 }}>
+                        <div >
                             <Outlet />
                         </div>
                     </Content>
                 </Layout>
-                    {/*< FloatButton.BackTop /> */}
+                {/*< FloatButton.BackTop /> */}
             </Layout>
 
             {/*  <div

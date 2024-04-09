@@ -14,6 +14,7 @@ import Delivery_partner from '../components/Delivery_partner';
 import Header_page from '../components/Header';
 import Sider_page from '../components/Sider_page';
 import Dashboard from '../components/Dashboard';
+import UserPage from '../components/UserTable';
 
 const Admin: React.FC = () => {
     const [toggle, settoggle] = useState(true);
@@ -61,6 +62,9 @@ const Admin: React.FC = () => {
                                 <Divider />
                                 <div>
                                     <Blog />
+                                </div>
+                                <div>
+                                    <UserPage/>
                                 </div>
                                 <div>
                                     <Delivery_partner />

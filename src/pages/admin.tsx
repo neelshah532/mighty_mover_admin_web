@@ -26,7 +26,7 @@ const Admin: React.FC = () => {
             {toggle ? (
                 <Loader />
             ) : (
-                <Layout className="w-full">
+                <Layout className="w-full ">
                     <Layout>
                         <Content className="bg-gray-50 mt-16 p-1">
                             <Outlet />

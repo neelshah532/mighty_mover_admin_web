@@ -23,11 +23,9 @@ export default function Sider_page() {
     const navigate = useNavigate(); // Import useNavigate from react-router-dom
     const handletoggle = () => {
         setcollapse(!collapse);
-        
-
     };
     return (
-        <div>
+        <div className='h-screen sticky top-0'>
             <Sider
                 theme="light"
                 collapsed={collapse}
@@ -42,25 +40,25 @@ export default function Sider_page() {
                 }}
                 className="shadow-sm shadow-gray-400 "
             >
-                <Flex>
+                <Flex className='mt-2' gap={collapse ? 0 : 10}>
                     {/*
                     {toggle1 ? (
                         <></>
                     ) : ( */}
-                    <div className="flex items-center mt-3">
-                        <img src={logo} alt="logo" className="border border-cyan-400" />
+                    <div className="">
+                        <img src={logo} alt="logo" style={{ transition: 'all 0.3s ease', }} className={collapse ? 'hidden' : 'block ml-1'} />
                     </div>
-                    <Button
-                        className="mt-3 text-2xl border-none text-center flex items-center justify-content rounded-md"
-                        onClick={handletoggle}
-                    >
-                        <IoArrowBack />
-                    </Button>
-                    {/* )}
-                     */}
+                    <div className={collapse ? 'w-full flex justify-center' : ''}>
+                        <Button
+                            className={collapse ? 'mr-0 text-xl border-none shadow-sm' : 'mr-1 text-xl border-none shadow-sm'}
+                            onClick={handletoggle}
+                        >
+                            {collapse ? (<IoArrowBack className='rotate-180 text-center transition ease-linear duration-300' />) : (<IoArrowBack className=' transition ease-linear duration-300' />)}
+                        </Button>
+                    </div>
                 </Flex>
                 <Menu
-                    className="mt-16"
+                    className="mt-8"
                     theme="light"
                     triggerSubMenuAction="hover"
                     items={[
@@ -69,6 +67,7 @@ export default function Sider_page() {
                             key: 'Home',
                             icon: <FaHome />,
                             onClick: () => navigate('/'),
+                            
                         },
                         {
                             label: 'Order',
@@ -92,6 +91,7 @@ export default function Sider_page() {
                             icon: <MdOutlinePayment />,
                             onClick: () => navigate('/payments'),
                         },
+                        
                         {
                             label: 'Settings',
                             key: 'settings',

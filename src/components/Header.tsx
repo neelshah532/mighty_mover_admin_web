@@ -154,27 +154,16 @@ export default function Header_page() {
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
-                <Flex  justify="space-between" className='border-2 border-black h-full w-full'>
-                   
-                    <Flex className='border-2 border-green-500' gap="small" align='center' justify="flex-end">
+                <Flex  justify="flex-end" className='bg-white shadow-md'>   
+                    <Flex className='h-16'  gap="small" align='center'>
                         {/* <Avatar
                                         src={pic || <UserOutlined />}
                                         icon={!pic ? <FaUser /> : undefined}
                                         className="rounded-full"
                                     /> */}
-                            <Tooltip
-                                title={
-                                    toggle1 ? (
-                                        <div className="flex  items-center">
-                                            {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
-                                        </div>
-                                    ) : (
-                                        <div>{'ADMIN'}</div>
-                                    )
-                                }
-                            >
+                            
                                 {/* <Button
                                     className="text-white font-semibold bg-black text-xl text-center mt-5"
                                     onClick={() => setIsModalOpen(true)}
@@ -192,10 +181,22 @@ export default function Header_page() {
                                         />
                                     )}
                                 </Button> */}
-                                <div className='border-2 border-pink-500'>
+                    <div className='flex items-center gap-3 mr-1'>
+                    <Tooltip
+                        title={
+                            toggle1 ? (
+                                <div className="flex  items-center">
+                                    {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
+                                </div>
+                            ) : (
+                                <div>{'ADMIN'}</div>
+                            )
+                        }
+                    >
+                                <div className=''>
                                 {fileList.length === 0 ? (
                                     <Avatar
-                                        className='border-2 border-purple-600'
+                                        className=''
                                         size="large"
                                         icon={<UserOutlined />}
                                         alt="avatar"
@@ -203,12 +204,14 @@ export default function Header_page() {
                                     />
                                 ) : (<Avatar
                                     className=""
+                                    size="large"
                                     src={pic || <UserOutlined />}
                                     icon={!pic ? <FaUser /> : undefined}
                                     alt="avatar"
                                     onClick={() => setIsModalOpen(true)}
                                 />)}
                                 </div>
+                    </Tooltip>
                                 <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
                                     <Flex vertical>
                                         {/* <Upload
@@ -253,7 +256,7 @@ export default function Header_page() {
                                     <Input size="large" placeholder="Password" prefix={<RiLockPasswordLine />} />
                                     <br></br>
                                     <div className="flex justify-end mt-4">
-                                        <Button className="mr-2" onClick={handleCancel}>
+                                        <Button onClick={handleCancel}>
                                             Cancel
                                         </Button>
                                         <Button
@@ -266,12 +269,13 @@ export default function Header_page() {
                                     </div>
                                 </Flex>
                             </Modal>
-                        </Tooltip>
+                        
                         <Tooltip title={POPOVER_LOGOUT}>
-                            <Button className="text-white font-semibold text-xl" onClick={handleLogout} danger>
-                                <BiLogOut />
+                            <Button className="text-xl" onClick={handleLogout} danger>
+                                <BiLogOut className=''/>
                             </Button>
                         </Tooltip>
+                    </div>
                     </Flex>
                 </Flex>
             {/* </Header> */}

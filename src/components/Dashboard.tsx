@@ -51,7 +51,7 @@ export default function Dashboard() {
         );
     // const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
     return (
-        <div className="bg-gray-50 p-1 font-inter">
+        <div className="bg-gray-50 p-1 font-inter overflow-hidden">
             <div className="grid  grid-cols-5 gap-4 m-4">
                 <div className="w-full h-full">
                     <Card bordered={false} className="w-full bg-blue-50">

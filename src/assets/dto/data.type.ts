@@ -52,6 +52,16 @@ interface DeliveryPartner {
     vehicle: number;
     status: deliverypartner;
 }
-export type { Order, DeliveryPartner };
+
+
+interface User {
+    index:number,
+    name:string,
+    email:string,
+    number:number,
+}
+
+
+export type { Order, DeliveryPartner, User };
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

@@ -3,7 +3,10 @@ import { FaCcStripe } from 'react-icons/fa';
 import { FaRegCreditCard } from 'react-icons/fa';
 import { MdSpeakerPhone } from 'react-icons/md';
 import { ColumnProps } from 'antd/es/table';
-import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype } from '../dto/data.type';
+import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User } from '../dto/data.type';
+
+
+
 
 export const DASHBOARD_CONTENT = [
     {
@@ -769,3 +772,74 @@ export const BLOG_SETTINGS_STRING = {
         }
     ]
 }
+
+
+export const USER_TABLE: User[] = [
+    {
+        index: 1,
+        name: "Utkarsh",
+        email: "utkarsh@solguruz.com",
+        number: 9898989898,
+        
+    }, {
+        index: 2,
+        name: "Rahul",
+        email: "rahul@solguruz.com",
+        number: 1212121212,
+       
+    }, {
+        index: 3,
+        name: "Tushar",
+        email: "tushar@solguruz.com",
+        number: 3535313234,
+       
+    }, {
+        index: 4,
+        name: "Neel",
+        email: "neel@solguruz.com",
+        number: 7894561237,
+       
+    }, {
+        index: 5,
+        name: "Prit",
+        email: "prit@solguruz.com",
+        number: 1234567891,
+        
+    }, {
+        index: 6,
+        name: "Ketan",
+        email: "ketan@solguruz.com",
+        number: 1212121212,
+    }, {
+        index: 7,
+        name: "Suraj",
+        email: "suraj@solguruz.com",
+        number: 3535313234,
+    }, {
+        index: 8,
+        name: "Aayush",
+        email: "aayush@solguruz.com",
+        number: 7894561237,
+    }
+]
+
+
+export const USER_DATA_COL = [
+    {
+        title: "Sr no.",
+        dataIndex: "index"
+    },
+    {
+        title: "Name",
+        dataIndex: "name"
+    },
+    {
+        title: "Email",
+        dataIndex: "email"
+    },
+    {
+        title: "Number",
+        dataIndex: "number"
+    },
+];
+

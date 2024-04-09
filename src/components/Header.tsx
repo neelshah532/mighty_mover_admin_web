@@ -160,7 +160,7 @@ export default function Header_page() {
     return (
         <div className="w-full">
          
-                <Header className="fixed z-10 w-full bg-white shadow-sm shadow-gray-400">
+                <Header className="z-10 w-full bg-white shadow-sm shadow-gray-400">
                     <Flex justify="space-between">
                         <Flex>
                             {toggle1 ? (

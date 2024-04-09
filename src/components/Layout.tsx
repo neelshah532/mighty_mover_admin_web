@@ -9,7 +9,7 @@ const { Content } = Layout;
 const FixedLayout: React.FC = () => {
     return (
         <>
-            <Layout style={{ minHeight: '100vh' }}>
+            <Layout >
                 <Sider_page />
                 <Layout className="site-layout">
                     <Header_page />

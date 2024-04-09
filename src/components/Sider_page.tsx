@@ -1,4 +1,4 @@
-'use client'
+'use client';
 // import { useState } from 'react';
 import Sider from 'antd/es/layout/Sider';
 import { Button, Flex, Menu } from 'antd';
@@ -9,21 +9,21 @@ import { FaRegUserCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 import { ORDER_TABLE } from '../assets/constant/constant';
 import { Order } from '../assets/dto/data.type';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { IoMenu } from 'react-icons/io5';
 import { useState } from 'react';
 
 export default function Sider_page() {
     // const [collapse, setCollapse] = useState(false);
     const data: Order[] = ORDER_TABLE;
-  const [toggle1, settoggle1] = useState(false);
-   const [collapse, setcollapse] = useState(false);
+    const [toggle1, settoggle1] = useState(false);
+    const [collapse, setcollapse] = useState(false);
     const navigate = useNavigate(); // Import useNavigate from react-router-dom
- const handletoggle = () => {
-     setcollapse(!collapse);
- };
+    const handletoggle = () => {
+        setcollapse(!collapse);
+    };
     return (
-        <div className="shadow-sm shadow-gray-400">
+        <div>
             <Sider
                 theme="light"
                 collapsed={collapse}
@@ -34,20 +34,22 @@ export default function Sider_page() {
                     left: 0,
                     top: 0,
                     bottom: 0,
+                    transition: 'all 0.3s ease',
                 }}
+                className="shadow-sm shadow-gray-400 flex items-center justify-center "
             >
-                <Flex>
+                {/* <Flex>
                     {toggle1 ? (
                         <></>
-                    ) : (
-                        <Button
-                            className="text-white mt-3 text-2xl border-none w-[30%] bg-black text-center flex justify-content"
-                            onClick={handletoggle}
-                        >
-                            <IoMenu />
-                        </Button>
-                    )}
-                </Flex>
+                    ) : ( */}
+                <Button
+                    className="mt-3 text-2xl border-none text-center flex items-center justify-content rounded-md"
+                    onClick={handletoggle}
+                >
+                    <IoMenu />
+                </Button>
+                {/* )}
+                </Flex> */}
                 <Menu
                     className="mt-16"
                     theme="light"

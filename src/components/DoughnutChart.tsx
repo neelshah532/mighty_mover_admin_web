@@ -9,13 +9,13 @@ const data01 = [
 
 export default function App() {
     const style = {
-        top: 40,
-        left: 380,
+        top: 10,
+        left: 350,
         lineHeight: '30px',
     };
     return (
-        <div style={{ width: '634px', height: '357px' }}>
-            <PieChart width={634} height={357}>
+        // <div style={{ width: '600px', height: '357px' }}>
+            <PieChart width={434} height={357}>
                 <Legend
                     iconSize={10}
                     width={120}
@@ -27,7 +27,7 @@ export default function App() {
                 <Pie
                     dataKey="value"
                     data={data01}
-                    cx={317}
+                    cx={217}
                     cy={178.5}
                     innerRadius={80}
                     outerRadius={120}
@@ -36,6 +36,7 @@ export default function App() {
                     label
                 />
             </PieChart>
-        </div>
+            
+        // </div>
     );
 }

@@ -49,7 +49,7 @@ export default function Dashboard() {
         ) : (
             <ArrowDownOutlined className="w-4 h-4" />
         );
-    const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
+    // const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
     return (
         <div className="bg-gray-50 p-1 font-inter">
             <div className="grid  grid-cols-5 gap-4 m-4">
@@ -145,8 +145,8 @@ export default function Dashboard() {
                     </Card>
                     <Card className="w-[40%] flex justify-center items-center ">
                         {/* <PieChart /> */}
-                        {/* <DoughnutChart /> */}
-                        Doughtnut
+                        <DoughnutChart />
+                        {/* Doughtnut */}
                     </Card>
                 </Flex>
             </div>

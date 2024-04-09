@@ -9,7 +9,7 @@ const { Content } = Layout;
 const FixedLayout: React.FC = () => {
     return (
         <>
-            <Layout >
+            <Layout style={{ minHeight: '100vh' }}>
                 <Sider_page />
                 <Layout className="site-layout">
                     <Header_page />
@@ -19,7 +19,7 @@ const FixedLayout: React.FC = () => {
                         </div>
                     </Content>
                 </Layout>
-                {/*< FloatButton.BackTop /> */}
+                < FloatButton.BackTop />
             </Layout>
 
             {/*  <div

@@ -70,9 +70,7 @@ const Settings: React.FC = () => (
 
                 </Form>
             </div>
-            <div>
-                <UserPage/>
-            </div>
+            
         </div>
     </>
 );

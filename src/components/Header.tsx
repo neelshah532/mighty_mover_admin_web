@@ -155,8 +155,8 @@ export default function Header_page() {
 
     return (
         <div className="w-full">
-            {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
-                <Flex  justify="space-between" className='border-2 border-black h-full w-full'>
+            <Header  className="fixed z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500 ">
+                <Flex  justify="space-between" className='border-2 border-black h-full w-full'> 
                    
                     <Flex className='border-2 border-green-500' gap="small" align='center' justify="flex-end">
                         {/* <Avatar
@@ -274,7 +274,7 @@ export default function Header_page() {
                         </Tooltip>
                     </Flex>
                 </Flex>
-            {/* </Header> */}
+            </Header>
 
         </div>
     );

@@ -46,17 +46,19 @@ import Payment_page from './components/Payment_page';
 import Blog from './components/Blog';
 import Delivery_partner from './components/Delivery_partner';
 import FixedLayout from './components/Layout';
+import UserPage from './components/UserTable';
 function App() {
     return (
         <>
             <Routes>
                 <Route element={<ProtectedRoutes />}>
-                    <Route element={<FixedLayout />}>   
+                    <Route element={<FixedLayout />}>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/orders" element={<Order_page />} />
                         <Route path="/payments" element={<Payment_page />} />
-                        <Route path="/settings" element={<Settings />} />
-                        <Route path="/blog" element={<Blog />} />
+                        <Route path="/setting/email-Verification" element={<Settings />} />
+                        <Route path="/setting/blog-settings" element={<Blog />} />
+                        <Route path="/setting/user-settings" element={<UserPage />} />
                         <Route path="/delivery-partner" element={<Delivery_partner />} />
                     </Route>
                 </Route>

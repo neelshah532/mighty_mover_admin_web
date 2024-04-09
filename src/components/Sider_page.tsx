@@ -14,17 +14,17 @@ import { IoArrowBack } from 'react-icons/io5';
 import { useState } from 'react';
 import logo from '../assets/Images/Group 1.svg';
 
-
 export default function Sider_page() {
     // const [collapse, setCollapse] = useState(false);
     const data: Order[] = ORDER_TABLE;
-    const [toggle1, settoggle1] = useState(false);
+    // const [toggle1, settoggle1] = useState(false);
     const [collapse, setcollapse] = useState(false);
-    const navigate = useNavigate(); // Import useNavigate from react-router-dom
+    const navigate = useNavigate();
     const handletoggle = () => {
         setcollapse(!collapse);
-        
-
+    };
+    const navigateToSettings = (key: string) => {
+        navigate(`/setting/${key}`);
     };
     return (
         <div>
@@ -38,7 +38,7 @@ export default function Sider_page() {
                     left: 0,
                     top: 0,
                     bottom: 0,
-                    transition: 'all 0.3s ease',
+                    transition:'all 0.3s ease',
                 }}
                 className="shadow-sm shadow-gray-400 "
             >
@@ -59,47 +59,39 @@ export default function Sider_page() {
                     {/* )}
                      */}
                 </Flex>
-                <Menu
-                    className="mt-16"
-                    theme="light"
-                    triggerSubMenuAction="hover"
-                    items={[
-                        {
-                            label: 'Dashboard',
-                            key: 'Home',
-                            icon: <FaHome />,
-                            onClick: () => navigate('/'),
-                        },
-                        {
-                            label: 'Order',
-                            key: 'order',
-                            icon: (
-                                <Badge count={data.length} size="small">
-                                    <MdOutlineContactPage />{' '}
-                                </Badge>
-                            ),
-                            onClick: () => navigate('/orders'),
-                        },
-                        {
-                            label: 'Delivery Partner',
-                            key: 'delivery',
-                            icon: <FaRegUserCircle />,
-                            onClick: () => navigate('/delivery-partner'),
-                        },
-                        {
-                            label: 'Payment Details',
-                            key: 'payment',
-                            icon: <MdOutlinePayment />,
-                            onClick: () => navigate('/payments'),
-                        },
-                        {
-                            label: 'Settings',
-                            key: 'settings',
-                            icon: <IoMdSettings />,
-                            onClick: () => navigate('/settings'),
-                        },
-                    ]}
-                ></Menu>
+                <Menu className="mt-16" theme="light" triggerSubMenuAction="hover" mode="inline">
+                    <Menu.Item key="Home" icon={<FaHome />} onClick={() => navigate('/')}>
+                        Dashboard
+                    </Menu.Item>
+                    <Menu.Item
+                        key="order"
+                        icon={
+                            <Badge count={data.length} size="small">
+                                <MdOutlineContactPage />
+                            </Badge>
+                        }
+                        onClick={() => navigate('/orders')}
+                    >
+                        Order
+                    </Menu.Item>
+                    <Menu.Item key="delivery" icon={<FaRegUserCircle />} onClick={() => navigate('/delivery-partner')}>
+                        Delivery Partner
+                    </Menu.Item>
+                    <Menu.Item key="payment" icon={<MdOutlinePayment />} onClick={() => navigate('/payments')}>
+                        Payment Details
+                    </Menu.Item>
+                    <Menu.SubMenu key="settings" title="Settings" icon={<IoMdSettings />}>
+                        <Menu.Item key="setting" onClick={() => navigateToSettings('email-Verification')}>
+                            Email Verification
+                        </Menu.Item>
+                        <Menu.Item key="setting1" onClick={() => navigateToSettings('blog-settings')}>
+                            Blog Settings
+                        </Menu.Item>
+                        <Menu.Item key="setting2" onClick={() => navigateToSettings('user-settings')}>
+                            User Settings
+                        </Menu.Item>
+                    </Menu.SubMenu>
+                </Menu>
             </Sider>
         </div>
     );

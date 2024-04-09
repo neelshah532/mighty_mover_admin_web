@@ -1,6 +1,7 @@
+'use client'
 // import { useState } from 'react';
 import Sider from 'antd/es/layout/Sider';
-import { Menu } from 'antd';
+import { Button, Flex, Menu } from 'antd';
 import { FaHome } from 'react-icons/fa';
 import { Badge } from 'antd';
 import { MdOutlineContactPage, MdOutlinePayment } from 'react-icons/md';
@@ -9,18 +10,23 @@ import { IoMdSettings } from 'react-icons/io';
 import { ORDER_TABLE } from '../assets/constant/constant';
 import { Order } from '../assets/dto/data.type';
 import {  useNavigate } from 'react-router-dom';
+import { IoMenu } from 'react-icons/io5';
+import { useState } from 'react';
 
 export default function Sider_page() {
     // const [collapse, setCollapse] = useState(false);
     const data: Order[] = ORDER_TABLE;
-
+  const [toggle1, settoggle1] = useState(false);
+   const [collapse, setcollapse] = useState(false);
     const navigate = useNavigate(); // Import useNavigate from react-router-dom
-
+ const handletoggle = () => {
+     setcollapse(!collapse);
+ };
     return (
         <div className="shadow-sm shadow-gray-400">
             <Sider
                 theme="light"
-                // collapsed={collapse}
+                collapsed={collapse}
                 collapsedWidth={80}
                 style={{
                     overflow: 'auto',
@@ -30,6 +36,18 @@ export default function Sider_page() {
                     bottom: 0,
                 }}
             >
+                <Flex>
+                    {toggle1 ? (
+                        <></>
+                    ) : (
+                        <Button
+                            className="text-white mt-3 mr-2 text-2xl border-none font-semibold w-full bg-black"
+                            onClick={handletoggle}
+                        >
+                            <IoMenu />
+                        </Button>
+                    )}
+                </Flex>
                 <Menu
                     className="mt-16"
                     theme="light"

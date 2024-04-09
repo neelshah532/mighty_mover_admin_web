@@ -13,15 +13,15 @@ import { POPOVER_LOGOUT } from '../assets/constant/constant';
 import type { GetProp, UploadProps, UploadFile } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import { ORDER_TABLE } from '../assets/constant/constant';
-import { Order } from '../assets/dto/data.type';
+// import { ORDER_TABLE } from '../assets/constant/constant';
+// import { Order } from '../assets/dto/data.type';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 export default function Header_page() {
-    const [collapse, setcollapse] = useState(false);
+    // const [collapse, setcollapse] = useState(false);
     const [name, setname] = useState('');
     const [toggle1, settoggle1] = useState(false);
-    // const [toggle, settoggle] = useState(true);
+    const [toggle, settoggle] = useState(true);
 
     // const [loading, setLoading] = useState(false);
     // const [pic, setpic] = useState(false);
@@ -36,10 +36,6 @@ export default function Header_page() {
 
         return () => clearTimeout(fetchdata);
     }, []);
-
-    const handletoggle = () => {
-        setcollapse(!collapse);
-    };
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -159,60 +155,49 @@ export default function Header_page() {
 
     return (
         <div className="w-full">
-         
-                <Header className="z-10 w-full bg-white shadow-sm shadow-gray-400">
-                    <Flex justify="space-between">
-                        <Flex>
-                            {toggle1 ? (
-                                <></>
-                            ) : (
-                                <Button
-                                    className="text-white mt-3 mr-2 text-2xl border-none font-semibold w-full bg-black"
-                                    onClick={handletoggle}
-                                >
-                                    <IoMenu />
-                                </Button>
-                            )}
-                        </Flex>
-
-                        <img src={logo} alt="logo" />
-                        <Flex gap="small" align="center" justify="flex-end">
-                            {/* <Avatar
+            <Header className="z-10 w-full bg-white shadow-sm shadow-gray-400">
+                <Flex justify="space-between" align='center'>
+                    <div className="flex items-center">
+                        {' '}
+                        <img src={logo} alt="logo" style={{ margin: 'auto' }} />{' '}
+                    </div>
+                    <Flex gap="small" align="center" justify="flex-end">
+                        {/* <Avatar
                                         src={pic || <UserOutlined />}
                                         icon={!pic ? <FaUser /> : undefined}
                                         className="rounded-full"
                                     /> */}
-                            <Tooltip
-                                title={
-                                    toggle1 ? (
-                                        <div className="flex  items-center">
-                                            {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
-                                        </div>
-                                    ) : (
-                                        <div>{'ADMIN'}</div>
-                                    )
-                                }
+                        <Tooltip
+                            title={
+                                toggle1 ? (
+                                    <div className="flex  items-center">
+                                        {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
+                                    </div>
+                                ) : (
+                                    <div>{'ADMIN'}</div>
+                                )
+                            }
+                        >
+                            <Button
+                                className="text-white font-semibold bg-black text-xl text-center mt-5 "
+                                onClick={() => setIsModalOpen(true)}
                             >
-                                <Button
-                                    className="text-white font-semibold bg-black text-xl text-center mt-5 "
-                                    onClick={() => setIsModalOpen(true)}
-                                >
-                                    {/* <FaUser /> */}
-                                    {fileList.length === 0 ? (
-                                        <FaUser />
-                                    ) : (
-                                        <Avatar
-                                            src={pic || <UserOutlined />}
-                                            icon={!pic ? <FaUser /> : undefined}
-                                            className="rounded-md w-10 h-10 bg-white "
-                                            alt="avatar"
-                                        />
-                                    )}
-                                </Button>
+                                {/* <FaUser /> */}
+                                {fileList.length === 0 ? (
+                                    <FaUser />
+                                ) : (
+                                    <Avatar
+                                        src={pic || <UserOutlined />}
+                                        icon={!pic ? <FaUser /> : undefined}
+                                        className="rounded-md w-10 h-10 bg-white "
+                                        alt="avatar"
+                                    />
+                                )}
+                            </Button>
 
-                                <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
-                                    <Flex vertical>
-                                        {/* <Upload
+                            <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+                                <Flex vertical>
+                                    {/* <Upload
                                                     name="avatar"
                                                     listType="picture-card"
                                                     className="avatar-uploader "
@@ -227,57 +212,55 @@ export default function Header_page() {
                                                         uploadButton
                                                     )}
                                                 </Upload> */}
-                                        <ImgCrop rotationSlider aspectSlider>
-                                            <Upload
-                                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                                listType="picture-card"
-                                                className="avatar-uploader "
-                                                fileList={fileList}
-                                                onChange={handleUploadChange}
-                                                onPreview={onPreview}
-                                                beforeUpload={beforeUpload}
-                                            >
-                                                {fileList.length < 1 && <div>{<PlusOutlined />}</div>}
+                                    <ImgCrop rotationSlider aspectSlider>
+                                        <Upload
+                                            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                                            listType="picture-card"
+                                            className="avatar-uploader "
+                                            fileList={fileList}
+                                            onChange={handleUploadChange}
+                                            onPreview={onPreview}
+                                            beforeUpload={beforeUpload}
+                                        >
+                                            {fileList.length < 1 && <div>{<PlusOutlined />}</div>}
 
-                                                {/* <img src={imageUrl} alt="avatar" width={100} height={100} /> */}
-                                            </Upload>
-                                        </ImgCrop>
+                                            {/* <img src={imageUrl} alt="avatar" width={100} height={100} /> */}
+                                        </Upload>
+                                    </ImgCrop>
 
-                                        <Input
-                                            size="large"
-                                            placeholder="Username"
-                                            prefix={<UserOutlined />}
-                                            value={name}
-                                            onChange={handleUsernameChange}
-                                        />
-                                        <br></br>
-                                        <Input size="large" placeholder="Password" prefix={<RiLockPasswordLine />} />
-                                        <br></br>
-                                        <div className="flex justify-end mt-4">
-                                            <Button className="mr-2" onClick={handleCancel}>
-                                                Cancel
-                                            </Button>
-                                            <Button
-                                                type="primary"
-                                                onClick={handleOk}
-                                                className="bg-blue-500 hover:bg-blue-600"
-                                            >
-                                                OK
-                                            </Button>
-                                        </div>
-                                    </Flex>
-                                </Modal>
-                            </Tooltip>
-                            <Tooltip title={POPOVER_LOGOUT}>
-                                <Button className="text-white font-semibold text-xl" onClick={handleLogout} danger>
-                                    <BiLogOut />
-                                </Button>
-                            </Tooltip>
-                        </Flex>
+                                    <Input
+                                        size="large"
+                                        placeholder="Username"
+                                        prefix={<UserOutlined />}
+                                        value={name}
+                                        onChange={handleUsernameChange}
+                                    />
+                                    <br></br>
+                                    <Input size="large" placeholder="Password" prefix={<RiLockPasswordLine />} />
+                                    <br></br>
+                                    <div className="flex justify-end mt-4">
+                                        <Button className="mr-2" onClick={handleCancel}>
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            type="primary"
+                                            onClick={handleOk}
+                                            className="bg-blue-500 hover:bg-blue-600"
+                                        >
+                                            OK
+                                        </Button>
+                                    </div>
+                                </Flex>
+                            </Modal>
+                        </Tooltip>
+                        <Tooltip title={POPOVER_LOGOUT}>
+                            <Button className="text-white font-semibold text-xl" onClick={handleLogout} danger>
+                                <BiLogOut />
+                            </Button>
+                        </Tooltip>
                     </Flex>
-                </Header>
-               
-           
+                </Flex>
+            </Header>
         </div>
     );
 }

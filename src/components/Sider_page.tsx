@@ -10,8 +10,10 @@ import { IoMdSettings } from 'react-icons/io';
 import { ORDER_TABLE } from '../assets/constant/constant';
 import { Order } from '../assets/dto/data.type';
 import { useNavigate } from 'react-router-dom';
-import { IoMenu } from 'react-icons/io5';
+import { IoArrowBack } from 'react-icons/io5';
 import { useState } from 'react';
+import logo from '../assets/Images/Group 1.svg';
+
 
 export default function Sider_page() {
     // const [collapse, setCollapse] = useState(false);
@@ -21,6 +23,8 @@ export default function Sider_page() {
     const navigate = useNavigate(); // Import useNavigate from react-router-dom
     const handletoggle = () => {
         setcollapse(!collapse);
+        
+
     };
     return (
         <div>
@@ -36,20 +40,25 @@ export default function Sider_page() {
                     bottom: 0,
                     transition: 'all 0.3s ease',
                 }}
-                className="shadow-sm shadow-gray-400 flex items-center justify-center "
+                className="shadow-sm shadow-gray-400 "
             >
-                {/* <Flex>
+                <Flex>
+                    {/*
                     {toggle1 ? (
                         <></>
                     ) : ( */}
-                <Button
-                    className="mt-3 text-2xl border-none text-center flex items-center justify-content rounded-md"
-                    onClick={handletoggle}
-                >
-                    <IoMenu />
-                </Button>
-                {/* )}
-                </Flex> */}
+                    <div className="flex items-center mt-3">
+                        <img src={logo} alt="logo" className="border border-cyan-400" />
+                    </div>
+                    <Button
+                        className="mt-3 text-2xl border-none text-center flex items-center justify-content rounded-md"
+                        onClick={handletoggle}
+                    >
+                        <IoArrowBack />
+                    </Button>
+                    {/* )}
+                     */}
+                </Flex>
                 <Menu
                     className="mt-16"
                     theme="light"

@@ -157,9 +157,7 @@ export default function Header_page() {
         <div className="w-full">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
                 <Flex  justify="space-between" className='border-2 border-black h-full w-full'>
-                    <div className="flex items-center">
-                        <img src={logo} alt="logo" className='border border-cyan-400'/>
-                    </div>
+                   
                     <Flex className='border-2 border-green-500' gap="small" align='center' justify="flex-end">
                         {/* <Avatar
                                         src={pic || <UserOutlined />}

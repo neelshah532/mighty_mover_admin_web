@@ -155,49 +155,65 @@ export default function Header_page() {
 
     return (
         <div className="w-full">
-            <Header className="z-10 w-full bg-white shadow-sm shadow-gray-400">
-                <Flex justify="space-between" align='center'>
+            {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
+                <Flex  justify="space-between" className='border-2 border-black h-full w-full'>
                     <div className="flex items-center">
-                        {' '}
-                        <img src={logo} alt="logo" style={{ margin: 'auto' }} />{' '}
+                        <img src={logo} alt="logo" className='border border-cyan-400'/>
                     </div>
-                    <Flex gap="small" align="center" justify="flex-end">
+                    <Flex className='border-2 border-green-500' gap="small" align='center' justify="flex-end">
                         {/* <Avatar
                                         src={pic || <UserOutlined />}
                                         icon={!pic ? <FaUser /> : undefined}
                                         className="rounded-full"
                                     /> */}
-                        <Tooltip
-                            title={
-                                toggle1 ? (
-                                    <div className="flex  items-center">
-                                        {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
-                                    </div>
-                                ) : (
-                                    <div>{'ADMIN'}</div>
-                                )
-                            }
-                        >
-                            <Button
-                                className="text-white font-semibold bg-black text-xl text-center mt-5 "
-                                onClick={() => setIsModalOpen(true)}
+                            <Tooltip
+                                title={
+                                    toggle1 ? (
+                                        <div className="flex  items-center">
+                                            {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
+                                        </div>
+                                    ) : (
+                                        <div>{'ADMIN'}</div>
+                                    )
+                                }
                             >
-                                {/* <FaUser /> */}
-                                {fileList.length === 0 ? (
-                                    <FaUser />
-                                ) : (
-                                    <Avatar
-                                        src={pic || <UserOutlined />}
-                                        icon={!pic ? <FaUser /> : undefined}
-                                        className="rounded-md w-10 h-10 bg-white "
-                                        alt="avatar"
-                                    />
-                                )}
-                            </Button>
+                                {/* <Button
+                                    className="text-white font-semibold bg-black text-xl text-center mt-5"
+                                    onClick={() => setIsModalOpen(true)}
+                                >
+                                    {fileList.length === 0 ? (
+                                        <FaUser />
+                                    ) : (
+                                        <Avatar
+                                            size="large"
+                                            src={pic || <UserOutlined />}
+                                            icon={!pic ? <FaUser /> : undefined}
+                                            className=""
+                                            alt="avatar"
 
-                            <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
-                                <Flex vertical>
-                                    {/* <Upload
+                                        />
+                                    )}
+                                </Button> */}
+                                <div className='border-2 border-pink-500'>
+                                {fileList.length === 0 ? (
+                                    <Avatar
+                                        className='border-2 border-purple-600'
+                                        size="large"
+                                        icon={<UserOutlined />}
+                                        alt="avatar"
+                                        onClick={() => setIsModalOpen(true)}
+                                    />
+                                ) : (<Avatar
+                                    className=""
+                                    src={pic || <UserOutlined />}
+                                    icon={!pic ? <FaUser /> : undefined}
+                                    alt="avatar"
+                                    onClick={() => setIsModalOpen(true)}
+                                />)}
+                                </div>
+                                <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+                                    <Flex vertical>
+                                        {/* <Upload
                                                     name="avatar"
                                                     listType="picture-card"
                                                     className="avatar-uploader "
@@ -260,7 +276,8 @@ export default function Header_page() {
                         </Tooltip>
                     </Flex>
                 </Flex>
-            </Header>
+            {/* </Header> */}
+
         </div>
     );
 }

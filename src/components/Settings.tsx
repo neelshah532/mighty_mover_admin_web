@@ -3,6 +3,7 @@ import { Button, Form, type FormProps, Input } from 'antd';
 import { SETTINGS_STRING } from '../assets/constant/constant';
 import { IoMdSettings } from "react-icons/io";
 import { Switch } from 'antd';
+import UserPage from './UserTable';
 
 interface FieldType {
     label?: string,
@@ -68,6 +69,9 @@ const Settings: React.FC = () => (
                     </div>
 
                 </Form>
+            </div>
+            <div>
+                <UserPage/>
             </div>
         </div>
     </>

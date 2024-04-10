@@ -3,11 +3,13 @@ import { FaCcStripe, FaHome, FaRegUserCircle } from 'react-icons/fa';
 import { FaRegCreditCard } from 'react-icons/fa';
 import { MdOutlineContactPage, MdOutlinePayment, MdSpeakerPhone } from 'react-icons/md';
 import { ColumnProps } from 'antd/es/table';
-import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User } from '../dto/data.type';
+import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User, AlignType } from '../dto/data.type';
 import { IoMdSettings } from 'react-icons/io';
 import { BiSolidMessageEdit } from 'react-icons/bi';
 import { RiUserSettingsFill } from 'react-icons/ri';
 import { TbSettingsCog } from 'react-icons/tb';
+import { useState } from 'react';
+import { Button } from 'antd';
 
 
 
@@ -777,73 +779,128 @@ export const BLOG_SETTINGS_STRING = {
     ]
 }
 
+// const[Status, setStatus] = useState('');
+
 
 export const USER_TABLE: User[] = [
     {
         index: 1,
-        name: "Utkarsh",
-        email: "utkarsh@solguruz.com",
+        name: 'Utkarsh',
+        email: 'utkarsh@solguruz.com',
         number: 9898989898,
-        
-    }, {
+        RegisterDate: '2023-11-24 | 05:30',
+        status: 'Active',
+    },
+    {
         index: 2,
-        name: "Rahul",
-        email: "rahul@solguruz.com",
+        name: 'Rahul',
+        email: 'rahul@solguruz.com',
         number: 1212121212,
-       
-    }, {
+        RegisterDate: '2023-11-24 | 05:30',
+        status: 'Active',
+    },
+    {
         index: 3,
-        name: "Tushar",
-        email: "tushar@solguruz.com",
+        name: 'Tushar',
+        email: 'tushar@solguruz.com',
         number: 3535313234,
-       
-    }, {
+        RegisterDate: '2023-11-24 | 05:30',
+        status: 'Active',
+    },
+    {
         index: 4,
-        name: "Neel",
-        email: "neel@solguruz.com",
+        name: 'Neel',
+        email: 'neel@solguruz.com',
         number: 7894561237,
-       
-    }, {
+        RegisterDate: '2023-11-24 | 05:30',
+        status: 'Active',
+    },
+    {
         index: 5,
-        name: "Prit",
-        email: "prit@solguruz.com",
+        name: 'Prit',
+        email: 'prit@solguruz.com',
         number: 1234567891,
-        
-    }, {
+        RegisterDate: '2023-11-24 | 05:30',
+        status: 'Active',
+    },
+    {
         index: 6,
-        name: "Ketan",
-        email: "ketan@solguruz.com",
+        name: 'Ketan',
+        email: 'ketan@solguruz.com',
         number: 1212121212,
-    }, {
+        RegisterDate: '2023-11-24 | 05:30',
+        status: 'Active',
+    },
+    {
         index: 7,
-        name: "Suraj",
-        email: "suraj@solguruz.com",
+        name: 'Suraj',
+        email: 'suraj@solguruz.com',
         number: 3535313234,
-    }, {
+        RegisterDate: '2023-11-24 | 05:30',
+        status: 'Active',
+    },
+    {
         index: 8,
-        name: "Aayush",
-        email: "aayush@solguruz.com",
+        name: 'Aayush',
+        email: 'aayush@solguruz.com',
         number: 7894561237,
-    }
-]
+        RegisterDate: '2023-11-24 | 05:30',
+        status: 'Enable',
+    },
+];
+
 
 
 export const USER_DATA_COL = [
     {
-        title: "Sr no.",
-        dataIndex: "index"
+        title: 'Sr no.',
+        dataIndex: 'index',
+        align: 'center' as AlignType,
     },
     {
-        title: "Name",
-        dataIndex: "name"
+        title: 'Name',
+        dataIndex: 'name',
+        align: 'center' as AlignType,
     },
     {
-        title: "Email",
-        dataIndex: "email"
+        title: 'Email',
+        dataIndex: 'email',
+        align: 'center' as AlignType,
     },
     {
-        title: "Number",
-        dataIndex: "number"
+        title: 'Number',
+        dataIndex: 'number',
+        align: 'center' as AlignType,
+    },
+    {
+        title: 'Register Date',
+        dataIndex: 'RegisterDate',
+        align: 'center' as AlignType,
+    },
+    {
+        title: 'status',
+        dataIndex: 'status',
+        align: 'center' as AlignType,
+       render: (status: string) => {
+            const handleClick = () => {
+              
+            };
+
+            return (
+                <Button
+                    style={{
+                        color: 'white',
+                        textAlign: 'center',
+                        fontWeight: '600',
+                        fontSize: 'medium',
+                        backgroundColor: status === 'Enable' ? '#dc2626' : '#059669',
+                    }}
+                    onClick={handleClick}
+                >
+                    {status === 'Enable' ? 'Disable' : 'Enable'}
+                </Button>
+            );
+        },
     },
 ];
 

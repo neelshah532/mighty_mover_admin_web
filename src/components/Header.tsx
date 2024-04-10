@@ -1,17 +1,19 @@
 import { Tooltip, Flex, Modal, Upload, Avatar, Input, Button, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { PlusOutlined } from '@ant-design/icons';
-import { IoMenu } from 'react-icons/io5';
-import { BiLogOut } from 'react-icons/bi';
+// import { IoMenu } from 'react-icons/io5';
+// import { BiLogOut } from 'react-icons/bi';
 import { FaUser } from 'react-icons/fa';
-import logo from '../assets/Images/Group 1.svg';
+// import logo from '../assets/Images/Group 1.svg';
 import { useState, useEffect, ChangeEventHandler } from 'react';
-import { Header } from 'antd/es/layout/layout';
+// import { Header } from 'antd/es/layout/layout';
 import ImgCrop from 'antd-img-crop';
 import { RiLockPasswordLine } from 'react-icons/ri';
-import { POPOVER_LOGOUT } from '../assets/constant/constant';
+// import { POPOVER_LOGOUT } from '../assets/constant/constant';
 import type { GetProp, UploadProps, UploadFile } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { Menu, Dropdown } from 'antd';
+import { TiArrowSortedDown } from 'react-icons/ti';
 
 // import { ORDER_TABLE } from '../assets/constant/constant';
 // import { Order } from '../assets/dto/data.type';
@@ -152,14 +154,22 @@ export default function Header_page() {
     const handleUsernameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setname(e.target.value);
     };
-
+    const menu = (
+        <Menu className="">
+            <Menu.Item key="0" onClick={() => setIsModalOpen(true)}>
+                Profile
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="1" onClick={handleLogout}>
+                Logout
+            </Menu.Item>
+        </Menu>
+    );
     return (
         <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
             <Flex justify="space-between" className="bg-white shadow-md">
-                <div>
-                    
-                </div>
+                <div></div>
                 <Flex className="h-16" gap="small" align="center">
                     {/* <Avatar
                                         src={pic || <UserOutlined />}
@@ -184,6 +194,7 @@ export default function Header_page() {
                                         />
                                     )}
                                 </Button> */}
+
                     <div className="flex items-center gap-3 mr-1">
                         <Tooltip
                             title={
@@ -198,13 +209,7 @@ export default function Header_page() {
                         >
                             <div className="">
                                 {fileList.length === 0 ? (
-                                    <Avatar
-                                        className=""
-                                        size="large"
-                                        icon={<UserOutlined />}
-                                        alt="avatar"
-                                        onClick={() => setIsModalOpen(true)}
-                                    />
+                                    <Avatar className="" size="large" icon={<UserOutlined />} alt="avatar" />
                                 ) : (
                                     <Avatar
                                         className=""
@@ -269,11 +274,16 @@ export default function Header_page() {
                             </Flex>
                         </Modal>
 
-                        <Tooltip title={POPOVER_LOGOUT}>
-                            <Button className="text-xl mr-2" onClick={handleLogout} danger>
+                        {/* <Tooltip title={POPOVER_LOGOUT}> */}
+                        {/* <Button className="text-xl mr-2" onClick={handleLogout} danger>
                                 <BiLogOut className="" />
-                            </Button>
-                        </Tooltip>
+                            </Button> */}
+                        <Dropdown overlay={menu} trigger={['click']} className="text-xl mr-2 " placement="bottom">
+                            <a className="ant-dropdown-link " onClick={(e) => e.preventDefault()}>
+                                <TiArrowSortedDown />
+                            </a>
+                        </Dropdown>
+                        {/* </Tooltip> */}
                     </div>
                 </Flex>
             </Flex>

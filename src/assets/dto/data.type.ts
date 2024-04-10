@@ -53,14 +53,16 @@ interface DeliveryPartner {
     status: deliverypartner;
 }
 
-
+export type AlignType = 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent';
 interface User {
-    index:number,
-    name:string,
-    email:string,
-    number:number,
+    index: number;
+    name: string;
+    email: string;
+    number: number;
+    RegisterDate:string;
+    status: string;
+    align?: AlignType | undefined;
 }
-
 
 export type { Order, DeliveryPartner, User };
 export type { DataType };

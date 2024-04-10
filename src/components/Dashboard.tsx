@@ -14,13 +14,13 @@ import {
     MONTHLY_DATA,
     MONTHLY_TARGET,
 } from '../assets/constant/constant';
-import { PieChart } from '../components/piechart';
+// import { PieChart } from '../components/piechart';
 import { LineChart } from '../components/linechart';
 
 import DoughnutChart from '../components/DoughnutChart';
 
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import CountUp from 'react-countup';
+// import CountUp from 'react-countup';
 
 import { ProgressProps } from 'antd';
 export default function Dashboard() {
@@ -36,12 +36,12 @@ export default function Dashboard() {
         '0%': '#c40811',
         '100%': '#c40811',
     };
-    const formatter = (value: number | string) => {
-        if (typeof value === 'number') {
-            return <CountUp end={value} duration={1} />;
-        }
-        return value;
-    };
+    // const formatter = (value: number | string) => {
+    //     if (typeof value === 'number') {
+    //         return <CountUp end={value} duration={1} />;
+    //     }
+    //     return value;
+    // };
 
     const prefix =
         DASHBOARD_STATS_PROFIT_VAL >= 0 ? (

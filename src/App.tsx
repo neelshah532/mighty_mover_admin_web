@@ -47,8 +47,10 @@ import Blog from './components/Blog';
 import Delivery_partner from './components/Delivery_partner';
 import FixedLayout from './components/Layout';
 import UserPage from './components/UserTable';
+import { LineChart } from './components/linechart';
 function App() {
     return (
+        
         <>
             <Routes>
                 <Route element={<ProtectedRoutes />}>
@@ -60,6 +62,7 @@ function App() {
                         <Route path="/setting/blog-settings" element={<Blog />} />
                         <Route path="/setting/user-settings" element={<UserPage />} />
                         <Route path="/delivery-partner" element={<Delivery_partner />} />
+                        <Route path="/linechart" element={<LineChart />} />
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

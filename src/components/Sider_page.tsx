@@ -2,22 +2,22 @@
 // import { useState } from 'react';
 import Sider from 'antd/es/layout/Sider';
 import { Button, Flex, Menu } from 'antd';
-import { FaHome } from 'react-icons/fa';
-import { Badge } from 'antd';
-import { MdOutlineContactPage, MdOutlinePayment } from 'react-icons/md';
-import { FaRegUserCircle } from 'react-icons/fa';
-import { IoMdSettings } from 'react-icons/io';
-import { ORDER_TABLE, SIDE_PANEL } from '../assets/constant/constant';
-import { Order } from '../assets/dto/data.type';
+// import { FaHome } from 'react-icons/fa';
+// import { Badge } from 'antd';
+// import { MdOutlineContactPage, MdOutlinePayment } from 'react-icons/md';
+// import { FaRegUserCircle } from 'react-icons/fa';
+// import { IoMdSettings } from 'react-icons/io';
+import {  SIDE_PANEL } from '../assets/constant/constant';
+// import { Order } from '../assets/dto/data.type';
 import { useNavigate } from 'react-router-dom';
 import { IoArrowBack } from 'react-icons/io5';
 import { useState } from 'react';
 import logo from '../assets/Images/Group 1.svg';
-import Item from 'antd/es/list/Item';
+// import Item from 'antd/es/list/Item';
 
 export default function Sider_page() {
     // const [collapse, setCollapse] = useState(false);
-    const data: Order[] = ORDER_TABLE;
+    // const data: Order[] = ORDER_TABLE;
     // const [toggle1, settoggle1] = useState(false);
     const [collapse, setcollapse] = useState(false);
     const navigate = useNavigate();

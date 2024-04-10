@@ -7,12 +7,13 @@ import { Badge } from 'antd';
 import { MdOutlineContactPage, MdOutlinePayment } from 'react-icons/md';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
-import { ORDER_TABLE } from '../assets/constant/constant';
+import { ORDER_TABLE, SIDE_PANEL } from '../assets/constant/constant';
 import { Order } from '../assets/dto/data.type';
 import { useNavigate } from 'react-router-dom';
 import { IoArrowBack } from 'react-icons/io5';
 import { useState } from 'react';
 import logo from '../assets/Images/Group 1.svg';
+import Item from 'antd/es/list/Item';
 
 export default function Sider_page() {
     // const [collapse, setCollapse] = useState(false);
@@ -38,11 +39,11 @@ export default function Sider_page() {
                     left: 0,
                     top: 0,
                     bottom: 0,
-                    transition:'all 0.3s ease',
+                    transition: 'all 0.3s ease',
                 }}
                 className="shadow-sm shadow-gray-400 "
             >
-                <Flex className='mt-2' gap={collapse ? 0 : 10}>
+                <Flex className='mt-4' gap={collapse ? 0 : 10}>
                     {/*
                     {toggle1 ? (
                         <></>
@@ -59,17 +60,13 @@ export default function Sider_page() {
                         </Button>
                     </div>
                 </Flex>
-                <Menu className="mt-16" theme="light" triggerSubMenuAction="hover" mode="inline">
-                    <Menu.Item key="Home" icon={<FaHome />} onClick={() => navigate('/')}>
+                <Menu className="mt-16" theme="light" triggerSubMenuAction="hover" mode="inline" defaultSelectedKeys={['Home']}>
+                    {/* <Menu.Item key="Home" icon={<FaHome />} onClick={() => navigate('/')} >
                         Dashboard
                     </Menu.Item>
                     <Menu.Item
                         key="order"
-                        icon={
-                            <Badge count={data.length} size="small">
-                                <MdOutlineContactPage />
-                            </Badge>
-                        }
+                        icon={<MdOutlineContactPage />}
                         onClick={() => navigate('/orders')}
                     >
                         Order
@@ -79,9 +76,26 @@ export default function Sider_page() {
                     </Menu.Item>
                     <Menu.Item key="payment" icon={<MdOutlinePayment />} onClick={() => navigate('/payments')}>
                         Payment Details
-                    </Menu.Item>
-                    <Menu.SubMenu key="settings" title="Settings" icon={<IoMdSettings />}>
-                        <Menu.Item key="setting" onClick={() => navigateToSettings('email-Verification')}>
+                    </Menu.Item> */}
+                    {/* {SIDE_PANEL.map(val)=>(
+                    <>
+                        <Menu.Item key={val.key} icon={val.icon} onClick={() => navigate(val.navigate)}>
+                            {val.name}
+                        </Menu.Item>
+                    </>
+                    )} */}
+                    {
+                        SIDE_PANEL.menu.map((val)=>(
+                            <>
+                                <Menu.Item key={val.key} icon={val.icon} onClick={() => navigate(val.navigate)}>
+                                    {val.name}
+                                </Menu.Item> 
+                            </>
+                        ))
+                    }
+
+                    {/* <Menu.SubMenu key="settings" title="Settings" icon={<IoMdSettings />}>
+                        <Menu.Item key="setting" onClick={() => navigateToSettings('email-verification')}>
                             Email Verification
                         </Menu.Item>
                         <Menu.Item key="setting1" onClick={() => navigateToSettings('blog-settings')}>
@@ -90,6 +104,15 @@ export default function Sider_page() {
                         <Menu.Item key="setting2" onClick={() => navigateToSettings('user-settings')}>
                             User Settings
                         </Menu.Item>
+                    </Menu.SubMenu> */}
+                    <Menu.SubMenu key={SIDE_PANEL.submenu_key} title={SIDE_PANEL.submenu_title} icon={SIDE_PANEL.icon}>
+                        {SIDE_PANEL.submenu.map((item)=>(
+                            <>
+                                <Menu.Item key={item.key} icon={item.icon} onClick={()=> navigateToSettings(item.navigate)}>
+                                    {item.name}
+                                </Menu.Item>
+                            </>
+                        ))}
                     </Menu.SubMenu>
                 </Menu>
             </Sider>

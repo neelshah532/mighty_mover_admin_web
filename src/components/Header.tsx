@@ -156,7 +156,10 @@ export default function Header_page() {
     return (
         <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
-            <Flex justify="flex-end" className="bg-white shadow-md">
+            <Flex justify="space-between" className="bg-white shadow-md">
+                <div>
+                    
+                </div>
                 <Flex className="h-16" gap="small" align="center">
                     {/* <Avatar
                                         src={pic || <UserOutlined />}
@@ -267,7 +270,7 @@ export default function Header_page() {
                         </Modal>
 
                         <Tooltip title={POPOVER_LOGOUT}>
-                            <Button className="text-xl" onClick={handleLogout} danger>
+                            <Button className="text-xl mr-2" onClick={handleLogout} danger>
                                 <BiLogOut className="" />
                             </Button>
                         </Tooltip>

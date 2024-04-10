@@ -1,9 +1,13 @@
 import { IoCashOutline } from 'react-icons/io5';
-import { FaCcStripe } from 'react-icons/fa';
+import { FaCcStripe, FaHome, FaRegUserCircle } from 'react-icons/fa';
 import { FaRegCreditCard } from 'react-icons/fa';
-import { MdSpeakerPhone } from 'react-icons/md';
+import { MdOutlineContactPage, MdOutlinePayment, MdSpeakerPhone } from 'react-icons/md';
 import { ColumnProps } from 'antd/es/table';
 import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User } from '../dto/data.type';
+import { IoMdSettings } from 'react-icons/io';
+import { BiSolidMessageEdit } from 'react-icons/bi';
+import { RiUserSettingsFill } from 'react-icons/ri';
+import { TbSettingsCog } from 'react-icons/tb';
 
 
 
@@ -843,3 +847,47 @@ export const USER_DATA_COL = [
     },
 ];
 
+export const SIDE_PANEL = {
+    menu: [{
+        key: "Home",
+        name: "Dashboard",
+        navigate: "/",
+        icon: <FaHome />
+    }, {
+        key: "order",
+        name: "Order",
+        navigate: "/orders",
+        icon: <MdOutlineContactPage />
+    }, {
+        key: "delivery",
+        name: "Delivery Partner",
+        navigate: "/delivery-partner",
+        icon: <FaRegUserCircle />
+    }, {
+        key: "payment",
+        name: "Payment",
+        navigate: "/payments",
+        icon: <MdOutlinePayment />
+    }
+],
+submenu_key:"settings",
+submenu_title:"Settings",
+icon:<IoMdSettings/>,
+    submenu:[{
+        key:"order",
+        navigate:"order-settings",
+        icon:<TbSettingsCog/>,
+        name:"Order Settings"
+    },
+{
+    key:"blog",
+    navigate:"blog-settings",
+    icon:<BiSolidMessageEdit/>,
+    name:"Blog Settings"
+},{
+    key:"user",
+    navigate:"user-settings",
+    icon:<RiUserSettingsFill/>,
+    name:"User Settings"
+}]
+}

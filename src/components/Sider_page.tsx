@@ -1,5 +1,3 @@
-    'use client';
-    // import { useState } from 'react';
     import Sider from 'antd/es/layout/Sider';
     import { Button, Flex, Menu } from 'antd';
     import { SIDE_PANEL } from '../assets/constant/constant';
@@ -53,7 +51,7 @@
                             </Button>
                         </div>
                     </Flex>
-                    <Menu className="mt-16" theme="light" triggerSubMenuAction="hover" mode="inline" selectedKeys={[location.pathname]}>
+                    <Menu className="mt-5" theme="light" triggerSubMenuAction="hover" mode="inline" selectedKeys={[location.pathname]}>
                         {SIDE_PANEL.menu.map((item) => (
                                 <Menu.Item key={item.navigate} icon={item.icon} onClick={() => navigate(item.navigate)}>
                                     {item.name}

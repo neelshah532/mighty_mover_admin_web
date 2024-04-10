@@ -33,11 +33,13 @@ const onChange = (checked: boolean) => {
 const Blog: React.FC = () => (
     <>
         <div className='bg-white rounded-md mx-2'>
-            <div className=''>
+            {/* <div className=''>
                 <h1 className='text-xl font-bold p-4'>Edit Blog Settings</h1>
-            </div>
-            <div className='flex gap-0.5 pl-4 pb-1 border-b border-black'>
-                < IoMdSettings className='size-7' /><h2 className='font-semibold text-lg'>Blog Settings</h2>
+            </div> */}
+            <div className='border-b border-black'>
+                <div className='flex ml-2 gap-2 items-center'>  
+                    < IoMdSettings className='size-7 mt-2' /><h2 className='font-semibold text-lg mt-2'>Blog Settings</h2>
+                </div>
             </div>
             <div>
                 <Form

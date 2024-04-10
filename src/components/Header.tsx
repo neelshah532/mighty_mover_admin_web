@@ -17,7 +17,7 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export default function Header_page() {
     // const [collapse, setcollapse] = useState(false);
 
-    
+    const titleList = ['Dashboard','Order','Delivery Partner','Payment']
 
     const [name, setname] = useState('');
     const [toggle1, settoggle1] = useState(false);
@@ -154,15 +154,15 @@ export default function Header_page() {
     };
 
 
-    const [title,setTitle] = useState('Dashboard')
+    // const [title,setTitle] = useState('Dashboard')
+
 
     return (
         <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
-            <Flex justify="space-between"  className="bg-white shadow-md items-center">
-                <div className='ml-2'>
-                    {title}
-                </div>
+            <Flex justify="flex-end"  className="bg-white shadow-md items-center">
+    
+                
                 <Flex className="h-16" gap="small" align="center">
                     {/* <Avatar
                                         src={pic || <UserOutlined />}

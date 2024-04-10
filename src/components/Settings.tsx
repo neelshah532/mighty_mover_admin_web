@@ -32,7 +32,7 @@ const Settings: React.FC = () => (
                 <h1 className='text-xl font-bold p-4'>Edit Setting</h1>
             </div>
             <div className='flex gap-0.5 pl-4 pb-1 border-b border-black'>
-                < IoMdSettings className='size-7 animate-spin' /><h2 className='font-semibold text-lg'>Order Settings</h2>
+                < IoMdSettings className='size-7' /><h2 className='font-semibold text-lg'>Order Settings</h2>
             </div>
             <div className='w-full flex justify-between items-center p-4'>
                 <span className='text-lg font-medium'>Email Verification</span> <Switch defaultChecked onChange={onChange} className='bg-gray-300' />

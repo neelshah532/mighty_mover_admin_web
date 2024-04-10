@@ -1,12 +1,9 @@
 import { Tooltip, Flex, Modal, Upload, Avatar, Input, Button, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { PlusOutlined } from '@ant-design/icons';
-import { IoMenu } from 'react-icons/io5';
 import { BiLogOut } from 'react-icons/bi';
 import { FaUser } from 'react-icons/fa';
-import logo from '../assets/Images/Group 1.svg';
 import { useState, useEffect, ChangeEventHandler } from 'react';
-import { Header } from 'antd/es/layout/layout';
 import ImgCrop from 'antd-img-crop';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { POPOVER_LOGOUT } from '../assets/constant/constant';
@@ -19,6 +16,9 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 export default function Header_page() {
     // const [collapse, setcollapse] = useState(false);
+
+    
+
     const [name, setname] = useState('');
     const [toggle1, settoggle1] = useState(false);
     const [toggle, settoggle] = useState(true);
@@ -153,12 +153,15 @@ export default function Header_page() {
         setname(e.target.value);
     };
 
+
+    const [title,setTitle] = useState('Dashboard')
+
     return (
         <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
-            <Flex justify="space-between" className="bg-white shadow-md">
-                <div>
-                    
+            <Flex justify="space-between"  className="bg-white shadow-md items-center">
+                <div className='ml-2'>
+                    {title}
                 </div>
                 <Flex className="h-16" gap="small" align="center">
                     {/* <Avatar

@@ -849,22 +849,18 @@ export const USER_DATA_COL = [
 
 export const SIDE_PANEL = {
     menu: [{
-        key: "Home",
         name: "Dashboard",
         navigate: "/",
         icon: <FaHome />
     }, {
-        key: "order",
         name: "Order",
         navigate: "/orders",
         icon: <MdOutlineContactPage />
     }, {
-        key: "delivery",
         name: "Delivery Partner",
         navigate: "/delivery-partner",
         icon: <FaRegUserCircle />
     }, {
-        key: "payment",
         name: "Payment",
         navigate: "/payments",
         icon: <MdOutlinePayment />
@@ -874,19 +870,15 @@ submenu_key:"settings",
 submenu_title:"Settings",
 icon:<IoMdSettings/>,
     submenu:[{
-        key:"order",
-        navigate:"order-settings",
+        navigate:"/settings/order-settings",
         icon:<TbSettingsCog/>,
         name:"Order Settings"
-    },
-{
-    key:"blog",
-    navigate:"blog-settings",
+    },{
+    navigate:"/settings/blog-settings",
     icon:<BiSolidMessageEdit/>,
     name:"Blog Settings"
 },{
-    key:"user",
-    navigate:"user-settings",
+    navigate:"/settings/user-settings",
     icon:<RiUserSettingsFill/>,
     name:"User Settings"
 }]

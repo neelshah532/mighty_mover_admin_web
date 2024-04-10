@@ -68,7 +68,7 @@ const UserPage: React.FC = () => {
                     <Empty />
                 ) : (
                     <>
-                        <Card title="User" className="m-2 random:w-1/2 ">
+                        <Card title="User Settings" className="m-2 random:w-1/2">
                             <Table
                                 dataSource={data}
                                 pagination={{ pageSize: 4 }}

@@ -13,15 +13,20 @@ import type { GetProp, UploadProps, UploadFile } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { TiArrowSortedDown } from 'react-icons/ti';
+import { IoArrowBack } from 'react-icons/io5';
 
 // import { ORDER_TABLE } from '../assets/constant/constant';
 // import { Order } from '../assets/dto/data.type';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
-export default function Header_page() {
+export default function HeaderPage({
+    collapse,
+    setcollapse,
+}: {
+    collapse: boolean;
+    setcollapse: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
     // const [collapse, setcollapse] = useState(false);
-
-    const titleList = ['Dashboard','Order','Delivery Partner','Payment']
 
     const [name, setname] = useState('');
     const [toggle1, settoggle1] = useState(false);
@@ -167,12 +172,32 @@ export default function Header_page() {
             </Menu.Item>
         </Menu>
     );
+
+    // this const is for handling the toggle of sidebar
+    const handletoggle = () => {
+        setcollapse(!collapse);
+    };
     return (
         <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
-            <Flex justify="flex-end"  className="bg-white shadow-md items-center">
-    
-                
+            <Flex justify="flex-end" className="bg-white shadow-md items-center">
+                <Flex className="mt-4" gap={collapse ? 0 : 10}>
+                    <div className={collapse ? 'w-full flex justify-center' : ''}>
+                        <Button
+                            className={
+                                collapse ? 'mr-0 text-xl border-none shadow-sm' : 'mr-1 text-xl border-none shadow-sm'
+                            }
+                            onClick={handletoggle}
+                        >
+                            {collapse ? (
+                                <IoArrowBack className="rotate-180 text-center transition ease-linear duration-300" />
+                            ) : (
+                                <IoArrowBack className=" transition ease-linear duration-300" />
+                            )}
+                        </Button>
+                    </div>
+                </Flex>
+
                 <Flex className="h-16" gap="small" align="center">
                     {/* <Avatar
                                         src={pic || <UserOutlined />}

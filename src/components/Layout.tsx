@@ -1,25 +1,27 @@
 
 import { FloatButton, Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
-import Header_page from '../components/Header';
-import Sider_page from '../components/Sider_page';
+import HeaderPage from './HeaderPage';
+import SiderPage from '../components/SiderPage';
+import { useState } from 'react';
 
 const { Content } = Layout;
 
 const FixedLayout: React.FC = () => {
+    const [collapse, setcollapse] = useState(false);
     return (
         <>
             <Layout style={{ minHeight: '100vh' }}>
-                <Sider_page />
+                <SiderPage collapse={collapse} />
                 <Layout className="site-layout">
-                    <Header_page />
+                    <HeaderPage collapse={collapse} setcollapse={setcollapse} />
                     <Content style={{ margin: '0 16px', marginTop: 16 }}>
-                        <div >
+                        <div>
                             <Outlet />
                         </div>
                     </Content>
                 </Layout>
-                < FloatButton.BackTop />
+                <FloatButton.BackTop />
             </Layout>
 
             {/*  <div

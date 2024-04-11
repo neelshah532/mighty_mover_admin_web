@@ -14,6 +14,10 @@ import { useNavigate } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { TiArrowSortedDown } from 'react-icons/ti';
 import { IoArrowBack } from 'react-icons/io5';
+import axios, { AxiosError } from 'axios';
+import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
+import { Adminlogout } from '../redux/userSlice';
 
 
 // import { ORDER_TABLE } from '../assets/constant/constant';
@@ -48,11 +52,34 @@ export default function HeaderPage({
     }, []);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const handleLogout = async() => {
+        // localStorage.removeItem('user');
+        // navigate('/login');
+        // message.success('You have been logged out');
+        try {
+            const logoutAdmin = await axios.get('/api/v1/admin/logout');
+            toast.success(logoutAdmin.data.message);
+            console.log(logoutAdmin.data.message);
+            navigate('/login');
+            dispatch(Adminlogout());
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if (axiosError.response) {
+                    console.log('Response Error', axiosError.response);
+                    toast.error(axiosError.response.data.message);
+                } else if (axiosError.request) {
+                    console.log('Request Error', axiosError.request);
+                } else {
+                    console.log('Error', axiosError.message);
+                }
+            }
+        }
 
-    const handleLogout = () => {
-        localStorage.removeItem('user');
-        navigate('/login');
-        message.success('You have been logged out');
     };
 
     // const showModal = () => {

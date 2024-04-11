@@ -1,9 +1,11 @@
+import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const PublicRoute = () => {
-    const user = localStorage.getItem('user');
+    const { user } = useSelector((state) => state);
+    
 
-    return !user ? <Outlet /> : <Navigate to="/" />;
+    return !user.user.token ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default PublicRoute;

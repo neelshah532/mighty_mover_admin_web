@@ -1,9 +1,9 @@
 import { Content } from 'antd/es/layout/layout';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import { FloatButton, Divider, Flex } from 'antd';
 import { TERMS, COPYRIGHT } from '../assets/constant/constant';
-import Loader from '../components/Loader';
+// import Loader from '../components/Loader';
 //import Header_page from '../components/Header';
 //import Sider_page from '../components/Sider_page';
 import { Outlet } from 'react-router-dom';
@@ -11,21 +11,21 @@ import { Outlet } from 'react-router-dom';
 // const { Content: AntContent } = Layout;
 
 const Admin: React.FC = () => {
-    const [toggle, setToggle] = useState(true);
+    // const [toggle, setToggle] = useState(true);
 
-    useEffect(() => {
-        const fetchdata = setTimeout(() => {
-            setToggle(false);
-        }, 0);
+    // useEffect(() => {
+    //     const fetchdata = setTimeout(() => {
+    //         setToggle(false);
+    //     }, 0);
 
-        return () => clearTimeout(fetchdata);
-    }, []);
+    //     return () => clearTimeout(fetchdata);
+    // }, []);
 
     return (
         <>
-            {toggle ? (
+            {/* {toggle ? (
                 <Loader />
-            ) : (
+            ) : ( */}
                 <Layout className="w-full ">
                     <Layout>
                         <Content className="bg-gray-50 mt-16 p-1">
@@ -39,7 +39,7 @@ const Admin: React.FC = () => {
                     </Layout>
                     <FloatButton.BackTop />
                 </Layout>
-            )}
+            {/* )} */}
         </>
     );
 };

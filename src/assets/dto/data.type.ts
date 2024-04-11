@@ -60,7 +60,7 @@ interface User {
     email: string;
     number: number;
     RegisterDate:string;
-    status: string;
+    status: boolean;
     align?: AlignType | undefined;
 }
 

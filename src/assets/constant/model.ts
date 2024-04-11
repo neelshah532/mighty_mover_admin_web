@@ -1,2 +1,2 @@
-export const OK = 'Ok';
-export const CANCEL = 'Cancle';
+export const OK = 'OK';
+export const CANCEL = 'Cancel';

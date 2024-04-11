@@ -26,27 +26,16 @@
                 <Sider
                     theme="light"
                     collapsed={collapse}
-                    collapsedWidth={80}
+                    collapsedWidth={0}
                     style={{
                         overflow: 'auto',
                         height: '100vh',
                         left: 0,
                         top: 0,
                         bottom: 0,
-                        transition: 'all 0.3s ease',
                     }}
-                    // className={collapse ? 'hidden' : 'shadow-md'}
-                    className="shadow-md shadow-gray-400"
                 >
-                    <Flex className="mt-4" gap={collapse ? 0 : 10}>
-                        <div className="">
-                            <img
-                                src={logo}
-                                alt="logo"
-                                style={{ transition: 'all 0.3s ease' }}
-                                className={collapse ? 'hidden' : 'block ml-1'}
-                            />
-                        </div>
+                    {/* <Flex className="mt-4" gap={collapse ? 0 : 10}> */} 
                         {/* <div className={collapse ? 'w-full flex justify-center' : ''}>
                             <Button
                                 className={
@@ -63,9 +52,17 @@
                                 )}
                             </Button>
                         </div> */}
-                    </Flex>
+                    {/* </Flex> */}
+                    <div className='flex justify-center mt-4'>
+                        <div className="">
+                            <img
+                                src={logo}
+                                alt="logo"
+                            />
+                        </div>
+                    </div>
                     <Menu
-                        className="mt-5"
+                        className="mt-3"
                         theme="light"
                         triggerSubMenuAction="hover"
                         mode="inline"

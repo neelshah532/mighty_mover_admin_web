@@ -789,7 +789,7 @@ export const USER_TABLE: User[] = [
         email: 'utkarsh@solguruz.com',
         number: 9898989898,
         RegisterDate: '2023-11-24 | 05:30',
-        status: 'Active',
+        status: true,
     },
     {
         index: 2,
@@ -797,7 +797,7 @@ export const USER_TABLE: User[] = [
         email: 'rahul@solguruz.com',
         number: 1212121212,
         RegisterDate: '2023-11-24 | 05:30',
-        status: 'Active',
+        status: true,
     },
     {
         index: 3,
@@ -805,7 +805,7 @@ export const USER_TABLE: User[] = [
         email: 'tushar@solguruz.com',
         number: 3535313234,
         RegisterDate: '2023-11-24 | 05:30',
-        status: 'Active',
+        status: true,
     },
     {
         index: 4,
@@ -813,7 +813,7 @@ export const USER_TABLE: User[] = [
         email: 'neel@solguruz.com',
         number: 7894561237,
         RegisterDate: '2023-11-24 | 05:30',
-        status: 'Active',
+        status: false,
     },
     {
         index: 5,
@@ -821,7 +821,7 @@ export const USER_TABLE: User[] = [
         email: 'prit@solguruz.com',
         number: 1234567891,
         RegisterDate: '2023-11-24 | 05:30',
-        status: 'Active',
+        status: false,
     },
     {
         index: 6,
@@ -829,7 +829,7 @@ export const USER_TABLE: User[] = [
         email: 'ketan@solguruz.com',
         number: 1212121212,
         RegisterDate: '2023-11-24 | 05:30',
-        status: 'Active',
+        status: false,
     },
     {
         index: 7,
@@ -837,7 +837,7 @@ export const USER_TABLE: User[] = [
         email: 'suraj@solguruz.com',
         number: 3535313234,
         RegisterDate: '2023-11-24 | 05:30',
-        status: 'Active',
+        status: false,
     },
     {
         index: 8,
@@ -845,7 +845,7 @@ export const USER_TABLE: User[] = [
         email: 'aayush@solguruz.com',
         number: 7894561237,
         RegisterDate: '2023-11-24 | 05:30',
-        status: 'Enable',
+        status: false,
     },
 ];
 
@@ -855,52 +855,27 @@ export const USER_DATA_COL = [
     {
         title: 'Sr no.',
         dataIndex: 'index',
-        align: 'center' as AlignType,
+        align: 'center' as AlignType
     },
     {
         title: 'Name',
         dataIndex: 'name',
-        align: 'center' as AlignType,
+        align: 'center' as AlignType
     },
     {
         title: 'Email',
         dataIndex: 'email',
-        align: 'center' as AlignType,
+        align: 'center' as AlignType
     },
     {
         title: 'Number',
         dataIndex: 'number',
-        align: 'center' as AlignType,
+        align: 'center' as AlignType
     },
     {
         title: 'Register Date',
         dataIndex: 'RegisterDate',
-        align: 'center' as AlignType,
-    },
-    {
-        title: 'status',
-        dataIndex: 'status',
-        align: 'center' as AlignType,
-       render: (status: string) => {
-            const handleClick = () => {
-              
-            };
-
-            return (
-                <Button
-                    style={{
-                        color: 'white',
-                        textAlign: 'center',
-                        fontWeight: '600',
-                        fontSize: 'medium',
-                        backgroundColor: status === 'Enable' ? '#dc2626' : '#059669',
-                    }}
-                    onClick={handleClick}
-                >
-                    {status === 'Enable' ? 'Disable' : 'Enable'}
-                </Button>
-            );
-        },
+        align: 'center' as AlignType
     },
 ];
 

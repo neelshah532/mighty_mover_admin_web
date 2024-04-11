@@ -51,8 +51,8 @@ export default function Dashboard() {
         );
     // const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
     return (
-        <div className="bg-gray-50 p-1 font-inter overflow-hidden">
-            <div className="grid  grid-cols-5 gap-4 m-4">
+        <div className="bg-gray-50 p-1 font-inter overflow-hidden ">
+            <div className="grid grid-cols-5 gap-4 m-4">
                 <div className="w-full h-full">
                     <Card bordered={false} className="w-full bg-blue-50">
                         <div className="w-full flex-col ">
@@ -119,7 +119,7 @@ export default function Dashboard() {
                         </div>
                     </Card>
                 </div>
-                <div className=" w-full h-full ">
+                <div className=" w-full h-full">
                     <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-50">
                         <div className="w-full flex-col ">
                             <div className="flex justify-start w-full text-[15px] font-semibold ">
@@ -138,12 +138,14 @@ export default function Dashboard() {
                     </Card>
                 </div>
             </div>
-            <div>
+            <div className=''>
                 <Flex gap="small" className="m-4">
-                    <Card className="w-[60%] border-2">
-                        <LineChart />
+                    <Card className="w-[60%] ">
+                        <div className='flex justify-center w-full'>
+                            <LineChart />
+                        </div>
                     </Card>
-                    <Card className="w-[40%] flex justify-center items-center ">
+                    <Card className="w-[40%] flex justify-center">
                         {/* <PieChart /> */}
                         <DoughnutChart />
                         {/* Doughtnut */}
@@ -151,8 +153,8 @@ export default function Dashboard() {
                 </Flex>
             </div>
         
-            <div className="w-full m-4 flex gap-2">
-                <div className="w-[17%]">
+            <div className="w-[99%] m-4 flex gap-2">
+                <div className="">
                     <Card bordered={false} className="w-full flex-1 h-full ">
                         <div className="flex flex-col justify-center items-center gap-4">
                             <div className="text-xl font-bold text-center"> {MONTHLY_TARGET}</div>
@@ -166,11 +168,11 @@ export default function Dashboard() {
                         </div>
                     </Card>
                 </div>
-                <div className='w-[80%]'>
+                <div className='w-full'>
                 <div className="grid grid-cols-4 flex-wrap w-full h-auto gap-2">
                 {DASHBOARD_CONTENT.map((item, index) => (
                     <>
-                        <div key={index} className="w-[200px] h-auto">
+                        <div key={index} className="h-auto">
                             <Card title={item.TOTAL_ORDER} hoverable bordered className="p-0 transition w-full h-full">
                                 {item.VAL}
                             </Card>

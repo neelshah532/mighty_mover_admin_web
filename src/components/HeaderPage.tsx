@@ -15,6 +15,7 @@ import { Menu, Dropdown } from 'antd';
 import { TiArrowSortedDown } from 'react-icons/ti';
 import { IoArrowBack } from 'react-icons/io5';
 
+
 // import { ORDER_TABLE } from '../assets/constant/constant';
 // import { Order } from '../assets/dto/data.type';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
@@ -180,24 +181,21 @@ export default function HeaderPage({
     return (
         <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
-            <Flex justify="flex-end" className="bg-white shadow-md items-center">
-                <Flex className="mt-4" gap={collapse ? 0 : 10}>
-                    <div className={collapse ? 'w-full flex justify-center' : ''}>
+            <Flex justify='space-between' className="bg-white shadow-md items-center">
+                <Flex>
+                    <div>
                         <Button
-                            className={
-                                collapse ? 'mr-0 text-xl border-none shadow-sm' : 'mr-1 text-xl border-none shadow-sm'
-                            }
+                            className="text-xl ml-2 rounded-full"
                             onClick={handletoggle}
                         >
                             {collapse ? (
-                                <IoArrowBack className="rotate-180 text-center transition ease-linear duration-300" />
+                                <IoArrowBack className="rotate-180" />
                             ) : (
-                                <IoArrowBack className=" transition ease-linear duration-300" />
+                                <IoArrowBack className="" />
                             )}
                         </Button>
                     </div>
                 </Flex>
-
                 <Flex className="h-16" gap="small" align="center">
                     {/* <Avatar
                                         src={pic || <UserOutlined />}
@@ -223,7 +221,7 @@ export default function HeaderPage({
                                     )}
                                 </Button> */}
 
-                    <div className="flex items-center gap-3 mr-1">
+                    <div className="flex items-center gap-3 mr-2">
                         <Tooltip
                             title={
                                 toggle1 ? (
@@ -235,7 +233,7 @@ export default function HeaderPage({
                                 )
                             }
                         >
-                            <div className="">
+                            <div>
                                 {fileList.length === 0 ? (
                                     <Avatar className="" size="large" icon={<UserOutlined />} alt="avatar" />
                                 ) : (

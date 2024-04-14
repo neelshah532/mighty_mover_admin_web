@@ -7,7 +7,7 @@ import { LOGIN_DATA_STRING } from '../assets/constant/constant';
 import { toast } from 'sonner';
 import { adminAuthLogin } from '../http/staticTokenService';
 import { AdminAdd } from '../redux/userSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 // import { Navigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import Loader from '../components/Loader';
@@ -24,7 +24,7 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const user = useSelector((state) => state);
+    // const user = useSelector((state) => state);
 
     // dispatch(AdminAdd({
 
@@ -33,11 +33,11 @@ const Login: React.FC = () => {
         setLoading(true);
         try {
             const response = await adminAuthLogin({ email, password });
-            console.log(response.data.message);
+            console.log(response.data.data);
             toast.success(response.data.message);
             const obj = {
                 id: response.data.data.id,
-                name: response.data.data.first_name,
+                name: response.data.data.first_name + " " + response.data.data.last_name,
                 email: response.data.data.email,
                 token: response.data.data.jwt,
             };

@@ -24,7 +24,7 @@ const initialState: initialState = {
     },
 };
 const userSlice = createSlice({
-    name: 'Admin',
+    name: 'user',
     initialState,
     reducers: {
         AdminAdd: (state, action) => {

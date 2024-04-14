@@ -1,14 +1,9 @@
 import { Tooltip, Flex, Modal, Upload, Avatar, Input, Button, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { PlusOutlined } from '@ant-design/icons';
-// import { IoMenu } from 'react-icons/io5';
-// import { BiLogOut } from 'react-icons/bi';
 import { FaUser } from 'react-icons/fa';
 import { useState, useEffect, ChangeEventHandler } from 'react';
-// import { Header } from 'antd/es/layout/layout';
 import ImgCrop from 'antd-img-crop';
-import { RiLockPasswordLine } from 'react-icons/ri';
-// import { POPOVER_LOGOUT } from '../assets/constant/constant';
 import type { GetProp, UploadProps, UploadFile } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
@@ -18,10 +13,8 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { Adminlogout } from '../redux/userSlice';
+import http from '../http/http';
 
-
-// import { ORDER_TABLE } from '../assets/constant/constant';
-// import { Order } from '../assets/dto/data.type';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 export default function HeaderPage({
@@ -31,17 +24,17 @@ export default function HeaderPage({
     collapse: boolean;
     setcollapse: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-    // const [collapse, setcollapse] = useState(false);
-
-    const [name, setname] = useState('');
-    const [toggle1, settoggle1] = useState(false);
+    const [Name, setName] = useState('');
+    const [Email, setEmail] = useState('');
+    // const [toggle1, settoggle1] = useState(false);
     const [toggle, settoggle] = useState(true);
-
-    // const [loading, setLoading] = useState(false);
-    // const [pic, setpic] = useState(false);
     const [pic, setPic] = useState<string | null>(null);
-    const [imageUrl, setImageUrl] = useState<string>();
+
     const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchdata = setTimeout(() => {
@@ -50,17 +43,16 @@ export default function HeaderPage({
 
         return () => clearTimeout(fetchdata);
     }, []);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const handleLogout = async() => {
+
+    const handleLogout = async () => {
         // localStorage.removeItem('user');
         // navigate('/login');
         // message.success('You have been logged out');
         try {
-            const logoutAdmin = await axios.get('/api/v1/admin/logout');
+            const logoutAdmin = await http.get('/api/v1/admin/logout');
             toast.success(logoutAdmin.data.message);
-            console.log(logoutAdmin.data.message);
+            console.log(logoutAdmin);
+            // console.log();
             navigate('/login');
             dispatch(Adminlogout());
         } catch (error) {
@@ -79,7 +71,6 @@ export default function HeaderPage({
                 }
             }
         }
-
     };
 
     // const showModal = () => {
@@ -109,37 +100,27 @@ export default function HeaderPage({
     const handleOk = () => {
         // setpic(true);
         message.info(`Update Success`);
-        settoggle1(true);
+        // settoggle1(true);
         setIsModalOpen(false);
+        setIsPasswordModalOpen(false)
     };
-    // const handleChange: UploadProps['onChange'] = (info) => {
-    //     if (info.file.status === 'uploading') {
-    //         setLoading(true);
-    //         return;
-    //     }
-    //     if (info.file.status === 'done') {
-    //         // Get this url from response in real world.
-    //         getBase64(info.file.originFileObj as FileType, (url) => {
-    //             setLoading(false);
-    //             setImageUrl(url);
-    //         });
-    //     }
-    // };
+    const handleChangePassword = async () => {
+        
+    }
 
     const handleUploadChange = ({ fileList }: { fileList: UploadFile[] }) => {
-        const allowedTypes = ['image/jpeg', 'image/png']; // Define allowed image types
-        const maxSize = 2 * 1024 * 1024; // Define max size in bytes (2MB)
+        const allowedTypes = ['image/jpeg', 'image/png'];
+        const maxSize = 2 * 1024 * 1024;
 
-        // Check if any file exceeds the maximum allowed size or is of an invalid type
+        // check max size and type is valid or note
         const isInvalidFile = fileList.some(
             (file) => file.size && (file.size > maxSize || (file.type && !allowedTypes.includes(file.type)))
         );
 
         if (isInvalidFile) {
-            // If any file is invalid, show an error message to the admin
             message.error('Invalid file! Please make sure the file is a JPEG or PNG image and does not exceed 2MB.');
         } else {
-            // Otherwise, update the file list and set the profile picture
+            //  set the admin profile picture
             setFileList(fileList);
             if (fileList.length > 0 && fileList[0].originFileObj) {
                 const reader = new FileReader();
@@ -151,22 +132,6 @@ export default function HeaderPage({
                 setPic(null);
             }
         }
-    };
-
-    const beforeUpload = (file: FileType) => {
-        const allowedTypes = ['image/jpeg', 'image/png']; // Define allowed image types
-        const maxSize = 2 * 1024 * 1024; // Define max size in bytes (2MB)
-
-        // Check if the file type is allowed and if it exceeds the maximum allowed size
-        if (!allowedTypes.includes(file.type)) {
-            message.error('You can only upload JPG/PNG files!');
-            return false;
-        }
-        if (file.size > maxSize) {
-            message.error('Image must be smaller than 2MB!');
-            return false;
-        }
-        return true;
     };
     const onPreview = async (file: UploadFile) => {
         let src = file.url as string;
@@ -185,17 +150,35 @@ export default function HeaderPage({
 
     const handleCancel = () => {
         setIsModalOpen(false);
+        setIsPasswordModalOpen(false);
     };
+    useEffect(() => {
+        // Fetch data from localStorage
+        const userData = localStorage.getItem('user');
+
+        if (userData) {
+            const { name, email } = JSON.parse(userData);
+            setName(name);
+            setEmail(email);
+        }
+    }, []);
     const handleUsernameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-        setname(e.target.value);
+        setName(e.target.value);
+    };
+    const handleEmailChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setEmail(e.target.value);
     };
     const menu = (
         <Menu className="">
             <Menu.Item key="0" onClick={() => setIsModalOpen(true)}>
-                Profile
+                Edit Profile
             </Menu.Item>
             <Menu.Divider />
-            <Menu.Item key="1" onClick={handleLogout}>
+            <Menu.Item key="1" onClick={() => setIsPasswordModalOpen(true)}>
+                Change Password
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="2" onClick={handleLogout}>
                 Logout
             </Menu.Item>
         </Menu>
@@ -208,18 +191,11 @@ export default function HeaderPage({
     return (
         <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
-            <Flex justify='space-between' className="bg-white shadow-md items-center">
+            <Flex justify="space-between" className="bg-white shadow-md items-center">
                 <Flex>
                     <div>
-                        <Button
-                            className="text-xl ml-2 rounded-full"
-                            onClick={handletoggle}
-                        >
-                            {collapse ? (
-                                <IoArrowBack className="rotate-180" />
-                            ) : (
-                                <IoArrowBack className="" />
-                            )}
+                        <Button className="text-xl ml-2 rounded-full" onClick={handletoggle}>
+                            {collapse ? <IoArrowBack className="rotate-180" /> : <IoArrowBack className="" />}
                         </Button>
                     </div>
                 </Flex>
@@ -251,13 +227,11 @@ export default function HeaderPage({
                     <div className="flex items-center gap-3 mr-2">
                         <Tooltip
                             title={
-                                toggle1 ? (
-                                    <div className="flex  items-center">
-                                        {name} <img src={imageUrl} width={50} height={50} alt="avatar" />
-                                    </div>
-                                ) : (
-                                    <div>{'ADMIN'}</div>
-                                )
+                                // toggle1 ? (
+                                <div className="flex  items-center">{Name}</div>
+                                // ) : (
+                                //     <div>{'ADMIN'}</div>
+                                // )
                             }
                         >
                             <div>
@@ -275,23 +249,9 @@ export default function HeaderPage({
                                 )}
                             </div>
                         </Tooltip>
+                        {/* model for edit profile */}
                         <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
                             <Flex vertical>
-                                {/* <Upload
-                                                    name="avatar"
-                                                    listType="picture-card"
-                                                    className="avatar-uploader "
-                                                    showUploadList={false}
-                                                    action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                                    beforeUpload={beforeUpload}
-                                                    onChange={handleChange}
-                                                >
-                                                    {imageUrl ? (
-                                                        <img src={imageUrl} alt="avatar" width={100} height={100} />
-                                                    ) : (
-                                                        uploadButton
-                                                    )}
-                                                </Upload> */}
                                 <ImgCrop rotationSlider aspectSlider>
                                     <Upload
                                         action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
@@ -300,7 +260,7 @@ export default function HeaderPage({
                                         fileList={fileList}
                                         onChange={handleUploadChange}
                                         onPreview={onPreview}
-                                        beforeUpload={beforeUpload}
+                                        // beforeUpload={beforeUpload}
                                     >
                                         {fileList.length < 1 && <div>{<PlusOutlined />}</div>}
 
@@ -310,14 +270,64 @@ export default function HeaderPage({
 
                                 <Input
                                     size="large"
-                                    placeholder="Username"
-                                    prefix={<UserOutlined />}
-                                    value={name}
+                                    placeholder="Email"
+                                    // prefix={<UserOutlined />}
+                                    value={Email}
+                                    onChange={handleEmailChange}
+                                />
+                                <br></br>
+
+                                <Input
+                                    size="large"
+                                    placeholder="Name"
+                                    // prefix={<UserOutlined />}
+                                    value={Name}
                                     onChange={handleUsernameChange}
                                 />
                                 <br></br>
-                                <Input size="large" placeholder="Password" prefix={<RiLockPasswordLine />} />
+                                {/* <Input size="large" placeholder="Password" prefix={<RiLockPasswordLine />} /> */}
+
+                                <div className="flex justify-end mt-4">
+                                    <Button onClick={handleCancel}>Cancel</Button>
+                                    <Button type="primary" onClick={handleOk} className="bg-blue-500 hover:bg-blue-600">
+                                        OK
+                                    </Button>
+                                </div>
+                            </Flex>
+                        </Modal>
+                        {/* model for password changes */}
+                        <Modal open={isPasswordModalOpen} onOk={handleChangePassword} onCancel={handleCancel} footer={null}>
+                            <Flex vertical>
+                                <div className="text-xl mb-3 -mt-1 font-semibold ">
+                                    Change Password
+                                </div>
+                                <Input.Password
+                                    size="large"
+                                    placeholder="Old Password"
+                                    // prefix={<UserOutlined />}
+                                    // value={oldpassword}
+                                    onChange={handleEmailChange}
+                                />
                                 <br></br>
+
+                                <Input.Password
+                                    size="large"
+                                    placeholder="New Password"
+                                    // prefix={<UserOutlined />}
+                                    // value={newpassword}
+                                    onChange={handleUsernameChange}
+                                />
+                                <br></br>
+                                <Input.Password
+                                    size="large"
+                                    placeholder="Confirm Password"
+                                    // prefix={<UserOutlined />}
+                                    // value={confirmpassword}
+                                    onChange={handleEmailChange}
+                                />
+                                <br></br>
+                                {/* <Input size="large" placeholder="Password" prefix={<RiLockPasswordLine />} /> */}
+
                                 <div className="flex justify-end mt-4">
                                     <Button onClick={handleCancel}>Cancel</Button>
                                     <Button type="primary" onClick={handleOk} className="bg-blue-500 hover:bg-blue-600">

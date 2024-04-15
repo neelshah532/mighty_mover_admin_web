@@ -76,9 +76,12 @@ const Login: React.FC = () => {
                 </div>
             ) : (
                 <>
-                    <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
-                        <div className="w-full max-w-md p-8 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg dark:border dark:border-gray-700">
-                            <div className="bg-blue-500 py-4 px-4 rounded-t-lg text-white">
+                    <section className=" min-h-screen flex items-center justify-center">
+                        <div className="w-full max-w-md p-8  rounded-lg shadow-xl ">
+                            <div className="flex justify-center mb-5">
+                                <img src="src/assets/Images/Group 1.svg" alt="logo" width={150} height={150} />
+                            </div>
+                            <div className="bg-[#1871ff] py-4 px-4 rounded-t-lg text-white">
                                 <h1 className="text-xl text-white font-bold text-center">{LOGIN_DATA_STRING.TITLE}</h1>
                             </div>
                             <div className="mt-6">
@@ -113,7 +116,7 @@ const Login: React.FC = () => {
                                             htmlType="submit"
                                             className="btn-signin"
                                             block
-                                            style={{ backgroundColor: '#1890ff' }}
+                                            style={{ backgroundColor: '#1871ff' }}
                                         >
                                             {LOGIN_DATA_STRING.LOGIN}
                                         </Button>

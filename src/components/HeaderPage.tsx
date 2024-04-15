@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { Adminlogout } from '../redux/userSlice';
 import http from '../http/http';
+import Loader from './Loader';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -29,7 +30,10 @@ export default function HeaderPage({
     // const [toggle1, settoggle1] = useState(false);
     const [toggle, settoggle] = useState(true);
     const [pic, setPic] = useState<string | null>(null);
-
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -55,6 +59,7 @@ export default function HeaderPage({
             // console.log();
             navigate('/login');
             dispatch(Adminlogout());
+            setIsLoading(true);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{
@@ -70,6 +75,8 @@ export default function HeaderPage({
                     console.log('Error', axiosError.message);
                 }
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -102,11 +109,47 @@ export default function HeaderPage({
         message.info(`Update Success`);
         // settoggle1(true);
         setIsModalOpen(false);
-        setIsPasswordModalOpen(false)
+        setIsPasswordModalOpen(false);
+       
     };
     const handleChangePassword = async () => {
-        
-    }
+        if (newPassword !== confirmPassword) {
+            toast.error('New password and confirm password do not match.');
+            return;
+        }
+        try {
+            const changePassword = await http.patch('api/v1/admin/password', {
+                old_password: oldPassword,
+                new_password: newPassword,
+            });
+
+            toast.success(changePassword.data.message);
+
+            console.log(changePassword);
+            console.log(oldPassword);
+            console.log(newPassword);
+            setIsPasswordModalOpen(false);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if (axiosError.response) {
+                    if (axiosError.response.status === 500) {
+                        toast.error('Server error occurred. Please try again later.');
+                    } else {
+                        toast.error(axiosError.response.data.message);
+                    }
+                } else if (axiosError.request) {
+                    console.log('Request Error', axiosError.request);
+                } else {
+                    console.log('Error', axiosError.message);
+                }
+                // resetForm();
+            }
+        }
+    };
 
     const handleUploadChange = ({ fileList }: { fileList: UploadFile[] }) => {
         const allowedTypes = ['image/jpeg', 'image/png'];
@@ -167,6 +210,17 @@ export default function HeaderPage({
     };
     const handleEmailChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setEmail(e.target.value);
+    };
+    const handleOldPasswordChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setOldPassword(e.target.value);
+    };
+
+    const handleNewPasswordChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setNewPassword(e.target.value);
+    };
+
+    const handleConfirmPasswordChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setConfirmPassword(e.target.value);
     };
     const menu = (
         <Menu className="">
@@ -290,48 +344,56 @@ export default function HeaderPage({
                                 <div className="flex justify-end mt-4">
                                     <Button onClick={handleCancel}>Cancel</Button>
                                     <Button type="primary" onClick={handleOk} className="bg-blue-500 hover:bg-blue-600">
-                                        OK
+                                        {/* {isLoading ? <Loader /> : 'OK'} */}
+                                        ok
                                     </Button>
                                 </div>
                             </Flex>
                         </Modal>
                         {/* model for password changes */}
-                        <Modal open={isPasswordModalOpen} onOk={handleChangePassword} onCancel={handleCancel} footer={null}>
+                        <Modal
+                            open={isPasswordModalOpen}
+                            onOk={handleChangePassword}
+                            onCancel={handleCancel}
+                            footer={null}
+                        >
                             <Flex vertical>
-                                <div className="text-xl mb-3 -mt-1 font-semibold ">
-                                    Change Password
-                                </div>
+                                <div className="text-xl mb-3 -mt-1 font-semibold ">Change Password</div>
                                 <Input.Password
                                     size="large"
                                     placeholder="Old Password"
                                     // prefix={<UserOutlined />}
-                                    // value={oldpassword}
-                                    onChange={handleEmailChange}
+                                    value={oldPassword}
+                                    onChange={handleOldPasswordChange}
                                 />
                                 <br></br>
 
                                 <Input.Password
                                     size="large"
                                     placeholder="New Password"
+                                    value={newPassword}
                                     // prefix={<UserOutlined />}
-                                    // value={newpassword}
-                                    onChange={handleUsernameChange}
+                                    onChange={handleNewPasswordChange}
                                 />
                                 <br></br>
                                 <Input.Password
                                     size="large"
                                     placeholder="Confirm Password"
+                                    value={confirmPassword}
                                     // prefix={<UserOutlined />}
-                                    // value={confirmpassword}
-                                    onChange={handleEmailChange}
+                                    onChange={handleConfirmPasswordChange}
                                 />
                                 <br></br>
                                 {/* <Input size="large" placeholder="Password" prefix={<RiLockPasswordLine />} /> */}
 
                                 <div className="flex justify-end mt-4">
                                     <Button onClick={handleCancel}>Cancel</Button>
-                                    <Button type="primary" onClick={handleOk} className="bg-blue-500 hover:bg-blue-600">
-                                        OK
+                                    <Button
+                                        type="primary"
+                                        onClick={handleChangePassword}
+                                        className="bg-blue-500 hover:bg-blue-600"
+                                    >
+                                        {isLoading ? <Loader /> : 'OK'}
                                     </Button>
                                 </div>
                             </Flex>

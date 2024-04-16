@@ -10,16 +10,16 @@ import { CANCEL, OK } from '../assets/constant/model';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import http from '../http/http';
-// import Loader from './Loader';   
+// import Loader from './Loader';
 
 function CategoriePage() {
     type FieldType = {
-        id:number;
+        id: number;
         name?: string;
         description?: string;
         // status?: string;
     };
-    const [enable, setEnable] = useState<boolean[]>([]);
+    // const [enable, setEnable] = useState<boolean[]>([]);
     const [modal2Open, setModal2Open] = useState(false);
     const [addItem, setAddItem] = useState(false);
     const [form] = useForm();
@@ -31,16 +31,14 @@ function CategoriePage() {
             title: 'Status',
             key: 'status',
             dataIndex: 'statustype',
-            align: 'center' as AlignType,
-            render: (_, record: Categories, index: number) => (
-                <div>
-                    <Button
-                        onClick={() => handleEnable(index)}
-                        className={enable[index] ? 'text-green-500' : 'text-red-500'}
-                    >
-                        {enable[index] ? 'Enable' : 'Disable'}
-                    </Button>
-                </div>
+            align: 'center',
+            render: (_, record) => (
+                <Button
+                    onClick={() => handleEnable(record.id)}
+                    className={record.status === 'Active' ? 'text-green-500' : 'text-red-500'}
+                >
+                    {record.status}
+                </Button>
             ),
         },
         {
@@ -63,22 +61,57 @@ function CategoriePage() {
             ),
         },
     ];
-
-    const handleEnable = (index: number) => {
-        setEnable((prevEnable) => {
-            const updatedEnable = [...prevEnable];
-            updatedEnable[index] = !updatedEnable[index];
-            return updatedEnable;
-        });
+    const handleEnable = async (id: string) => {
+        const statusUpdate = await http.patch(`/api/v1/Categories/${id}`);
+        console.log(statusUpdate.data.message);
+        try {
+            if (statusUpdate.status === 200) {
+                toast.success(statusUpdate.data.message);
+                setCategoriesData((prevCategories) => {
+                    return prevCategories.map((category) => {
+                        if (category.id === id) {
+                            category.status = category.status === 'Active' ? 'Inactive' : 'Active';
+                        }
+                        return category;
+                    });
+                });
+            } else {
+                toast.error(statusUpdate.data.message);
+            }
+            //  fetchData();
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if (axiosError.response) {
+                    console.log('Response Error', axiosError.response);
+                    toast.error(axiosError.response.data.message);
+                } else if (axiosError.request) {
+                    console.log('Request Error', axiosError.request);
+                } else {
+                    console.log('Error', axiosError.message);
+                }
+            }
+        }
     };
+
+    // const handleEnable = (index: number) => {
+    //     setEnable((prevEnable) => {
+    //         const updatedEnable = [...prevEnable];
+    //         updatedEnable[index] = !updatedEnable[index];
+    //         return updatedEnable;
+    //     });
+    // };
     const handleEdit = (record: Categories) => {
         setModal2Open(true);
         form.setFieldsValue(record);
     };
 
-    const handleDelete = async(id:string) => {
-        const deleteRecord = await http.delete(`/api/v1/Categories/${id}`)
-        console.log(deleteRecord.data)
+    const handleDelete = async (id: string) => {
+        const deleteRecord = await http.delete(`/api/v1/Categories/${id}`);
+        console.log(deleteRecord.data);
         fetchData();
     };
     const handleAdd = () => {
@@ -88,11 +121,10 @@ function CategoriePage() {
         setAddItem(false);
     };
     const handleAdditems = async () => {
-
         // console.log('add item');
         // setAddItem(false);
         try {
-            const res = await http.post('/api/v1/Categories', form.getFieldsValue({}));   
+            const res = await http.post('/api/v1/Categories', form.getFieldsValue({}));
             // console.log(res);
             if (res.status === 200) {
                 toast.success(res.data.message);
@@ -128,33 +160,33 @@ function CategoriePage() {
     useEffect(() => {
         fetchData();
     }, []);
-const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-        const response = await http.get('api/v1/Categories');
-        // const data = await response.json();
-        console.log(response.data.data);
-        setCategoriesData(response.data.data);
-        setLoading(false);
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            const axiosError = error as AxiosError<{
-                status: number;
-                message: string;
-            }>;
-            if (axiosError.response) {
-                console.log('Response Error', axiosError.response);
-                toast.error(axiosError.response.data.message);
-            } else if (axiosError.request) {
-                console.log('Request Error', axiosError.request);
-            } else {
-                console.log('Error', axiosError.message);
+    const fetchData = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await http.get('api/v1/Categories');
+            // const data = await response.json();
+            console.log(response.data.data);
+            setCategoriesData(response.data.data);
+            setLoading(false);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if (axiosError.response) {
+                    console.log('Response Error', axiosError.response);
+                    toast.error(axiosError.response.data.message);
+                } else if (axiosError.request) {
+                    console.log('Request Error', axiosError.request);
+                } else {
+                    console.log('Error', axiosError.message);
+                }
             }
+        } finally {
+            setLoading(false);
         }
-    } finally {
-        setLoading(false);
-    }
-},[]);
+    }, []);
     return (
         <>
             <div>
@@ -168,7 +200,7 @@ const fetchData = useCallback(async () => {
                         <div className="flex justify-end mb-2">
                             <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#1871ff' }}>
                                 Add Item
-                            </Button>   
+                            </Button>
                         </div>
                         {loading ? (
                             <Flex gap="middle" className="w-full h-full justify-center ">
@@ -178,8 +210,9 @@ const fetchData = useCallback(async () => {
                             <Table
                                 rowClassName="text-center"
                                 dataSource={categoriesData}
-                                pagination={{ pageSize: 10 }}
+                                pagination={{ pageSize: 10}}
                                 columns={cetagories_data_col}
+                                onChange={(e) => console.log(e)}
                                 bordered
                                 sticky
                                 className="w-full"
@@ -221,12 +254,7 @@ const fetchData = useCallback(async () => {
                         >
                             <Input />
                         </Form.Item>
-                        {/* <Form.Item<FieldType>
-                          label="Status"
-                          name="status"
-                      >
-                          <Input />
-                      </Form.Item> */}
+                      
                         <div className="flex gap-3 justify-end">
                             <Button onClick={() => setModal2Open(false)}>{CANCEL}</Button>
                             <Button onClick={() => setModal2Open(false)}>{OK}</Button>

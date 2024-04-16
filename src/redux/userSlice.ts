@@ -39,7 +39,10 @@ const userSlice = createSlice({
             };
             localStorage.clear();
         },
+        Categoriedata: (state,action) => {
+            state.user = action.payload;
+        }
     },
 });
-export const { AdminAdd, Adminlogout } = userSlice.actions;
+export const { AdminAdd, Adminlogout, Categoriedata } = userSlice.actions;
 export default userSlice.reducer;

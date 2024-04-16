@@ -64,6 +64,16 @@ interface User {
     align?: AlignType | undefined;
 }
 
-export type { Order, DeliveryPartner, User };
+
+interface Categories {
+    id: string;
+    name: string;
+    description: string;
+    status: boolean;
+    created_at: string;
+    align?: AlignType | undefined;
+}
+
+export type { Order, DeliveryPartner, User, Categories };
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

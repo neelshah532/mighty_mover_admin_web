@@ -9,12 +9,12 @@ import { store } from './app/store.ts';
 // import { makeStore } from './app/store.ts';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <BrowserRouter>
             <Provider store={store}>
                 <Toaster richColors position="top-center" />
                 <App />
             </Provider>
         </BrowserRouter>
-    </React.StrictMode>
+    //  </React.StrictMode>
 );

@@ -48,9 +48,10 @@ import Delivery_partner from './components/Delivery_partner';
 import FixedLayout from './components/Layout';
 import UserPage from './components/UserTable';
 import { LineChart } from './components/linechart';
+import CategoriePage from './components/CategoriePage';
+import SubCategory from './components/SubCategory';
 function App() {
     return (
-        
         <>
             <Routes>
                 <Route element={<ProtectedRoutes />}>
@@ -63,6 +64,8 @@ function App() {
                         <Route path="/settings/user-settings" element={<UserPage />} />
                         <Route path="/delivery-partner" element={<Delivery_partner />} />
                         <Route path="/linechart" element={<LineChart />} />
+                        <Route path="/categories" element={<CategoriePage />} />
+                        <Route path="/categories/:id" element={<SubCategory />} />
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

@@ -1,15 +1,14 @@
 import { IoCashOutline } from 'react-icons/io5';
 import { FaCcStripe, FaHome, FaRegUserCircle } from 'react-icons/fa';
 import { FaRegCreditCard } from 'react-icons/fa';
-import { MdOutlineContactPage, MdOutlinePayment, MdSpeakerPhone } from 'react-icons/md';
+import { MdOutlineCategory, MdOutlineContactPage, MdOutlinePayment, MdSpeakerPhone } from 'react-icons/md';
 import { ColumnProps } from 'antd/es/table';
 import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User, AlignType } from '../dto/data.type';
 import { IoMdSettings } from 'react-icons/io';
 import { BiSolidMessageEdit } from 'react-icons/bi';
 import { RiUserSettingsFill } from 'react-icons/ri';
 import { TbSettingsCog } from 'react-icons/tb';
-import { useState } from 'react';
-import { Button } from 'antd';
+
 
 
 
@@ -880,38 +879,52 @@ export const USER_DATA_COL = [
 ];
 
 export const SIDE_PANEL = {
-    menu: [{
-        name: "Dashboard",
-        navigate: "/",
-        icon: <FaHome />
-    }, {
-        name: "Order",
-        navigate: "/orders",
-        icon: <MdOutlineContactPage />
-    }, {
-        name: "Delivery Partner",
-        navigate: "/delivery-partner",
-        icon: <FaRegUserCircle />
-    }, {
-        name: "Payment",
-        navigate: "/payments",
-        icon: <MdOutlinePayment />
-    }
-],
-submenu_key:"settings",
-submenu_title:"Settings",
-icon:<IoMdSettings/>,
-    submenu:[{
-        navigate:"/settings/order-settings",
-        icon:<TbSettingsCog/>,
-        name:"Order Settings"
-    },{
-    navigate:"/settings/blog-settings",
-    icon:<BiSolidMessageEdit/>,
-    name:"Blog Settings"
-},{
-    navigate:"/settings/user-settings",
-    icon:<RiUserSettingsFill/>,
-    name:"User Settings"
-}]
-}
+    menu: [
+        {
+            name: 'Dashboard',
+            navigate: '/',
+            icon: <FaHome />,
+        },
+        {
+            name: 'Order',
+            navigate: '/orders',
+            icon: <MdOutlineContactPage />,
+        },
+        {
+            name: 'Delivery Partner',
+            navigate: '/delivery-partner',
+            icon: <FaRegUserCircle />,
+        },
+        {
+            name: 'Payment',
+            navigate: '/payments',
+            icon: <MdOutlinePayment />,
+        },
+        {
+            name: 'Categories',
+            navigate: '/categories',
+            icon: <MdOutlineCategory />,
+        },
+        
+    ],
+    submenu_key: 'settings',
+    submenu_title: 'Settings',
+    icon: <IoMdSettings />,
+    submenu: [
+        {
+            navigate: '/settings/order-settings',
+            icon: <TbSettingsCog />,
+            name: 'Order Settings',
+        },
+        {
+            navigate: '/settings/blog-settings',
+            icon: <BiSolidMessageEdit />,
+            name: 'Blog Settings',
+        },
+        {
+            navigate: '/settings/user-settings',
+            icon: <RiUserSettingsFill />,
+            name: 'User Settings',
+        },
+    ],
+};

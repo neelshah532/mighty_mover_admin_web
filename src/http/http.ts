@@ -38,6 +38,7 @@ http.interceptors.request.use(
         // Set Authorization header
         const data = localStorage.getItem('user') || null;
         const token = data && JSON.parse(data || '');
+        console.log(token.token)
         config.headers.Authorization = `Bearer ${token.token} `;
         // console.log(token.token);
         // console.log(config.headers)

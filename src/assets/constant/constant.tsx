@@ -8,7 +8,7 @@ import { IoMdSettings } from 'react-icons/io';
 import { BiSolidMessageEdit } from 'react-icons/bi';
 import { RiUserSettingsFill } from 'react-icons/ri';
 import { TbSettingsCog } from 'react-icons/tb';
-
+import { FaCity } from "react-icons/fa";
 
 
 
@@ -904,6 +904,11 @@ export const SIDE_PANEL = {
             name: 'Categories',
             navigate: '/categories',
             icon: <MdOutlineCategory />,
+        },
+        {
+            name: 'City',
+            navigate: '/city',
+            icon:<FaCity/>,
         },
         
     ],

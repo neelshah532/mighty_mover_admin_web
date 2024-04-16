@@ -69,7 +69,7 @@ interface Categories {
     id: string;
     name: string;
     description: string;
-    status: boolean;
+    status: string | boolean;
     created_at: string;
     align?: AlignType | undefined;
 }

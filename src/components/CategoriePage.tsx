@@ -19,7 +19,7 @@ function CategoriePage() {
         description?: string;
         // status?: string;
     };
-    const [enable, setEnable] = useState<boolean[]>([]);
+    // const [enable, setEnable] = useState<boolean[]>([]);
     const [modal2Open, setModal2Open] = useState(false);
     const [addItem, setAddItem] = useState(false);
     const [form] = useForm();
@@ -31,16 +31,14 @@ function CategoriePage() {
             title: 'Status',
             key: 'status',
             dataIndex: 'statustype',
-            align: 'center' as AlignType,
-            render: (_, record: Categories, index: number) => (
-                <div>
-                    <Button
-                        onClick={() => handleEnable(index)}
-                        className={enable[index] ? 'text-green-500' : 'text-red-500'}
-                    >
-                        {enable[index] ? 'Enable' : 'Disable'}
-                    </Button>
-                </div>
+            align: 'center',
+            render: (_, record) => (
+                <Button
+                    onClick={() => handleEnable(record.id)}
+                    className={record.status === 'Active' ? 'text-green-500' : 'text-red-500'}
+                >
+                    {record.status}
+                </Button>
             ),
         },
         {
@@ -63,14 +61,52 @@ function CategoriePage() {
             ),
         },
     ];
+    const handleEnable = async(id:string) => {
+        const statusUpdate = await http.patch(`/api/v1/Categories/${id}`);
+        console.log(statusUpdate.data.message);
+        try{
+            if(statusUpdate.status === 200){
+                toast.success(statusUpdate.data.message);
+                setCategoriesData((prevCategories) => {
+                    return prevCategories.map((category) => {
+                        if (category.id === id) {
+                           
+                            category.status = category.status === 'Active' ? 'Inactive' : 'Active';
+                        }
+                        return category;
+                    });
+                });
+            }else{
+                toast.error(statusUpdate.data.message);
+            }
+            //  fetchData(); 
+        }
+        catch(error){
+            if(axios.isAxiosError(error)){
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if(axiosError.response){
+                    console.log('Response Error', axiosError.response);
+                    toast.error(axiosError.response.data.message);
+                }else if(axiosError.request){
+                    console.log('Request Error', axiosError.request);
+                }else{
+                    console.log('Error', axiosError.message);
+                }
+            }
+        }
 
-    const handleEnable = (index: number) => {
-        setEnable((prevEnable) => {
-            const updatedEnable = [...prevEnable];
-            updatedEnable[index] = !updatedEnable[index];
-            return updatedEnable;
-        });
-    };
+    }
+
+    // const handleEnable = (index: number) => {
+    //     setEnable((prevEnable) => {
+    //         const updatedEnable = [...prevEnable];
+    //         updatedEnable[index] = !updatedEnable[index];
+    //         return updatedEnable;
+    //     });
+    // };
     const handleEdit = (record: Categories) => {
         setModal2Open(true);
         form.setFieldsValue(record);

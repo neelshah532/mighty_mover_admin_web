@@ -137,6 +137,7 @@ function City() {
         editform.setFieldsValue(record);
         seteditId(id);
     };
+  
 
     const editmodal_function_api = async () => {
         try {
@@ -248,7 +249,7 @@ function City() {
                     </Form.Item>
                 </Form>
             </Modal>
-            <Modal title="Edit City" open={editmodal} onOk={editmodal_function_api} onCancel={seteditmodal(false)}>
+            <Modal title="Edit City" open={editmodal} onOk={editmodal_function_api} onCancel={()=>seteditmodal(false)}>
                 <Form form={editform} autoComplete="off">
                     <Form.Item
                         label="City Name"

@@ -51,6 +51,7 @@ import { LineChart } from './components/linechart';
 import CategoriePage from './components/CategoriePage';
 import SubCategory from './components/SubCategory';
 import City from './components/City';
+import Coupon from './components/Coupon';
 function App() {
     return (
         <>
@@ -68,6 +69,8 @@ function App() {
                         <Route path="/categories" element={<CategoriePage />} />
                         <Route path="/categories/:id" element={<SubCategory />} />
                         <Route path="/city" element={<City />} />
+                        <Route path="/coupon" element={<Coupon />} />
+
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

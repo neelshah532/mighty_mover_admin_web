@@ -85,7 +85,17 @@ interface UpdateCity {
     country_name: string;
     city_name: string;
 }
+interface coupon{
+    id:string;
+    coupon_code:string;
+    coupon_type:string;
+    description:string;
+    discount_type:string;
+    discount_value:number;
+    expiry_date:string;
+    max_usage_count:number
 
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity };
+}
+export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon};
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

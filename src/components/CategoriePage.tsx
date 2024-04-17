@@ -250,8 +250,9 @@ function CategoriePage() {
                             <Table
                                 rowClassName="text-center"
                                 dataSource={categoriesData}
-                                pagination={{ pageSize: 10 }}
+                                pagination={{ pageSize: 10}}
                                 columns={cetagories_data_col}
+                                onChange={(e) => console.log(e)}
                                 bordered
                                 sticky
                                 className="w-full"
@@ -293,12 +294,7 @@ function CategoriePage() {
                         >
                             <Input />
                         </Form.Item>
-                        {/* <Form.Item<FieldType>
-                          label="Status"
-                          name="status"
-                      >
-                          <Input />
-                      </Form.Item> */}
+                      
                         <div className="flex gap-3 justify-end">
                             <Button onClick={() => setModal2Open(false)}>{CANCEL}</Button>
                             <Button onClick={handleUpdatedata}>{OK}</Button>

@@ -59,11 +59,10 @@ interface User {
     name: string;
     email: string;
     number: number;
-    RegisterDate:string;
+    RegisterDate: string;
     status: boolean;
     align?: AlignType | undefined;
 }
-
 
 interface Categories {
     id: string;
@@ -73,7 +72,30 @@ interface Categories {
     created_at: string;
     align?: AlignType | undefined;
 }
+interface city {
+    city_name: string;
+    country_name: string;
+    created_at: string;
+    id: string;
+    status: string | boolean;
+    align?: AlignType | undefined;
+}
 
-export type { Order, DeliveryPartner, User, Categories };
+interface UpdateCity {
+    country_name: string;
+    city_name: string;
+}
+interface coupon{
+    id:string;
+    coupon_code:string;
+    coupon_type:string;
+    description:string;
+    discount_type:string;
+    discount_value:number;
+    expiry_date:string;
+    max_usage_count:number
+
+}
+export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon};
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

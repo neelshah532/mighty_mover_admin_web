@@ -6,7 +6,7 @@ import { CETAGORIES_DATA_COL } from '../assets/constant/categories';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { useForm } from 'antd/es/form/Form';
-import { CANCEL, OK } from '../assets/constant/model';
+import { ADD_ITEM, CANCEL, OK } from '../assets/constant/model';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import http from '../http/http';
@@ -19,10 +19,13 @@ function CategoriePage() {
         description?: string;
         // status?: string;
     };
+    const [form] = useForm();
+    const [addForm] = useForm();
+
     // const [enable, setEnable] = useState<boolean[]>([]);
     const [modal2Open, setModal2Open] = useState(false);
     const [addItem, setAddItem] = useState(false);
-    const [form] = useForm();
+    const [CurrentEditValue, setCurrentEditValue] = useState('');
     const [loading, setLoading] = useState(false);
     // const categories_page = Categories_page;
     const cetagories_data_col: ColumnProps<Categories>[] = [
@@ -48,7 +51,7 @@ function CategoriePage() {
             render: (_, record: Categories) => (
                 <div className="flex gap-2 justify-center">
                     <div>
-                        <button onClick={() => handleEdit(record)}>
+                        <button onClick={() => handleEdit(record, record.id)}>
                             <FaEdit />
                         </button>
                     </div>
@@ -104,9 +107,36 @@ function CategoriePage() {
     //         return updatedEnable;
     //     });
     // };
-    const handleEdit = (record: Categories) => {
+    const handleEdit = (record: Categories, id: string) => {
         setModal2Open(true);
         form.setFieldsValue(record);
+        setCurrentEditValue(id);
+    };
+    // this const is used for update specific subcategories
+    const handleUpdatedata = async () => {
+        // console.log(setCurrentEditValue);
+        setModal2Open(false);
+        try {
+            const updateRecord = await http.patch(`/api/v1/Categories/${CurrentEditValue}`, form.getFieldsValue({}));
+            toast.success(updateRecord.data.message);
+            setCurrentEditValue('');
+            fetchData();
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if (axiosError.response) {
+                    console.log('Response Error', axiosError.response);
+                    toast.error(axiosError.response.data.message);
+                } else if (axiosError.request) {
+                    console.log('Request Error', axiosError.request);
+                } else {
+                    console.log('Error', axiosError.message);
+                }
+            }
+        }
     };
 
     const handleDelete = async (id: string) => {
@@ -124,12 +154,13 @@ function CategoriePage() {
         // console.log('add item');
         // setAddItem(false);
         try {
-            const res = await http.post('/api/v1/Categories', form.getFieldsValue({}));
+            const res = await http.post('/api/v1/Categories', addForm.getFieldsValue({}));
             // console.log(res);
             if (res.status === 200) {
                 toast.success(res.data.message);
                 setAddItem(false);
-                form.resetFields();
+                addForm.resetFields();
+
                 fetchData();
                 console.log(res.data.data);
             } else {
@@ -199,7 +230,7 @@ function CategoriePage() {
                     <Card title="Categories page" className="m-2">
                         <div className="flex justify-end mb-2">
                             <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#1871ff' }}>
-                                Add Item
+                                {ADD_ITEM}
                             </Button>
                         </div>
                         {loading ? (
@@ -222,7 +253,7 @@ function CategoriePage() {
                 </>
                 {/* )} */}
                 <Modal
-                    title="Edit User"
+                    title="Edit Category"
                     centered
                     open={modal2Open}
                     onOk={() => setModal2Open(false)}
@@ -257,12 +288,12 @@ function CategoriePage() {
                       
                         <div className="flex gap-3 justify-end">
                             <Button onClick={() => setModal2Open(false)}>{CANCEL}</Button>
-                            <Button onClick={() => setModal2Open(false)}>{OK}</Button>
+                            <Button onClick={handleUpdatedata}>{OK}</Button>
                         </div>
                     </Form>
                 </Modal>
-                <Modal title="Add Item" open={addItem} footer={null}>
-                    <Form form={form} autoComplete="off" className="w-full ">
+                <Modal title="Add Category" open={addItem} footer={null}>
+                    <Form form={addForm} autoComplete="off" className="w-full ">
                         <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input name!' }]}>
                             <Input />
                         </Form.Item>

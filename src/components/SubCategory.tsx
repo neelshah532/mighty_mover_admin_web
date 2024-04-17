@@ -10,7 +10,7 @@ import { ColumnProps } from 'antd/es/table';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { useForm } from 'antd/es/form/Form';
-import { ADD_ITEM, BACK_BUTTON, CANCEL, OK } from '../assets/constant/model';
+import { ADD_ITEM, BACK_BUTTON, CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 
 const SubCategory = () => {
     //this is id is fetch param from url
@@ -21,6 +21,8 @@ const SubCategory = () => {
     const [modal2Open, setModal2Open] = useState(false);
     const [addItem, setAddItem] = useState(false);
     const [CurrentEditValue, setCurrentEditValue] = useState('');
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [deleteItemId, setDeleteItemId] = useState('');
     // this is subcategorie const is use for perform on status and actions
 
     const subcetagories_data_col: ColumnProps<Categories>[] = [
@@ -139,11 +141,51 @@ const SubCategory = () => {
     };
 
     // this const is used for delete specific subcategories
+    // const handleDelete = async (id: string) => {
+    //     const deleteRecord = await http.delete(`/api/v1/subcategories/${params.id}/${id}`);
+    //     console.log(deleteRecord.data);
+    //     fetchData();
+    // };
     const handleDelete = async (id: string) => {
-        const deleteRecord = await http.delete(`/api/v1/subcategories/${params.id}/${id}`);
-        console.log(deleteRecord.data);
-        fetchData();
+        showDeleteModal(id);
     };
+
+    // show delete confirm modal confirmation popup 
+    const showDeleteModal = (id: string) => {
+        setDeleteItemId(id);
+        setDeleteModalVisible(true);
+    };
+
+    // close delete confirmation modal
+    const handleDeleteModalCancel = () => {
+        setDeleteModalVisible(false);
+    };
+
+    // Function to confirm delete action
+    const handleDeleteConfirm = async () => {
+        try {
+            const deleteRecord = await http.delete(`/api/v1/subcategories/${params.id}/${deleteItemId}`);
+            console.log(deleteRecord.data);
+            fetchData();
+            setDeleteModalVisible(false);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if (axiosError.response) {
+                    console.log('Response Error', axiosError.response);
+                    toast.error(axiosError.response.data.message);
+                } else if (axiosError.request) {
+                    console.log('Request Error', axiosError.request);
+                } else {
+                    console.log('Error', axiosError.message);
+                }
+            }
+        }
+    };
+
 
     // handle to open add-subcategory model
     const handleAdd = () => {
@@ -331,6 +373,21 @@ const SubCategory = () => {
                         </Button>
                     </div>
                 </Form>
+            </Modal>
+            <Modal
+                title="Confirm Deletion"
+                open={deleteModalVisible}
+                onCancel={handleDeleteModalCancel}
+                footer={
+                    <div className="flex gap-3 justify-end">
+                        <Button onClick={handleDeleteModalCancel}>{CANCEL}</Button>
+                        <Button type="primary" htmlType="submit" onClick={handleDeleteConfirm}>
+                            {OK}
+                        </Button>
+                    </div>
+                }
+            >
+                <p>{DELETE_CONFIRMATION}</p>
             </Modal>
         </>
     );

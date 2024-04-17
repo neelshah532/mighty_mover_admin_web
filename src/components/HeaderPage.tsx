@@ -51,14 +51,11 @@ export default function HeaderPage({
     }, []);
 
     const handleLogout = async () => {
-        // localStorage.removeItem('user');
-        // navigate('/login');
-        // message.success('You have been logged out');
+        
         try {
             const logoutAdmin = await http.get('/api/v1/admin/logout');
             toast.success(logoutAdmin.data.message);
             console.log(logoutAdmin);
-            // console.log();
             navigate('/login');
             dispatch(Adminlogout());
             setIsLoading(true);
@@ -82,30 +79,7 @@ export default function HeaderPage({
         }
     };
 
-    // const showModal = () => {
-    //     setIsModalOpen(true);
-    // };
-
-    // const getBase64 = (img: FileType, callback: (url: string) => void) => {
-    //     const reader = new FileReader();
-    //     reader.addEventListener('load', () => callback(reader.result as string));
-    //     reader.readAsDataURL(img);
-    // };
-
-    // const beforeUpload = (file: FileType) => {
-    //     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    //     if (!isJpgOrPng) {
-    //         message.error('You can only upload JPG/PNG file!');
-    //     }
-    //     const isLt2M = file.size / 1024 / 1024 < 2;
-    //     if (!isLt2M) {
-    //         message.error('Image must smaller than 2MB!');
-    //     }
-    //     return isJpgOrPng && isLt2M;
-    // };
-    // const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-    //     setFileList(newFileList);
-    // };
+  
     const handleOk = () => {
         // setpic(true);
         message.info(`Update Success`);
@@ -258,38 +232,14 @@ export default function HeaderPage({
                     </div>
                 </Flex>
                 <Flex className="h-16" gap="small" align="center">
-                    {/* <Avatar
-                                        src={pic || <UserOutlined />}
-                                        icon={!pic ? <FaUser /> : undefined}
-                                        className="rounded-full"
-                                    /> */}
-
-                    {/* <Button
-                                    className="text-white font-semibold bg-black text-xl text-center mt-5"
-                                    onClick={() => setIsModalOpen(true)}
-                                >
-                                    {fileList.length === 0 ? (
-                                        <FaUser />
-                                    ) : (
-                                        <Avatar
-                                            size="large"
-                                            src={pic || <UserOutlined />}
-                                            icon={!pic ? <FaUser /> : undefined}
-                                            className=""
-                                            alt="avatar"
-
-                                        />
-                                    )}
-                                </Button> */}
+                  
 
                     <div className="flex items-center gap-3 mr-2">
                         <Tooltip
                             title={
-                                // toggle1 ? (
+                                
                                 <div className="flex  items-center">{Name}</div>
-                                // ) : (
-                                //     <div>{'ADMIN'}</div>
-                                // )
+                               
                             }
                         >
                             <div>
@@ -345,11 +295,11 @@ export default function HeaderPage({
                                 <br></br>
                                 {/* <Input size="large" placeholder="Password" prefix={<RiLockPasswordLine />} /> */}
 
-                                <div className="flex justify-end mt-4">
+                                <div className="flex justify-end mt-4 gap-3">
                                     <Button onClick={handleCancel}>Cancel</Button>
                                     <Button type="primary" onClick={handleOk} className="bg-blue-500 hover:bg-blue-600">
                                         {/* {isLoading ? <Loader /> : 'OK'} */}
-                                        ok
+                                        Save Changes
                                     </Button>
                                 </div>
                             </Flex>
@@ -403,16 +353,12 @@ export default function HeaderPage({
                             </Flex>
                         </Modal>
 
-                        {/* <Tooltip title={POPOVER_LOGOUT}> */}
-                        {/* <Button className="text-xl mr-2" onClick={handleLogout} danger>
-                                <BiLogOut className="" />
-                            </Button> */}
+                        
                         <Dropdown overlay={menu} trigger={['click']} className="text-xl mr-2 " placement="bottom">
                             <a className="ant-dropdown-link " onClick={(e) => e.preventDefault()}>
                                 <TiArrowSortedDown />
                             </a>
                         </Dropdown>
-                        {/* </Tooltip> */}
                     </div>
                 </Flex>
             </Flex>

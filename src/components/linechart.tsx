@@ -11,7 +11,6 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { LINE_CHART } from '../assets/constant/constant';
-// import faker from 'faker';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export const options = {
@@ -20,13 +19,19 @@ export const options = {
         legend: {
             position: 'top' as const,
         },
-        title: {
-            display: true,
-            text: 'Chart.js Line Chart',
-        },
+        // title: {
+        //     display: true,
+        //     text: 'Line Chart',
+            
+        // },
     },
 };
 
 export function LineChart() {
-    return <Line options={options} data={LINE_CHART} />;
+    return (
+        <>
+
+            <Line options={options} data={LINE_CHART} />
+        </>
+    );
 }

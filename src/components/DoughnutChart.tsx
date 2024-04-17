@@ -2,7 +2,7 @@
 import { PieChart, Pie, Legend } from 'recharts';
 
 const data01 = [
-    { name: 'Group A', value: 400, fill: '#519DE9' },
+    { name: 'Group A', value: 400, fill: '#2967ff' },
     { name: 'Group B', value: 300, fill: '#7CC674' },
     { name: 'Group C', value: 400, fill: '#F4C145' },
 ];

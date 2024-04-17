@@ -6,13 +6,13 @@ import { CETAGORIES_DATA_COL } from '../assets/constant/categories';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { useForm } from 'antd/es/form/Form';
-import { ADD_ITEM, CANCEL, OK } from '../assets/constant/model';
+import { ADD_ITEM, CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import http from '../http/http';
 import { useDispatch } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
-// import Loader from './Loader';   
+// import Loader from './Loader';
 
 function CategoriePage() {
     type FieldType = {
@@ -24,9 +24,10 @@ function CategoriePage() {
     //use redux to display name of page
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setPage('Category')); 
+        dispatch(setPage('Category'));
     }, [dispatch]);
-    
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [deleteItemId, setDeleteItemId] = useState('');
     //we have use useForm hook to get and set form value
     const [form] = useForm();
     const [addForm] = useForm();
@@ -148,11 +149,46 @@ function CategoriePage() {
         }
     };
 
-    const handleDelete = async (id: string) => {
-        const deleteRecord = await http.delete(`/api/v1/Categories/${id}`);
-        console.log(deleteRecord.data);
-        fetchData();
-    };
+   const handleDelete = async (id: string) => {
+       showDeleteModal(id);
+   };
+
+   // show delete confirm modal confirmation popup
+   const showDeleteModal = (id: string) => {
+       setDeleteItemId(id);
+       setDeleteModalVisible(true);
+   };
+
+   // close delete confirmation modal
+   const handleDeleteModalCancel = () => {
+       setDeleteModalVisible(false);
+   };
+
+   // Function to confirm delete action
+   const handleDeleteConfirm = async (id: string) => {
+       try {
+           const deleteRecord = await http.delete(`/api/v1/Categories/${id}/${deleteItemId}`);
+           console.log(deleteRecord.data);
+           fetchData();
+           setDeleteModalVisible(false);
+       } catch (error) {
+           if (axios.isAxiosError(error)) {
+               const axiosError = error as AxiosError<{
+                   status: number;
+                   message: string;
+               }>;
+               if (axiosError.response) {
+                   console.log('Response Error', axiosError.response);
+                   toast.error(axiosError.response.data.message);
+               } else if (axiosError.request) {
+                   console.log('Request Error', axiosError.request);
+               } else {
+                   console.log('Error', axiosError.message);
+               }
+           }
+       }
+   };
+
     const handleAdd = () => {
         setAddItem(true);
     };
@@ -238,7 +274,7 @@ function CategoriePage() {
                 <>
                     <Card title="Categories page" className="m-2">
                         <div className="flex justify-end mb-2">
-                            <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#1871ff' }}>
+                            <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#2967ff' }}>
                                 {ADD_ITEM}
                             </Button>
                         </div>
@@ -250,7 +286,7 @@ function CategoriePage() {
                             <Table
                                 rowClassName="text-center"
                                 dataSource={categoriesData}
-                                pagination={{ pageSize: 10}}
+                                pagination={{ pageSize: 10 }}
                                 columns={cetagories_data_col}
                                 onChange={(e) => console.log(e)}
                                 bordered
@@ -294,14 +330,14 @@ function CategoriePage() {
                         >
                             <Input />
                         </Form.Item>
-                      
+
                         <div className="flex gap-3 justify-end">
                             <Button onClick={() => setModal2Open(false)}>{CANCEL}</Button>
                             <Button onClick={handleUpdatedata}>{OK}</Button>
                         </div>
                     </Form>
                 </Modal>
-                <Modal title="Add Category" open={addItem} footer={null}>
+                <Modal title="Add Category" open={addItem} onCancel={handleAddItemModelClose} footer={null}>
                     <Form form={addForm} autoComplete="off" className="w-full ">
                         <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input name!' }]}>
                             <Input />
@@ -330,11 +366,24 @@ function CategoriePage() {
 
                         <div className="flex gap-3 justify-end">
                             <Button onClick={handleAddItemModelClose}>{CANCEL}</Button>
-                            <Button type="primary" htmlType="submit" onClick={handleAdditems}>
+                            <Button onClick={handleAdditems}>{OK}</Button>
+                        </div>
+                    </Form>
+                </Modal>
+                <Modal
+                    title="Confirm Deletion"
+                    open={deleteModalVisible}
+                    onCancel={handleDeleteModalCancel}
+                    footer={
+                        <div className="flex gap-3 justify-end">
+                            <Button onClick={handleDeleteModalCancel}>{CANCEL}</Button>
+                            <Button type="primary" htmlType="submit" onClick={handleDeleteConfirm}>
                                 {OK}
                             </Button>
                         </div>
-                    </Form>
+                    }
+                >
+                    <p>{DELETE_CONFIRMATION}</p>
                 </Modal>
             </div>
         </>

@@ -284,12 +284,12 @@ const SubCategory = () => {
             {/* <Card title="SubCategory page" className="m-2"> */}
             <div className="flex justify-end mb-4 gap-5">
                 <div className=" ">
-                    <Button type="primary" onClick={handleBack} style={{ backgroundColor: '#1871ff' }}>
+                    <Button type="primary" onClick={handleBack} style={{ backgroundColor: '#2967ff' }}>
                         {BACK_BUTTON}
                     </Button>
                 </div>
                 <div className="">
-                    <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#1871ff' }}>
+                    <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#2967ff' }}>
                         {ADD_ITEM}
                     </Button>
                 </div>

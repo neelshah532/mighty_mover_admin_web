@@ -37,7 +37,7 @@ const Login: React.FC = () => {
             toast.success(response.data.message);
             const obj = {
                 id: response.data.data.id,
-                name: response.data.data.first_name + " " + response.data.data.last_name,
+                name: response.data.data.first_name + ' ' + response.data.data.last_name,
                 email: response.data.data.email,
                 token: response.data.data.jwt,
             };
@@ -81,7 +81,7 @@ const Login: React.FC = () => {
                             <div className="flex justify-center mb-5">
                                 <img src="src/assets/Images/Group 1.svg" alt="logo" width={150} height={150} />
                             </div>
-                            <div className="bg-[#1871ff] py-4 px-4 rounded-t-lg text-white">
+                            <div className="bg-[#2967ff] py-4 px-4 rounded-t-lg text-white">
                                 <h1 className="text-xl text-white font-bold text-center">{LOGIN_DATA_STRING.TITLE}</h1>
                             </div>
                             <div className="mt-6">
@@ -116,7 +116,7 @@ const Login: React.FC = () => {
                                             htmlType="submit"
                                             className="btn-signin"
                                             block
-                                            style={{ backgroundColor: '#1871ff' }}
+                                            style={{ backgroundColor: '#2967ff' }}
                                         >
                                             {LOGIN_DATA_STRING.LOGIN}
                                         </Button>

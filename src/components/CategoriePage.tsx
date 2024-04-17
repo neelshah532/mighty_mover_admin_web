@@ -10,6 +10,8 @@ import { ADD_ITEM, CANCEL, OK } from '../assets/constant/model';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import http from '../http/http';
+import { useDispatch } from 'react-redux';
+import { setPage } from '../redux/pageSlice';
 // import Loader from './Loader';   
 
 function CategoriePage() {
@@ -19,6 +21,13 @@ function CategoriePage() {
         description?: string;
         // status?: string;
     };
+    //use redux to display name of page
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setPage('Category')); 
+    }, [dispatch]);
+    
+    //we have use useForm hook to get and set form value
     const [form] = useForm();
     const [addForm] = useForm();
 

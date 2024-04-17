@@ -2,12 +2,20 @@ import { Empty,Card,Table } from 'antd';
 import { ORDER_TABLE,DATA_COL } from '../assets/constant/constant';
 import { Order } from '../assets/dto/data.type';
 import { ColumnProps } from 'antd/es/table';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { setPage } from '../redux/pageSlice';
 
 export default function Order_page() {
+    //use redux to display name of page
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setPage('Order'));
+    }, [dispatch]);
+
     const data: Order[] = ORDER_TABLE;
     const columns: ColumnProps<Order>[] = DATA_COL;
 
-  
     return (
         <div>
             <div>

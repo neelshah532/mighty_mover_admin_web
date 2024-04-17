@@ -3,7 +3,7 @@ import { Button, Form, type FormProps, Input } from 'antd';
 import { SETTINGS_STRING } from '../assets/constant/constant';
 import { IoMdSettings } from "react-icons/io";
 import { Switch } from 'antd';
-import UserPage from './UserTable';
+// import UserPage from './UserTable';
 
 interface FieldType {
     label?: string,
@@ -26,6 +26,7 @@ const onChange = (checked: boolean) => {
 
 
 const Settings: React.FC = () => (
+    
     <>
         <div className='bg-white rounded-md mx-2'>
             {/* <div className=''>

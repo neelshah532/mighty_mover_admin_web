@@ -1,5 +1,5 @@
     import Sider from 'antd/es/layout/Sider';
-    import {  Flex, Menu } from 'antd';
+    import { Menu } from 'antd';
     import { SIDE_PANEL } from '../assets/constant/constant';
     import { useNavigate } from 'react-router-dom';
     // import { IoArrowBack } from 'react-icons/io5';

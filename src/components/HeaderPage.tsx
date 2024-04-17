@@ -21,9 +21,11 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export default function HeaderPage({
     collapse,
     setcollapse,
+    currentPage,
 }: {
     collapse: boolean;
     setcollapse: React.Dispatch<React.SetStateAction<boolean>>;
+    currentPage: string;
 }) {
     const [Name, setName] = useState('');
     const [Email, setEmail] = useState('');
@@ -110,7 +112,6 @@ export default function HeaderPage({
         // settoggle1(true);
         setIsModalOpen(false);
         setIsPasswordModalOpen(false);
-       
     };
     const handleChangePassword = async () => {
         if (newPassword !== confirmPassword) {
@@ -251,6 +252,9 @@ export default function HeaderPage({
                         <Button className="text-xl ml-2 rounded-full" onClick={handletoggle}>
                             {collapse ? <IoArrowBack className="rotate-180" /> : <IoArrowBack className="" />}
                         </Button>
+                    </div>
+                    <div className="text-lg font-semibold">
+                        <h1 style={{ color: 'black', paddingLeft: 16 }}>{currentPage}</h1>
                     </div>
                 </Flex>
                 <Flex className="h-16" gap="small" align="center">

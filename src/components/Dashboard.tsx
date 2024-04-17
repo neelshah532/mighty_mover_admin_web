@@ -23,7 +23,15 @@ import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 // import CountUp from 'react-countup';
 
 import { ProgressProps } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { setPage } from '../redux/pageSlice';
 export default function Dashboard() {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setPage('Dashboard')); 
+    }, [dispatch]);
+
     const twoColors: ProgressProps['strokeColor'] = {
         '0%': '#108ee9',
         '100%': '#87d068',

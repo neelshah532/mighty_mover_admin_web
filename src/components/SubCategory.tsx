@@ -11,8 +11,16 @@ import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { useForm } from 'antd/es/form/Form';
 import { ADD_ITEM, BACK_BUTTON, CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
+import { useDispatch } from 'react-redux';
+import { setPage } from '../redux/pageSlice';
 
 const SubCategory = () => {
+    //use redux to display name of page
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setPage('SubCategory'));
+    }, [dispatch]);
+
     //this is id is fetch param from url
     const params = useParams();
     const [form] = useForm();
@@ -64,7 +72,7 @@ const SubCategory = () => {
 
     //handle status change of subcategories
     const handleEnable = async (id: string) => {
-        const statusUpdate = await http.patch(`/api/v1/subcategories/${params.id}/${id}`);
+        const statusUpdate = await http.patch(`/api/v1/subcategories/?category_id=${id}`);
         console.log(statusUpdate.data.message);
         console.log(id);
         try {
@@ -150,7 +158,7 @@ const SubCategory = () => {
         showDeleteModal(id);
     };
 
-    // show delete confirm modal confirmation popup 
+    // show delete confirm modal confirmation popup
     const showDeleteModal = (id: string) => {
         setDeleteItemId(id);
         setDeleteModalVisible(true);
@@ -185,7 +193,6 @@ const SubCategory = () => {
             }
         }
     };
-
 
     // handle to open add-subcategory model
     const handleAdd = () => {
@@ -274,30 +281,31 @@ const SubCategory = () => {
     const [categoriesData, setCategoriesData] = useState<Categories[]>([]);
     return (
         <>
-            <Card title="SubCategory page" className="m-2">
-                <div className="flex justify-end mb-4 gap-5">
-                    <div className=" ">
-                        <Button type="primary" onClick={handleBack} style={{ backgroundColor: '#1871ff' }}>
-                            {BACK_BUTTON}
-                        </Button>
-                    </div>
-                    <div className="">
-                        <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#1871ff' }}>
-                            {ADD_ITEM}
-                        </Button>
-                    </div>
+            {/* <Card title="SubCategory page" className="m-2"> */}
+            <div className="flex justify-end mb-4 gap-5">
+                <div className=" ">
+                    <Button type="primary" onClick={handleBack} style={{ backgroundColor: '#1871ff' }}>
+                        {BACK_BUTTON}
+                    </Button>
                 </div>
+                <div className="">
+                    <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#1871ff' }}>
+                        {ADD_ITEM}
+                    </Button>
+                </div>
+            </div>
 
-                <Table
-                    rowClassName="text-center"
-                    dataSource={categoriesData}
-                    pagination={{ pageSize: 10 }}
-                    columns={subcetagories_data_col}
-                    bordered
-                    sticky
-                    className="w-full"
-                ></Table>
-            </Card>
+            <Table
+                rowClassName="text-center"
+                dataSource={categoriesData}
+                pagination={{ pageSize: 10 }}
+                columns={subcetagories_data_col}
+                bordered
+                sticky
+                className="w-full rounded-lg shadow-lg
+                    "
+            ></Table>
+            {/* </Card> */}
             <Modal
                 title="Edit Category"
                 centered

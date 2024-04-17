@@ -4,17 +4,22 @@ import { Outlet } from 'react-router-dom';
 import HeaderPage from './HeaderPage';
 import SiderPage from '../components/SiderPage';
 import { useState } from 'react';
+import {  useSelector } from 'react-redux';
+import { store } from '../app/store';
 
 const { Content } = Layout;
 
 const FixedLayout: React.FC = () => {
-    const [collapse, setcollapse] = useState(false);
+const currentPage = useSelector((state) => state.page.currentPage);
+
+const [collapse, setcollapse] = useState(false);
+   
     return (
         <>
             <Layout style={{ minHeight: '100vh' }}>
                 <SiderPage collapse={collapse} />
                 <Layout className="site-layout">
-                    <HeaderPage collapse={collapse} setcollapse={setcollapse} />
+                    <HeaderPage collapse={collapse} setcollapse={setcollapse} currentPage={currentPage} />
                     <Content style={{ margin: '0 16px', marginTop: 16 }}>
                         <div>
                             <Outlet />

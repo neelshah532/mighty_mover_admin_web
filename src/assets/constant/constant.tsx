@@ -915,6 +915,11 @@ export const SIDE_PANEL = {
             navigate: '/coupon',
             icon:<RiCoupon2Fill/>,
         },
+        {
+            name: 'Blog',
+            navigate: '/show_edit_delete',
+            icon:<BiSolidMessageEdit/>,
+        },
         
     ],
     submenu_key: 'settings',

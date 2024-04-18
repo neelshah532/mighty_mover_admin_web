@@ -1,6 +1,6 @@
-import { Button, Card, DatePicker, Form, Input, Modal, Radio, Table } from 'antd';
+import { Button, Card, DatePicker, Flex, Form, Input, Modal, Radio, Spin, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { CANCEL, OK } from '../assets/constant/model';
+import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 import { useForm } from 'antd/es/form/Form';
 import http from '../http/http';
 import axios, { AxiosError } from 'axios';
@@ -19,16 +19,37 @@ export default function Coupon() {
     const [coupondata, setcoupondata] = useState([]);
     const [editId, seteditId] = useState('');
     const [editmodal, seteditmodal] = useState(false);
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [deleteItemId, setDeleteItemId] = useState('');
+    const [loading,setloading]=useState(false)
+
+    const handleDelete = async (id: string) => {
+        showDeleteModal(id);
+    };
+
+    // show delete confirm modal confirmation popup
+    const showDeleteModal = (id: string) => {
+        setDeleteItemId(id);
+        setDeleteModalVisible(true);
+    };
+
+    // close delete confirmation modal
+    const handleDeleteModalCancel = () => {
+        setDeleteModalVisible(false);
+    };
+
     const editmodal_function = (record: coupon, id: string) => {
         seteditmodal(true);
         editform.setFieldsValue({ ...record, expiry_date: dayjs(record.expiry_date) });
         seteditId(id);
     };
 
-    const delete_coupon = async (id: any) => {
+    const handleDeleteConfirm = async () => {
         try {
-            const response = await http.delete(`/api/v1/coupons/${id}`);
+            const response = await http.delete(`/api/v1/coupons/${deleteItemId}`);
             toast.success(response.data.message);
+            setDeleteModalVisible(false);
+
             fetchData();
         } catch (error) {
             message_error(error);
@@ -60,7 +81,7 @@ export default function Coupon() {
                         </button>
                     </div>
                     <div>
-                        <button onClick={() => delete_coupon(record.id)}>
+                        <button onClick={() => handleDelete(record.id)}>
                             <MdDelete />
                         </button>
                     </div>
@@ -90,6 +111,7 @@ export default function Coupon() {
     const handleadd = async () => {
         try {
             const response = await http.post('/api/v1/coupons', form.getFieldsValue({}));
+            toast.success(response.data.message);
             form.resetFields();
             openmodal();
         } catch (error) {
@@ -97,12 +119,17 @@ export default function Coupon() {
         }
     };
     const fetchData = async () => {
+        setloading(true)
         try {
             const response = await http.get('/api/v1/coupons');
             setcoupondata(response.data.data);
             console.log(response.data);
+            setloading(false)
         } catch (error) {
             message_error(error);
+        }
+        finally{
+            setloading(false)
         }
     };
     useEffect(() => {
@@ -128,15 +155,23 @@ export default function Coupon() {
                         Add Coupon
                     </Button>
                 </div>
-                <Table
-                    rowClassName="text-center"
-                    dataSource={coupondata}
-                    pagination={{ pageSize: 10 }}
-                    columns={coupon_col_data}
-                    bordered
-                    sticky
-                    className="w-full"
-                ></Table>
+                {loading ? (
+                    <Flex gap="middle" className="w-full h-full justify-center ">
+                        <Spin size="large" />
+                    </Flex>
+                ) : (
+                    <>
+                        <Table
+                            rowClassName="text-center"
+                            dataSource={coupondata}
+                            pagination={{ pageSize: 10 }}
+                            columns={coupon_col_data}
+                            bordered
+                            sticky
+                            className="w-full"
+                        ></Table>
+                    </>
+                )}
             </Card>
             <Modal
                 title="Add City"
@@ -286,6 +321,21 @@ export default function Coupon() {
                         <Input className="w-full" />
                     </Form.Item>
                 </Form>
+            </Modal>
+            <Modal
+                title="Confirm Deletion"
+                open={deleteModalVisible}
+                onCancel={handleDeleteModalCancel}
+                footer={
+                    <div className="flex gap-3 justify-end">
+                        <Button onClick={handleDeleteModalCancel}>{CANCEL}</Button>
+                        <Button type="primary" htmlType="submit" onClick={handleDeleteConfirm}>
+                            {OK}
+                        </Button>
+                    </div>
+                }
+            >
+                <p>{DELETE_CONFIRMATION}</p>
             </Modal>
         </div>
     );

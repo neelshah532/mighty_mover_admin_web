@@ -96,6 +96,13 @@ interface coupon{
     max_usage_count:number
 
 }
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon};
+interface blog{
+    id:string;
+    fk_document:string;
+    author_name:string;
+    title:string;
+
+}
+export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog};
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

@@ -23,12 +23,14 @@ function CategoriePage() {
     };
     //use redux to display name of page
     const dispatch = useDispatch();
-   
+
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
     //we have use useForm hook to get and set form value
     const [form] = useForm();
     const [addForm] = useForm();
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [total, setTotal] = useState(0);
 
     // const [enable, setEnable] = useState<boolean[]>([]);
     const [modal2Open, setModal2Open] = useState(false);
@@ -38,7 +40,7 @@ function CategoriePage() {
     const [radioValue, setRadioValue] = useState<number>(0);
     // const categories_page = Categories_page;
     const cetagories_data_col: ColumnProps<Categories>[] = [
-        ...CETAGORIES_DATA_COL,
+        ...CETAGORIES_DATA_COL(currentPage, 10),
         {
             title: 'Status',
             key: 'status',
@@ -248,13 +250,16 @@ function CategoriePage() {
         dispatch(setPage('Category'));
         fetchData();
     }, [dispatch]);
+
     const fetchData = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await http.get('api/v1/Categories');
+            const response = await http.get(`/api/v1/Categories?limit=10&page=${currentPage}`);
             // const data = await response.json();
             console.log(response.data.data);
             setCategoriesData(response.data.data);
+            console.log(total);
+            setTotal(response.data.total);
             setLoading(false);
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -298,9 +303,9 @@ function CategoriePage() {
                             <Table
                                 rowClassName="text-center"
                                 dataSource={categoriesData}
-                                pagination={{ pageSize: 5 }}
+                                pagination={{ pageSize: 10, total: total }}
                                 columns={cetagories_data_col}
-                                onChange={(e) => console.log(e)}
+                                onChange={(e) => setCurrentPage(e.current || 0)}
                                 // bordered
                                 sticky
                                 className="w-full"
@@ -366,7 +371,7 @@ function CategoriePage() {
                             name="status"
                             rules={[{ required: true, message: 'Please select your status' }]}
                         >
-                            <Radio.Group value={radioValue} onChange={handleRadioButton} defaultValue={0}>
+                            <Radio.Group value={radioValue} onChange={() => handleRadioButton} defaultValue={0}>
                                 <Radio value={0} onClick={() => console.log(0)}>
                                     Active
                                 </Radio>

@@ -12,7 +12,7 @@ import { FaEdit } from 'react-icons/fa';
 
 function City() {
     const [citydata, setcitydata] = useState<city[]>([]);
-    const [total,settotal]=useState(0)
+    const [total, settotal] = useState(0);
     const [modal, setmodal] = useState(false);
     const [editmodal, seteditmodal] = useState(false);
     const [form] = useForm();
@@ -162,7 +162,6 @@ function City() {
         editform.setFieldsValue(record);
         seteditId(id);
     };
-  
 
     const editmodal_function_api = async () => {
         try {
@@ -222,7 +221,7 @@ function City() {
         <div>
             <Card title="Cities" className="m-2">
                 <div className="flex justify-end mb-2">
-                    <Button type="primary" style={{ backgroundColor: '#1871ff' }} onClick={openmodal}>
+                    <Button type="primary" style={{ backgroundColor: '#2967ff' }} onClick={openmodal}>
                         Add City
                     </Button>
                 </div>
@@ -235,7 +234,7 @@ function City() {
                 <Table
                     rowClassName="text-center"
                     dataSource={citydata}
-                    pagination={{ pageSize: 10 ,total:total}}
+                    pagination={{ pageSize: 10, total: total }}
                     columns={crud_city_data}
                     onChange={(e) => setpage(e.current)}
                     bordered
@@ -282,7 +281,12 @@ function City() {
                     </Form.Item>
                 </Form>
             </Modal>
-            <Modal title="Edit City" open={editmodal} onOk={editmodal_function_api} onCancel={()=>seteditmodal(false)}>
+            <Modal
+                title="Edit City"
+                open={editmodal}
+                onOk={editmodal_function_api}
+                onCancel={() => seteditmodal(false)}
+            >
                 <Form form={editform} autoComplete="off">
                     <Form.Item
                         label="City Name"

@@ -151,7 +151,7 @@ export default function Coupon() {
         <div>
             <Card title="Coupons" className="m-2">
                 <div className="flex justify-end mb-2">
-                    <Button type="primary" style={{ backgroundColor: '#1871ff' }} onClick={openmodal}>
+                    <Button type="primary" style={{ backgroundColor: '#2967ff' }} onClick={openmodal}>
                         Add Coupon
                     </Button>
                 </div>

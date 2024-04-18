@@ -28,7 +28,7 @@ export const CETAGORIES_DATA_COL: ColumnProps<Categories>[] = [
         align: 'center' as AlignType,
     },
     {
-        title: 'Created At',
+        title: 'Created Date    ',
         dataIndex: 'created_at',
         align: 'center' as AlignType,
     },

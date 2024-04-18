@@ -28,7 +28,7 @@ const Admin: React.FC = () => {
             ) : ( */}
                 <Layout className="w-full ">
                     <Layout>
-                        <Content className="bg-gray-50 mt-16 p-1">
+                        <Content className=" mt-16 p-1">
                             <Outlet />
                             <Flex justify="space-between" className="ml-4 mr-4 text-gray-400">
                                 <div className="hover:text-gray-600">{COPYRIGHT}</div>

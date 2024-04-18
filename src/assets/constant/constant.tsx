@@ -703,8 +703,8 @@ export const LINE_CHART = {
         {
             label: 'Dataset 1',
             data: generateRandomData(LINE_CHART_LABELS.length, -1000, 1000),
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: '#2967ff',
+            backgroundColor: '#2967ff',
         },
     ],
 };
@@ -920,6 +920,7 @@ export const SIDE_PANEL = {
             navigate: '/show_edit_delete',
             icon:<BiSolidMessageEdit/>,
         },
+        
         
     ],
     submenu_key: 'settings',

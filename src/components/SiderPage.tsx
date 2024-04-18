@@ -22,7 +22,7 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
     //     navigate(`/setting/${key}`);
     // };
     return (
-        <div className="h-screen sticky top-0">
+        <div className="h-screen sticky top-0  border ">
             <Sider
                 theme="light"
                 collapsed={collapse}
@@ -59,7 +59,7 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                     </div>
                 </div>
                 <Menu
-                    className="mt-3 group/item" 
+                    className="mt-3 group/item"
                     theme="light"
                     triggerSubMenuAction="hover"
                     mode="vertical"

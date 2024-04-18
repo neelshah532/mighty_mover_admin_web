@@ -22,7 +22,7 @@ export const options = {
         // title: {
         //     display: true,
         //     text: 'Line Chart',
-            
+
         // },
     },
 };
@@ -30,8 +30,7 @@ export const options = {
 export function LineChart() {
     return (
         <>
-
-            <Line options={options} data={LINE_CHART} />
+            <Line options={options} data={LINE_CHART} width={"6px"}  height={"4px"}/>
         </>
     );
 }

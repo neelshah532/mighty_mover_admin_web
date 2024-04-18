@@ -220,7 +220,7 @@ export default function HeaderPage({
     return (
         <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
-            <Flex justify="space-between" className="bg-white shadow-md items-center">
+            <Flex justify="space-between" className="bg-gray-50  items-center">
                 <Flex>
                     <div>
                         <Button className="text-xl ml-2 rounded-full" onClick={handletoggle}>

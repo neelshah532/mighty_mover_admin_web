@@ -60,104 +60,111 @@ export default function Dashboard() {
     // const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
     return (
         <div className="overflow-hidden ">
-            <div className="grid grid-cols-5 gap-2 m-0 w-full ">
-                <div className="w-full h-full">
-                    <Card bordered={false} className="w-full bg-blue-100">
-                        <div className="w-full flex-col ">
-                            <div className="flex justify-start w-full text-[15px] font-semibold ">
-                                {DASHBOARD_STATS_REVENUE}
-                            </div>
-                            <div className="flex justify-start w-full text-[24px] font-bold gap-1 items-center">
-                                <div style={{ fontWeight: '700' }}>{DASHBOARD_STATS_REVENUE_VAL / 1000}</div>
-                                <div style={{ fontWeight: '700' }}>{'K'}</div>
-                                <div>{prefix}</div>
-                            </div>
+            <div className="grid grid-cols-5 gap-2 m-4 w-auto ">
+                {/* <div className="w-full h-full"> */}
+                <Card bordered={false} className="w-full bg-blue-100">
+                    <div className="w-full flex-col ">
+                        <div className="flex justify-start w-full text-[15px] font-semibold ">
+                            {DASHBOARD_STATS_REVENUE}
                         </div>
-                    </Card>
-                </div>
-                <div className=" w-full h-full">
-                    <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
-                        <div className="w-full flex-col ">
-                            <div className="flex justify-start w-full text-[15px] font-semibold ">
-                                {DASHBOARD_STATS_COSTS_MONEY}
-                            </div>
-                            <div className="flex justify-start w-full text-[24px] font-bold gap-1 items-center">
-                                <div style={{ fontWeight: '700' }}>{DASHBOARD_STATS_COSTS_MONEY_VAL / 1000}</div>
-                                <div style={{ fontWeight: '700' }}>{'K'}</div>
-                                <div>{prefix}</div>
-                            </div>
+                        <div className="flex justify-start w-full text-[24px] font-bold gap-1 items-center">
+                            <div style={{ fontWeight: '700' }}>{DASHBOARD_STATS_REVENUE_VAL / 1000}</div>
+                            <div style={{ fontWeight: '700' }}>{'K'}</div>
+                            <div>{prefix}</div>
                         </div>
-                    </Card>
-                </div>
-                <div className=" w-full h-full ">
-                    <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
-                        <div className="w-full flex-col ">
-                            <div className="flex justify-start w-full text-[15px] font-semibold ">
-                                {DASHBOARD_STATS_PROFIT}
-                            </div>
-                            <div className="flex justify-start w-full  font-bold gap-1 items-center">
-                                <div style={{ fontWeight: '700' }} className="text-[24px]">
-                                    {DASHBOARD_STATS_PROFIT_VAL / 1000}
-                                </div>
-                                <div style={{ fontWeight: '700' }} className="text-[24px]">
-                                    {'K'}
-                                </div>
-                                <div>{prefix}</div>
-                            </div>
+                    </div>
+                </Card>
+                {/* </div> */}
+                {/* <div className=" w-full h-full"> */}
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
+                    <div className="w-full flex-col ">
+                        <div className="flex justify-start w-full text-[15px] font-semibold ">
+                            {DASHBOARD_STATS_COSTS_MONEY}
                         </div>
-                    </Card>
-                </div>
-                <div className=" w-full h-full ">
-                    <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
-                        <div className="w-full flex-col ">
-                            <div className="flex justify-start w-full text-[15px] font-semibold ">
-                                {DASHBOARD_STATS_PROFIT}
-                            </div>
-                            <div className="flex justify-start w-full  font-bold gap-1 items-center">
-                                <div style={{ fontWeight: '700' }} className="text-[24px]">
-                                    {DASHBOARD_STATS_PROFIT_VAL / 1000}
-                                </div>
-                                <div style={{ fontWeight: '700' }} className="text-[24px]">
-                                    {'K'}
-                                </div>
-                                <div>{prefix}</div>
-                            </div>
+                        <div className="flex justify-start w-full text-[24px] font-bold gap-1 items-center">
+                            <div style={{ fontWeight: '700' }}>{DASHBOARD_STATS_COSTS_MONEY_VAL / 1000}</div>
+                            <div style={{ fontWeight: '700' }}>{'K'}</div>
+                            <div>{prefix}</div>
                         </div>
-                    </Card>
-                </div>
-                <div className=" w-full h-full">
-                    <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
-                        <div className="w-full flex-col ">
-                            <div className="flex justify-start w-full text-[15px] font-semibold ">
-                                {DASHBOARD_STATS_PROFIT}
-                            </div>
-                            <div className="flex justify-start w-full  font-bold gap-1 items-center">
-                                <div style={{ fontWeight: '700' }} className="text-[24px]">
-                                    {DASHBOARD_STATS_PROFIT_VAL / 1000}
-                                </div>
-                                <div style={{ fontWeight: '700' }} className="text-[24px]">
-                                    {'K'}
-                                </div>
-                                <div>{prefix}</div>
-                            </div>
+                    </div>
+                </Card>
+                {/* </div> */}
+                {/* <div className=" w-full h-full "> */}
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
+                    <div className="w-full flex-col ">
+                        <div className="flex justify-start w-full text-[15px] font-semibold ">
+                            {DASHBOARD_STATS_PROFIT}
                         </div>
-                    </Card>
-                </div>
+                        <div className="flex justify-start w-full  font-bold gap-1 items-center">
+                            <div style={{ fontWeight: '700' }} className="text-[24px]">
+                                {DASHBOARD_STATS_PROFIT_VAL / 1000}
+                            </div>
+                            <div style={{ fontWeight: '700' }} className="text-[24px]">
+                                {'K'}
+                            </div>
+                            <div>{prefix}</div>
+                        </div>
+                    </div>
+                </Card>
+                {/* </div> */}
+                {/* <div className=" w-full h-full "> */}
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
+                    <div className="w-full flex-col ">
+                        <div className="flex justify-start w-full text-[15px] font-semibold ">
+                            {DASHBOARD_STATS_PROFIT}
+                        </div>
+                        <div className="flex justify-start w-full  font-bold gap-1 items-center">
+                            <div style={{ fontWeight: '700' }} className="text-[24px]">
+                                {DASHBOARD_STATS_PROFIT_VAL / 1000}
+                            </div>
+                            <div style={{ fontWeight: '700' }} className="text-[24px]">
+                                {'K'}
+                            </div>
+                            <div>{prefix}</div>
+                        </div>
+                    </div>
+                </Card>
+                {/* </div> */}
+                {/* <div className=" w-full h-full"> */}
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
+                    <div className="w-full flex-col ">
+                        <div className="flex justify-start w-full text-[15px] font-semibold ">
+                            {DASHBOARD_STATS_PROFIT}
+                        </div>
+                        <div className="flex justify-start w-full  font-bold gap-1 items-center">
+                            <div style={{ fontWeight: '700' }} className="text-[24px]">
+                                {DASHBOARD_STATS_PROFIT_VAL / 1000}
+                            </div>
+                            <div style={{ fontWeight: '700' }} className="text-[24px]">
+                                {'K'}
+                            </div>
+                            <div>{prefix}</div>
+                        </div>
+                    </div>
+                </Card>
+                {/* </div> */}
             </div>
-            <div className="w-full">
+            <div className="w-auto">
                 <Flex gap="small" className="m-4">
-                    <Card className="w-[60%] border border-slate-400">
+                    <Card className="w-full border border-slate-400">
                         <div className="flex justify-center w-full">
                             <div className="w-full">
                                 <span className="font-semibold text-lg">Line Chart</span>
-                                <LineChart />
+                                <div style={{ width: '100%', height: '100%' }}>
+                                    <LineChart />
+                                </div>
                             </div>
                         </div>
                     </Card>
-                    <Card className="w-[40%] flex justify-center border border-slate-400">
-                        {/* <PieChart /> */}
-                        <DoughnutChart />
-                        {/* Doughtnut */}
+                    <Card className="w-full border border-slate-400 flex flex-col items-center justify-center">
+                            <div className="w-full">
+                                <span className="font-semibold text-lg">Pie Chart</span>
+                            </div>
+                        <div className="flex justify-center items-center">
+                                <div style={{ width: '100%', height: '100%' }} className='border'>
+                                    <DoughnutChart />
+                                </div>
+                        </div>
                     </Card>
                 </Flex>
             </div>

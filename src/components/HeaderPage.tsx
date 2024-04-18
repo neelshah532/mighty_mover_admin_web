@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { Adminlogout } from '../redux/userSlice';
 import http from '../http/http';
 import Loader from './Loader';
-
+import { HiMiniBarsArrowDown } from "react-icons/hi2";
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 export default function HeaderPage({
@@ -223,8 +223,8 @@ export default function HeaderPage({
             <Flex justify="space-between" className="bg-gray-50  items-center">
                 <Flex>
                     <div>
-                        <Button className="text-xl ml-2 rounded-full" onClick={handletoggle}>
-                            {collapse ? <IoArrowBack className="rotate-180" /> : <IoArrowBack className="" />}
+                        <Button className="text-xl ml-2 rounded-md" onClick={handletoggle} >
+                            {collapse ? <HiMiniBarsArrowDown className="rotate-[270deg]" /> : <HiMiniBarsArrowDown className="rotate-90" />}
                         </Button>
                     </div>
                     <div className="text-lg font-semibold">

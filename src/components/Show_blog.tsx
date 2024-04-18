@@ -175,12 +175,16 @@ export default function Show_blog() {
             render: (_, record: blog) => (
                 <div className="flex gap-2 justify-center">
                     <div>
-                        <button onClick={() => edit_modal_open_function(record.id)}>
+                        <button
+                        className="py-3 px-4 bg-blue-500 text-white rounded" 
+                        onClick={() => edit_modal_open_function(record.id)}>
                             <FaEdit />
                         </button>
                     </div>
                     <div>
-                        <button onClick={() => handlemodaldelete(record.id)}>
+                        <button
+                         className="py-3 px-4 bg-red-500 text-white rounded"
+                        onClick={() => handlemodaldelete(record.id)}>
                             <MdDelete />
                         </button>
                     </div>

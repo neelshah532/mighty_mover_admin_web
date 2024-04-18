@@ -86,12 +86,16 @@ function City() {
             render: (_, record: city) => (
                 <div className="flex gap-2 justify-center">
                     <div>
-                        <button onClick={() => editmodal_function(record, record.id)}>
+                        <button
+                        className="py-3 px-4 bg-blue-500 text-white rounded"
+                        onClick={() => editmodal_function(record, record.id)}>
                             <FaEdit />
                         </button>
                     </div>
                     <div>
-                        <button onClick={() => handleDelete(record.id)}>
+                        <button
+                         className="py-3 px-4 bg-red-500 text-white rounded"
+                         onClick={() => handleDelete(record.id)}>
                             <MdDelete />
                         </button>
                     </div>

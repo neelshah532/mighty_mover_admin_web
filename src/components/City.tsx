@@ -21,7 +21,7 @@ function City() {
     const [page, setpage] = useState<number>(1);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
-    const [loading,setloading]=useState(false)
+    const [loading, setloading] = useState(false);
 
     const handleDelete = async (id: string) => {
         showDeleteModal(id);
@@ -42,7 +42,7 @@ function City() {
         try {
             const response = await http.delete(`/api/v1/admin/city/${deleteItemId}`);
             console.log(response.data);
-        setDeleteModalVisible(false);
+            setDeleteModalVisible(false);
 
             fetchData();
         } catch (error) {
@@ -87,15 +87,17 @@ function City() {
                 <div className="flex gap-2 justify-center">
                     <div>
                         <button
-                        className="py-3 px-4 bg-blue-500 text-white rounded"
-                        onClick={() => editmodal_function(record, record.id)}>
+                            className="py-3 px-4 bg-blue-500 text-white rounded"
+                            onClick={() => editmodal_function(record, record.id)}
+                        >
                             <FaEdit />
                         </button>
                     </div>
                     <div>
                         <button
-                         className="py-3 px-4 bg-red-500 text-white rounded"
-                         onClick={() => handleDelete(record.id)}>
+                            className="py-3 px-4 bg-red-500 text-white rounded"
+                            onClick={() => handleDelete(record.id)}
+                        >
                             <MdDelete />
                         </button>
                     </div>
@@ -105,13 +107,12 @@ function City() {
     ];
 
     const fetchData = async () => {
-   
-        setloading(true)
+        setloading(true);
         try {
             const response = await http.get(`/api/v1/admin/city?limit=10&page=${page}`);
             setcitydata(response.data.data);
-            settotal(response.data.total)
-            setloading(false)
+            settotal(response.data.total);
+            setloading(false);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{
@@ -127,10 +128,8 @@ function City() {
                     console.log('Error', axiosError.message);
                 }
             }
-        }
-        finally{
-            setloading(false)
-
+        } finally {
+            setloading(false);
         }
     };
     const handleEnable = async (id: string) => {
@@ -230,23 +229,23 @@ function City() {
                     </Button>
                 </div>
                 {loading ? (
-                            <Flex gap="middle" className="w-full h-full justify-center ">
-                                <Spin size="large" />
-                            </Flex>
-                        ) : (
-                            <>
-                <Table
-                    rowClassName="text-center"
-                    dataSource={citydata}
-                    pagination={{ pageSize: 10, total: total }}
-                    columns={crud_city_data}
-                    onChange={(e) => setpage(e.current)}
-                    bordered
-                    sticky
-                    className="w-full"
-                ></Table>
-                            </>
-                        )}
+                    <Flex gap="middle" className="w-full h-full justify-center ">
+                        <Spin size="large" />
+                    </Flex>
+                ) : (
+                    <>
+                        <Table
+                            rowClassName="text-center"
+                            dataSource={citydata}
+                            pagination={{ pageSize: 10, total: total }}
+                            columns={crud_city_data}
+                            onChange={(e) => setpage(e.current)}
+                            bordered
+                            sticky
+                            className="w-full"
+                        ></Table>
+                    </>
+                )}
             </Card>
             <Modal
                 title="Add City"

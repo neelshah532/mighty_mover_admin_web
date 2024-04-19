@@ -61,7 +61,7 @@ export default function Blog() {
        
         console.log(values)
         try{
-                const response=await http.post("/api/v1/blog",{"title":values.title,"description":quill.getContents(),"author_name":values.author_name,"document_id":imgid})
+                const response=await http.post("/api/v1/blog",{"title":values.title,"description":JSON.stringify(quill.getContents()),"author_name":values.author_name,"document_id":imgid})
                 toast.success(response.data.message)
         }
         catch(error){
@@ -165,8 +165,7 @@ export default function Blog() {
                             >
                                 <ReactQuill
                                     theme="snow"
-                                    value={value}
-                                    onChange={setValue}
+                                    
                                     className="h-[300px] "
                                     id="quill"
                                     //   modules={{

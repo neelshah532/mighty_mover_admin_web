@@ -10,6 +10,9 @@ import { RiUserSettingsFill } from 'react-icons/ri';
 import { TbSettingsCog } from 'react-icons/tb';
 import { FaCity } from "react-icons/fa";
 import { RiCoupon2Fill } from "react-icons/ri";
+import { TbHelmet } from "react-icons/tb";
+import { GiSteeringWheel } from "react-icons/gi";
+
 import { FaMotorcycle } from "react-icons/fa6";
 
 
@@ -925,6 +928,11 @@ export const SIDE_PANEL = {
             navigate: '/vehicle',
             icon:<FaMotorcycle/>,
         },
+        {
+            name:"Driver",
+            navigate:"/drivers",
+            icon: <GiSteeringWheel />
+        }
         
         
     ],

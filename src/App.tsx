@@ -54,6 +54,7 @@ import City from './components/City';
 import Coupon from './components/Coupon';
 import Show_blog from './components/Show_blog';
 import Vehicle from './components/Vehicle';
+import DriverTable from './components/DriverTable';
 function App() {
     return (
         <>
@@ -75,8 +76,7 @@ function App() {
                         <Route path="/show_edit_delete" element={<Show_blog />} />
                         <Route path="/vehicle" element={<Vehicle />} />
 
-
-
+                        <Route path="/drivers" element={<DriverTable/>}/>
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

@@ -12,11 +12,11 @@ export const BLOG_DATA: ColumnProps<blog>[] = [
     },
     {
         title: 'Image',
-        dataIndex: 'fk_document',
-        render: (fk_document: any) => {
+        dataIndex: 'document',
+        render: (document: any) => {
             return (
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                    <img src={fk_document} alt="image" style={{ width: '70px', height: '50px' }}></img>
+                    <img src={document} alt="image" style={{ width: '70px', height: '50px' }}></img>
                 </div>
             );
         },

@@ -102,7 +102,19 @@ interface blog{
     author_name:string;
     title:string;
 
+
 }
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog};
+interface vehicle{
+    id:string;
+    length:number;
+    max_weight:number;
+    order_type:string;
+    per_km_charge:number;
+    vehicle_category:string;
+    vehicle_num:string;
+    widht:number
+
+}
+export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog,vehicle};
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

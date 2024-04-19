@@ -30,6 +30,7 @@ export default function Show_blog() {
     const [value, setValue] = useState<valueinterface>({ title: '', description: '', author_name: '', documentId: '' });
     const [imgid, setimgid] = useState('');
     const [imgurl, setimgurl] = useState('');
+    const [fk_document,setfk_document]=useState("")
     interface valueinterface {
         title: string;
         description: string;
@@ -89,7 +90,7 @@ export default function Show_blog() {
         formData.append('type', 'blog');
         formData.append('image', fileData);
         try {
-            const response = await formhttp.post('/api/v1/document', formData);
+            const response = await formhttp.patch(`/api/v1/document/update/${fk_document}`, formData);
             setimgid(response.data.data.document_id);
             setimgurl(response.data.data.document)
         } catch (error) {
@@ -115,6 +116,7 @@ export default function Show_blog() {
         seteditmodal(!openeditmodal);
         try {
             const response = await blog_admin_get_one(id);
+            setfk_document(response.data.data.fk_document)
             console.log(response.data.data);
             setimgurl(response.data.data.document);
             data.setFieldsValue({
@@ -244,7 +246,7 @@ export default function Show_blog() {
                                     key={index}
                                     label={item.label}
                                     name={item.name}
-                                    rules={[{ required: item.req, message: item.message }]}
+                                    rules={[{ required: false, message: item.message }]}
                                     className="w-1/2"
                                 >
                                     <Input placeholder={item.placeholder} />
@@ -253,7 +255,7 @@ export default function Show_blog() {
                             <Form.Item
                                 label="Image"
                                 name="image"
-                                rules={[{ required: true, message: 'Please Upload Image!' }]}
+                                rules={[{ required: false, message: 'Please Upload Image!' }]}
                                 className="w-1/2"
                             >
                                 <div className="w-full flex-col gap-4 items-center">
@@ -275,7 +277,7 @@ export default function Show_blog() {
                             <Form.Item
                                 label="Description"
                                 name="description"
-                                rules={[{ required: true, message: 'Please Enter Description!' }]}
+                                rules={[{ required: false, message: 'Please Enter Description!' }]}
                                 className="w-1/2"
                                 style={{ fontSize: '100px' }}
                             >

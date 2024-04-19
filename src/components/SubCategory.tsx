@@ -1,7 +1,7 @@
-import { Button, Card, Form, Input, Modal, Radio, Table } from 'antd';
+import { Button, Form, Input, Modal, Radio, Table } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CETAGORIES_DATA_COL } from '../assets/constant/categories';
+import { SUBCATEGORIES_DATA_COL } from '../assets/constant/categories';
 import http from '../http/http';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
@@ -29,12 +29,13 @@ const SubCategory = () => {
     const [modal2Open, setModal2Open] = useState(false);
     const [addItem, setAddItem] = useState(false);
     const [CurrentEditValue, setCurrentEditValue] = useState('');
+    // const [statusId, setStatusId] = useState('');
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
     // this is subcategorie const is use for perform on status and actions
 
     const subcetagories_data_col: ColumnProps<Categories>[] = [
-        ...CETAGORIES_DATA_COL,
+        ...SUBCATEGORIES_DATA_COL,
         {
             title: 'Status',
             key: 'status',
@@ -42,8 +43,8 @@ const SubCategory = () => {
             align: 'center',
             render: (_, record) => (
                 <Button
-                    onClick={() => handleEnable(record.id)}
-                    className={record.status === 'Active' ? 'text-green-500' : 'text-red-500'}
+                    onClick={() => handleEnable(record.id, String(record.status))}
+                    className={record.status === 'active' ? 'text-green-500' : 'text-red-500'}
                 >
                     {record.status}
                 </Button>
@@ -71,21 +72,20 @@ const SubCategory = () => {
     ];
 
     //handle status change of subcategories
-    const handleEnable = async (id: string) => {
-        const statusUpdate = await http.patch(`/api/v1/subcategories/?category_id=${id}`);
-        console.log(statusUpdate.data.message);
-        console.log(id);
+    const handleEnable = async (id: string, currentStatus: string) => {
+        // setStatusId(id);
         try {
+            const changeStatus = currentStatus === 'active' ? 1 : 0;
+            const statusUpdate = await http.patch(`/api/v1/subcategories/${id}/?category_id=${params.id}`, {
+                status: changeStatus,
+            });
+            console.log(statusUpdate.data.message);
+            console.log(id);
             if (statusUpdate.status === 200) {
                 toast.success(statusUpdate.data.message);
-                setCategoriesData((prevCategories) => {
-                    return prevCategories.map((category) => {
-                        if (category.id === id) {
-                            category.status = category.status === 'Active' ? 'Inactive' : 'Active';
-                        }
-                        return category;
-                    });
-                });
+                console.log(statusUpdate.data.message);
+                console.log(statusUpdate.data.data.status);
+                fetchData();
             } else {
                 toast.error(statusUpdate.data.message);
             }
@@ -124,7 +124,7 @@ const SubCategory = () => {
         setModal2Open(false);
         try {
             const updateRecord = await http.patch(
-                `/api/v1/subcategories/${params.id}/${CurrentEditValue}`,
+                `/api/v1/subcategories/${CurrentEditValue}/?category_id=${params.id}`,
                 form.getFieldsValue({})
             );
             toast.success(updateRecord.data.message);
@@ -172,7 +172,7 @@ const SubCategory = () => {
     // Function to confirm delete action
     const handleDeleteConfirm = async () => {
         try {
-            const deleteRecord = await http.delete(`/api/v1/subcategories/${params.id}/${deleteItemId}`);
+            const deleteRecord = await http.delete(`/api/v1/subcategories/${deleteItemId}/?category_id=${params.id}`);
             console.log(deleteRecord.data);
             fetchData();
             setDeleteModalVisible(false);
@@ -210,7 +210,7 @@ const SubCategory = () => {
         // console.log('add item');
         // setAddItem(false);
         try {
-            const res = await http.post(`/api/v1/subcategories/${params.id}`, addForm.getFieldsValue({}));
+            const res = await http.post(`/api/v1/subcategories/?category_id=${params.id}`, addForm.getFieldsValue({}));
             console.log(res);
             if (res.status === 200) {
                 toast.success(res.data.message);
@@ -242,7 +242,7 @@ const SubCategory = () => {
     const fetchData = useCallback(async () => {
         // setLoading(true);
         try {
-            const response = await http.get(`api/v1/subcategories/${params.id}`);
+            const response = await http.get(`api/v1/subcategories/?category_id=${params.id}`);
             // const data = await response.json();
             // console.log(response);
             setCategoriesData(response.data.data);

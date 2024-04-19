@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Form, Input, Modal, Radio, Spin, Table } from 'antd';
+import { Button, Card, Flex, Form, Input, Modal, Pagination, Radio, Spin, Table } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
 import { AlignType, Categories } from '../assets/dto/data.type';
@@ -13,34 +13,32 @@ import http from '../http/http';
 import { useDispatch } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
 // import Loader from './Loader';
-
+type FieldType = {
+    id: number;
+    name?: string;
+    description?: string;
+    // status?: string;
+};
 function CategoriePage() {
-    type FieldType = {
-        id: number;
-        name?: string;
-        description?: string;
-        // status?: string;
-    };
     //use redux to display name of page
-    const dispatch = useDispatch();
 
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
     //we have use useForm hook to get and set form value
-    const [form] = useForm();
-    const [addForm] = useForm();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState(0);
-
     // const [enable, setEnable] = useState<boolean[]>([]);
     const [modal2Open, setModal2Open] = useState(false);
     const [addItem, setAddItem] = useState(false);
     const [CurrentEditValue, setCurrentEditValue] = useState('');
     const [loading, setLoading] = useState(false);
-    const [radioValue, setRadioValue] = useState<number>(0);
+    const [radioValue, setRadioValue] = useState<boolean>(false);
+    const [form] = useForm();
+    const [addForm] = useForm();
+    const dispatch = useDispatch();
     // const categories_page = Categories_page;
     const cetagories_data_col: ColumnProps<Categories>[] = [
-        ...CETAGORIES_DATA_COL(currentPage, 10),
+        ...CETAGORIES_DATA_COL(currentPage, 5),
         {
             title: 'Status',
             key: 'status',
@@ -246,19 +244,14 @@ function CategoriePage() {
     const [categoriesData, setCategoriesData] = useState<Categories[]>([]);
 
     // api calling section
-    useEffect(() => {
-        dispatch(setPage('Category'));
-        fetchData();
-    }, [dispatch]);
-
     const fetchData = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await http.get(`/api/v1/Categories?limit=10&page=${currentPage}`);
-            // const data = await response.json();
-            console.log(response.data.data);
+            const response = await http.get(`/api/v1/Categories?limit=10&page=${(currentPage - 1) * 10}`);
+            console.log(currentPage);
+            // console.log(response.data.data);
             setCategoriesData(response.data.data);
-            console.log(total);
+            // console.log(total);
             setTotal(response.data.total);
             setLoading(false);
         } catch (error) {
@@ -279,7 +272,38 @@ function CategoriePage() {
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [currentPage]);
+    const HandlePagination = async (page: number) => {
+        console.log(page);
+        try {
+            const skip = (page - 1) * 10;
+            console.log(skip);
+            const response = await http.get(`/api/v1/Categories?limit=10&page=${skip}`);
+            setCategoriesData(response.data.data);
+            setTotal(response.data.total);
+            setCurrentPage(page);   
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if (axiosError.response) {
+                    console.log('Response Error', axiosError.response);
+                    toast.error(axiosError.response.data.message);
+                } else if (axiosError.request) {
+                    console.log('Request Error', axiosError.request);
+                } else {
+                    console.log('Error', axiosError.message);
+                }
+            }
+        }
+    };
+    useEffect(() => {
+        dispatch(setPage('Category'));
+        void fetchData();
+    }, [dispatch, fetchData, currentPage]);
+
     return (
         <>
             <div>
@@ -300,16 +324,32 @@ function CategoriePage() {
                                 <Spin size="large" />
                             </Flex>
                         ) : (
-                            <Table
-                                rowClassName="text-center"
-                                dataSource={categoriesData}
-                                pagination={{ pageSize: 10, total: total }}
-                                columns={cetagories_data_col}
-                                onChange={(e) => setCurrentPage(e.current || 0)}
-                                // bordered
-                                sticky
-                                className="w-full"
-                            ></Table>
+                            <>
+                                <Table
+                                    rowClassName="text-center"
+                                    dataSource={categoriesData}
+                                    // pagination={{
+                                    //     pageSize: 5,
+                                    //     total: total,
+                                    //     current: currentPage,
+                                    //     onChange: (page) =>{
+                                    //         setCurrentPage(page)
+                                    //         fetchData();
+                                    //     },
+                                    // }}
+                                    pagination={false}
+                                    columns={cetagories_data_col}
+                                    // bordered
+                                    sticky
+                                    className="w-full"
+                                ></Table>
+                                <Pagination
+                                    current={currentPage}
+                                    onChange={(page) => HandlePagination(page)}
+                                    total={total}
+                                    pageSize={10}
+                                />
+                            </>
                         )}
                     </Card>
                 </>

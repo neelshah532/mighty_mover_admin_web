@@ -115,6 +115,15 @@ interface vehicle{
     widht:number
 
 }
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog,vehicle};
+
+interface driver {
+    id:string,
+    name:string,
+    email:string,
+    contact:string,
+    shift:string
+}
+
+export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog,vehicle,driver};
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

@@ -1,9 +1,9 @@
-import { Button, Card, Flex, Form, Input, Modal, Spin, Table } from 'antd';
+import { Button, Card, Flex, Form, Input, Modal, Select, Spin, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import http from '../http/http';
 import { toast } from 'sonner';
 import axios, { AxiosError } from 'axios';
-import { VEHICLE_DATA_COL } from '../assets/constant/vehicle';
+// import { VEHICLE_DATA_COL } from '../assets/constant/vehicle';
 import { AlignType } from '../assets/dto/data.type';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
@@ -12,6 +12,7 @@ import { useForm } from 'antd/es/form/Form';
 import { DRIVER_DATA_COL } from '../assets/constant/driver_constant';
 
 export default function DriverTable() {
+    const [driverId, setDriverId] = useState('');
     const [loading, setLoading] = useState(false);
     const [vehicledata, setvehicledata] = useState([]);
     const [deleteModalVisible, setdeleteModalVisible] = useState(false)
@@ -36,7 +37,7 @@ export default function DriverTable() {
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
-            render: (_, record: city) => (
+            render: (_, record) => (
                 <div className="flex gap-2 justify-center">
                     <div>
                         <button className="py-3 px-4 bg-blue-500 text-white rounded" onClick={() => editclick(record)}>
@@ -44,7 +45,7 @@ export default function DriverTable() {
                         </button>
                     </div>
                     <div>
-                        <button className="py-3 px-4 bg-red-500 text-white rounded" onClick={() => setdeleteModalVisible(true)}>
+                        <button className="py-3 px-4 bg-red-500 text-white rounded" onClick={() => deleteDriver(record)}>
                             <MdDelete />
                         </button>
                     </div>
@@ -53,15 +54,20 @@ export default function DriverTable() {
         },
     ];
 
+
+    const deleteDriver = (record) => {
+        setdeleteModalVisible(true)
+        setDriverId(record.id)
+    }
+
     const editclick = (record: any) => {
         seteditmodalVisible(true)
         form.setFieldsValue(record);
-
     }
     const fetchData = async () => {
         setLoading(true);
         try {
-            const response = await http.get('/api/v1/driver?limit=1');
+            const response = await http.get('/api/v1/driver?limit=10');
             toast.success(response.data.message);
             setvehicledata(response.data.data);
             console.log(response.data.data);
@@ -89,13 +95,21 @@ export default function DriverTable() {
         }
     };
     const handleDeleteConfirm = async () => {
-        // try{
-        //     const response=await http.delete("")
-        // }
+        setLoading(true)
+        try{
+            const response = await http.delete(`api/v1/driver/deleteAccount/${driverId}`)
+            toast.success(response.data.message)
+            setLoading(false)
+        }
+         catch (error) {
+        message_error(error);
+    } finally {
+        setLoading(false);
+    }
     }
 
     const handleedit = async () => {
-
+        
     }
 
     useEffect(() => {
@@ -103,7 +117,7 @@ export default function DriverTable() {
     }, []);
     return (
         <div>
-            <Card title="Vehicle" className="m-2">
+            <Card title="Driver" className="m-2">
                 {loading ? (
                     <Flex gap="middle" className="w-full h-full justify-center ">
                         <Spin size="large" />
@@ -151,60 +165,41 @@ export default function DriverTable() {
             >
                 <Form form={form}>
                     <Form.Item
-                        label="Vehicle No"
-                        name="vehicle_num"
-                        rules={[{ required: true, message: 'Please input City name!' }]}
+                        label="Name"
+                        name="name"
+                        rules={[{ required: true, message: 'Please input name!' }]}
                         className="w-full"
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Category"
-                        name="vehicle_category"
-                        rules={[{ required: true, message: 'Please add country name' }]}
+                        label="Email"
+                        name="email"
+                        rules={[{ required: true, message: 'Please add email' }]}
                         className="w-full"
                     >
                         <Input className="w-full" />
                     </Form.Item>
                     <Form.Item
-                        label="Type"
-                        name="order_type"
-                        rules={[{ required: true, message: 'Please add country name' }]}
+                        label="Contact"
+                        name="contact"
+                        rules={[{ required: true, message: 'Please add contact' }]}
                         className="w-full"
                     >
                         <Input className="w-full" />
                     </Form.Item>
                     <Form.Item
-                        label="KM Charge"
-                        name="per_km_charge"
-                        rules={[{ required: true, message: 'Please add country name' }]}
+                        label="Shift"
+                        name="shift"
+                        rules={[{ required: true, message: 'Please add shift' }]}
                         className="w-full"
                     >
-                        <Input className="w-full" />
-                    </Form.Item>
-                    <Form.Item
-                        label="Max Weight"
-                        name="max_weight"
-                        rules={[{ required: true, message: 'Please add country name' }]}
-                        className="w-full"
-                    >
-                        <Input className="w-full" />
-                    </Form.Item>
-                    <Form.Item
-                        label="Length"
-                        name="length"
-                        rules={[{ required: true, message: 'Please add country name' }]}
-                        className="w-full"
-                    >
-                        <Input className="w-full" />
-                    </Form.Item>
-                    <Form.Item
-                        label="Width"
-                        name="width"
-                        rules={[{ required: true, message: 'Please add country name' }]}
-                        className="w-full"
-                    >
-                        <Input className="w-full" />
+                        {/* <Input className="w-full" /> */}
+                        <Select>
+                            <Select.Option value="day">Day</Select.Option>
+                            <Select.Option value="night">Night</Select.Option>
+                            <Select.Option value="both">Both</Select.Option>
+                        </Select>
                     </Form.Item>
                 </Form>
             </Modal>

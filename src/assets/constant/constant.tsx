@@ -10,7 +10,7 @@ import { RiUserSettingsFill } from 'react-icons/ri';
 import { TbSettingsCog } from 'react-icons/tb';
 import { FaCity } from "react-icons/fa";
 import { RiCoupon2Fill } from "react-icons/ri";
-
+import { FaMotorcycle } from "react-icons/fa6";
 
 
 export const DASHBOARD_CONTENT = [
@@ -914,6 +914,16 @@ export const SIDE_PANEL = {
             name: 'Coupon',
             navigate: '/coupon',
             icon:<RiCoupon2Fill/>,
+        },
+        {
+            name: 'Blog',
+            navigate: '/show_edit_delete',
+            icon:<BiSolidMessageEdit/>,
+        },
+        {
+            name: 'Vehicle',
+            navigate: '/vehicle',
+            icon:<FaMotorcycle/>,
         },
         
         

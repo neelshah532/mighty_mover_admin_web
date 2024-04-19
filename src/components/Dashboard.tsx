@@ -62,7 +62,7 @@ export default function Dashboard() {
         <div className="overflow-hidden ">
             <div className="grid grid-cols-5 gap-2 m-4 w-auto ">
                 {/* <div className="w-full h-full"> */}
-                <Card bordered={false} className="w-full bg-blue-100">
+                <Card bordered={false} className="w-full bg-blue-50">
                     <div className="w-full flex-col ">
                         <div className="flex justify-start w-full text-[15px] font-semibold ">
                             {DASHBOARD_STATS_REVENUE}
@@ -76,7 +76,7 @@ export default function Dashboard() {
                 </Card>
                 {/* </div> */}
                 {/* <div className=" w-full h-full"> */}
-                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-50">
                     <div className="w-full flex-col ">
                         <div className="flex justify-start w-full text-[15px] font-semibold ">
                             {DASHBOARD_STATS_COSTS_MONEY}
@@ -90,7 +90,7 @@ export default function Dashboard() {
                 </Card>
                 {/* </div> */}
                 {/* <div className=" w-full h-full "> */}
-                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-50">
                     <div className="w-full flex-col ">
                         <div className="flex justify-start w-full text-[15px] font-semibold ">
                             {DASHBOARD_STATS_PROFIT}
@@ -108,7 +108,7 @@ export default function Dashboard() {
                 </Card>
                 {/* </div> */}
                 {/* <div className=" w-full h-full "> */}
-                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-50">
                     <div className="w-full flex-col ">
                         <div className="flex justify-start w-full text-[15px] font-semibold ">
                             {DASHBOARD_STATS_PROFIT}
@@ -126,7 +126,7 @@ export default function Dashboard() {
                 </Card>
                 {/* </div> */}
                 {/* <div className=" w-full h-full"> */}
-                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-100">
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-50">
                     <div className="w-full flex-col ">
                         <div className="flex justify-start w-full text-[15px] font-semibold ">
                             {DASHBOARD_STATS_PROFIT}
@@ -161,7 +161,7 @@ export default function Dashboard() {
                                 <span className="font-semibold text-lg">Pie Chart</span>
                             </div>
                         <div className="flex justify-center items-center">
-                                <div style={{ width: '100%', height: '100%' }} className='border'>
+                                <div style={{ width: '100%', height: '100%' }}>
                                     <DoughnutChart />
                                 </div>
                         </div>

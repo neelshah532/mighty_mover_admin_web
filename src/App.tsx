@@ -52,6 +52,8 @@ import CategoriePage from './components/CategoriePage';
 import SubCategory from './components/SubCategory';
 import City from './components/City';
 import Coupon from './components/Coupon';
+import Show_blog from './components/Show_blog';
+import Vehicle from './components/Vehicle';
 function App() {
     return (
         <>
@@ -70,6 +72,10 @@ function App() {
                         <Route path="/categories/:id" element={<SubCategory />} />
                         <Route path="/city" element={<City />} />
                         <Route path="/coupon" element={<Coupon />} />
+                        <Route path="/show_edit_delete" element={<Show_blog />} />
+                        <Route path="/vehicle" element={<Vehicle />} />
+
+
 
                     </Route>
                 </Route>

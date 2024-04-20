@@ -10,7 +10,7 @@ import { ColumnProps } from 'antd/es/table';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { useForm } from 'antd/es/form/Form';
-import { ADD_ITEM, BACK_BUTTON, CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
+import { ADD_ITEM, BACK_BUTTON, CANCEL, DELETE, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 import { useDispatch } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
 
@@ -32,6 +32,7 @@ const SubCategory = () => {
     // const [statusId, setStatusId] = useState('');
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
+    const [radioValue, setRadioValue] = useState<number>(0);
     // this is subcategorie const is use for perform on status and actions
 
     const subcetagories_data_col: ColumnProps<Categories>[] = [
@@ -39,7 +40,7 @@ const SubCategory = () => {
         {
             title: 'Status',
             key: 'status',
-            dataIndex: 'statustype',
+            dataIndex: 'status',
             align: 'center',
             render: (_, record) => (
                 <Button
@@ -210,7 +211,10 @@ const SubCategory = () => {
         // console.log('add item');
         // setAddItem(false);
         try {
-            const res = await http.post(`/api/v1/subcategories/?category_id=${params.id}`, addForm.getFieldsValue({}));
+            const res = await http.post(`/api/v1/subcategories/?category_id=${params.id}`, {
+                ...addForm.getFieldsValue(),
+                status: radioValue,
+            });
             console.log(res);
             if (res.status === 200) {
                 toast.success(res.data.message);
@@ -237,6 +241,10 @@ const SubCategory = () => {
                 }
             }
         }
+    };
+    //handle radioButton
+    const handleRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRadioValue(e.target.value);
     };
     // create fetchData function to fetch data from api
     const fetchData = useCallback(async () => {
@@ -361,24 +369,22 @@ const SubCategory = () => {
                     </Form.Item>
                     <Form.Item
                         label="Status"
-                        name="statustype"
+                        name="status"
                         rules={[{ required: true, message: 'Please select your status' }]}
                     >
-                        <Radio.Group>
+                        <Radio.Group value={radioValue} onChange={() => handleRadioButton} defaultValue={0}>
                             <Radio value={0} onClick={() => console.log(0)}>
-                                Active
+                                active
                             </Radio>
                             <Radio value={1} onClick={() => console.log(1)}>
-                                Inactive
+                                inactive
                             </Radio>
                         </Radio.Group>
                     </Form.Item>
 
                     <div className="flex gap-3 justify-end">
                         <Button onClick={handleAddItemModelClose}>{CANCEL}</Button>
-                        <Button type="primary" htmlType="submit" onClick={handleAdditems}>
-                            {OK}
-                        </Button>
+                        <Button onClick={handleAdditems}>{ADD_ITEM}</Button>
                     </div>
                 </Form>
             </Modal>
@@ -389,9 +395,7 @@ const SubCategory = () => {
                 footer={
                     <div className="flex gap-3 justify-end">
                         <Button onClick={handleDeleteModalCancel}>{CANCEL}</Button>
-                        <Button type="primary" htmlType="submit" onClick={handleDeleteConfirm}>
-                            {OK}
-                        </Button>
+                        <Button onClick={handleDeleteConfirm}>{DELETE}</Button>
                     </div>
                 }
             >

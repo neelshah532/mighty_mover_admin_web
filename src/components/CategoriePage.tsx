@@ -32,7 +32,7 @@ function CategoriePage() {
     const [addItem, setAddItem] = useState(false);
     const [CurrentEditValue, setCurrentEditValue] = useState('');
     const [loading, setLoading] = useState(false);
-    const [radioValue, setRadioValue] = useState<boolean>(false);
+    const [radioValue, setRadioValue] = useState<number>(1);
     const [form] = useForm();
     const [addForm] = useForm();
     const dispatch = useDispatch();
@@ -281,7 +281,7 @@ function CategoriePage() {
             const response = await http.get(`/api/v1/Categories?limit=10&page=${skip}`);
             setCategoriesData(response.data.data);
             setTotal(response.data.total);
-            setCurrentPage(page);   
+            setCurrentPage(page);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{

@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 interface User {
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
 }
 interface initialState {
     user: {
         id: null | string;
-        name: null | User;
+        first_name: null | string;
+        last_name: null | User;
         email: null | User;
         token: null | string;
     };
@@ -18,7 +20,8 @@ const userData = localState && JSON.parse(localState || '');
 const initialState: initialState = {
     user: {
         id: userData.id,
-        name: userData.name,
+        first_name: userData.firstname,
+        last_name: userData.lastname,
         email: userData.email,
         token: userData.token,
     },
@@ -33,15 +36,16 @@ const userSlice = createSlice({
         Adminlogout: (state) => {
             state.user = {
                 id: null,
-                name: null,
+                first_name: null,
+                last_name: null,
                 email: null,
                 token: null,
             };
             localStorage.clear();
         },
-        Categoriedata: (state,action) => {
+        Categoriedata: (state, action) => {
             state.user = action.payload;
-        }
+        },
     },
 });
 export const { AdminAdd, Adminlogout, Categoriedata } = userSlice.actions;

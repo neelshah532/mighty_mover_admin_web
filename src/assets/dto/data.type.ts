@@ -72,6 +72,14 @@ interface Categories {
     created_at: string;
     align?: AlignType | undefined;
 }
+interface AdminsDisplay {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    // status: string | boolean;
+    align?: AlignType | undefined;
+}
 interface city {
     city_name: string;
     country_name: string;
@@ -85,36 +93,32 @@ interface UpdateCity {
     country_name: string;
     city_name: string;
 }
-interface coupon{
-    id:string;
-    coupon_code:string;
-    coupon_type:string;
-    description:string;
-    discount_type:string;
-    discount_value:number;
-    expiry_date:string;
-    max_usage_count:number
-
+interface coupon {
+    id: string;
+    coupon_code: string;
+    coupon_type: string;
+    description: string;
+    discount_type: string;
+    discount_value: number;
+    expiry_date: string;
+    max_usage_count: number;
 }
-interface blog{
-    id:string;
-    fk_document:string;
-    author_name:string;
-    title:string;
-
-
+interface blog {
+    id: string;
+    fk_document: string;
+    author_name: string;
+    title: string;
 }
-interface vehicle{
-    id:string;
-    length:number;
-    max_weight:number;
-    order_type:string;
-    per_km_charge:number;
-    vehicle_category:string;
-    vehicle_num:string;
-    widht:number
-
+interface vehicle {
+    id: string;
+    length: number;
+    max_weight: number;
+    order_type: string;
+    per_km_charge: number;
+    vehicle_category: string;
+    vehicle_num: string;
+    widht: number;
 }
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog,vehicle};
+export type { Order, DeliveryPartner, User, Categories, city, UpdateCity, coupon, blog, vehicle, AdminsDisplay };
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

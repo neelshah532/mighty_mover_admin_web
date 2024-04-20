@@ -15,8 +15,8 @@ const generateRequestToken = (config: InternalAxiosRequestConfig) => {
 };
 
 // Create instance of axios
-const http = axios.create({
-    baseURL: 'http://192.168.68.68:3000',
+const formhttp = axios.create({
+    baseURL: 'http://192.168.68.85:3000',
     headers: {
         Accept: 'application/json',
         'Content-Type': 'multipart/form-data',
@@ -24,7 +24,7 @@ const http = axios.create({
 });
 
 // Create a request interceptor for the instance and get accessToken
-http.interceptors.request.use(
+formhttp.interceptors.request.use(
     async (config) => {
         // Attach an AbortController to the request
         const requestToken = generateRequestToken(config);
@@ -49,7 +49,7 @@ http.interceptors.request.use(
     }
 );
 
-http.interceptors.response.use(
+formhttp.interceptors.response.use(
     (response) => response,
     async (error: AxiosError<ApiErrorData>) => {
         if (axios.isAxiosError(error) && error.response) {
@@ -73,4 +73,4 @@ export const cancelRequest = (config: InternalAxiosRequestConfig) => {
     }
 };
 
-export default http;
+export default formhttp;

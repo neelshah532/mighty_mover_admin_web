@@ -1,9 +1,9 @@
-import { Button, Card, Form, Input, Modal, Table } from 'antd';
+import { Button, Card, Flex, Form, Input, Modal, Spin, Table } from 'antd';
 import http from '../http/http';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
-import { CANCEL, OK } from '../assets/constant/model';
+import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 import { useForm } from 'antd/es/form/Form';
 import { AlignType, city } from '../assets/dto/data.type';
 import { CITY_DATA_COL } from '../assets/constant/city';
@@ -19,11 +19,31 @@ function City() {
     const [editform] = useForm();
     const [editId, seteditId] = useState('');
     const [page, setpage] = useState<number>(1);
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [deleteItemId, setDeleteItemId] = useState('');
+    const [loading, setloading] = useState(false);
 
-    const delete_city = async (record: any) => {
+    const handleDelete = async (id: string) => {
+        showDeleteModal(id);
+    };
+
+    // show delete confirm modal confirmation popup
+    const showDeleteModal = (id: string) => {
+        setDeleteItemId(id);
+        setDeleteModalVisible(true);
+    };
+
+    // close delete confirmation modal
+    const handleDeleteModalCancel = () => {
+        setDeleteModalVisible(false);
+    };
+
+    const handleDeleteConfirm = async () => {
         try {
-            const response = await http.delete(`/api/v1/admin/city/${record.id}`);
+            const response = await http.delete(`/api/v1/admin/city/${deleteItemId}`);
             console.log(response.data);
+            setDeleteModalVisible(false);
+
             fetchData();
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -53,7 +73,7 @@ function City() {
             render: (_, record) => (
                 <Button
                     onClick={() => handleEnable(record.id)}
-                    className={record.status === 'Active' ? 'text-green-500' : 'text-red-500'}
+                    className={record.status === 'active' ? 'text-green-500' : 'text-red-500'}
                 >
                     {record.status}
                 </Button>
@@ -66,12 +86,18 @@ function City() {
             render: (_, record: city) => (
                 <div className="flex gap-2 justify-center">
                     <div>
-                        <button onClick={() => editmodal_function(record, record.id)}>
+                        <button
+                            className="py-3 px-4 bg-blue-500 text-white rounded"
+                            onClick={() => editmodal_function(record, record.id)}
+                        >
                             <FaEdit />
                         </button>
                     </div>
                     <div>
-                        <button onClick={() => delete_city(record)}>
+                        <button
+                            className="py-3 px-4 bg-red-500 text-white rounded"
+                            onClick={() => handleDelete(record.id)}
+                        >
                             <MdDelete />
                         </button>
                     </div>
@@ -81,11 +107,12 @@ function City() {
     ];
 
     const fetchData = async () => {
-        console.log(citydata);
+        setloading(true);
         try {
             const response = await http.get(`/api/v1/admin/city?limit=10&page=${page}`);
             setcitydata(response.data.data);
             settotal(response.data.total);
+            setloading(false);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{
@@ -101,6 +128,8 @@ function City() {
                     console.log('Error', axiosError.message);
                 }
             }
+        } finally {
+            setloading(false);
         }
     };
     const handleEnable = async (id: string) => {
@@ -199,16 +228,24 @@ function City() {
                         Add City
                     </Button>
                 </div>
-                <Table
-                    rowClassName="text-center"
-                    dataSource={citydata}
-                    pagination={{ pageSize: 10, total: total }}
-                    columns={crud_city_data}
-                    onChange={(e) => setpage(e.current)}
-                    bordered
-                    sticky
-                    className="w-full"
-                ></Table>
+                {loading ? (
+                    <Flex gap="middle" className="w-full h-full justify-center ">
+                        <Spin size="large" />
+                    </Flex>
+                ) : (
+                    <>
+                        <Table
+                            rowClassName="text-center"
+                            dataSource={citydata}
+                            pagination={{ pageSize: 10, total: total }}
+                            columns={crud_city_data}
+                            onChange={(e) => setpage(e.current)}
+                            bordered
+                            sticky
+                            className="w-full"
+                        ></Table>
+                    </>
+                )}
             </Card>
             <Modal
                 title="Add City"
@@ -271,6 +308,21 @@ function City() {
                         <Input className="w-full" />
                     </Form.Item>
                 </Form>
+            </Modal>
+            <Modal
+                title="Confirm Deletion"
+                open={deleteModalVisible}
+                onCancel={handleDeleteModalCancel}
+                footer={
+                    <div className="flex gap-3 justify-end">
+                        <Button onClick={handleDeleteModalCancel}>{CANCEL}</Button>
+                        <Button type="primary" htmlType="submit" onClick={handleDeleteConfirm}>
+                            {OK}
+                        </Button>
+                    </div>
+                }
+            >
+                <p>{DELETE_CONFIRMATION}</p>
             </Modal>
         </div>
     );

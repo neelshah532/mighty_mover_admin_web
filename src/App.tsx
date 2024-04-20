@@ -54,6 +54,7 @@ import City from './components/City';
 import Coupon from './components/Coupon';
 import Show_blog from './components/Show_blog';
 import Vehicle from './components/Vehicle';
+import VIewAdmin from './components/VIewAdmin';
 function App() {
     return (
         <>
@@ -74,9 +75,7 @@ function App() {
                         <Route path="/coupon" element={<Coupon />} />
                         <Route path="/show_edit_delete" element={<Show_blog />} />
                         <Route path="/vehicle" element={<Vehicle />} />
-
-
-
+                        <Route path="/admin" element={<VIewAdmin />} />
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

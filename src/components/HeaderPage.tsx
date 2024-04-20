@@ -8,14 +8,14 @@ import type { GetProp, UploadProps, UploadFile } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { TiArrowSortedDown } from 'react-icons/ti';
-import { IoArrowBack } from 'react-icons/io5';
+// import { IoArrowBack } from 'react-icons/io5';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { Adminlogout } from '../redux/userSlice';
 import http from '../http/http';
 import Loader from './Loader';
-import { HiMiniBarsArrowDown } from "react-icons/hi2";
+import { HiMiniBarsArrowDown } from 'react-icons/hi2';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 export default function HeaderPage({
@@ -27,7 +27,8 @@ export default function HeaderPage({
     setcollapse: React.Dispatch<React.SetStateAction<boolean>>;
     currentPage: string;
 }) {
-    const [Name, setName] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
     const [Email, setEmail] = useState('');
     // const [toggle1, settoggle1] = useState(false);
     const [toggle, settoggle] = useState(true);
@@ -51,7 +52,6 @@ export default function HeaderPage({
     }, []);
 
     const handleLogout = async () => {
-        
         try {
             const logoutAdmin = await http.get('/api/v1/admin/logout');
             toast.success(logoutAdmin.data.message);
@@ -79,14 +79,52 @@ export default function HeaderPage({
         }
     };
 
-  
-    const handleOk = () => {
-        // setpic(true);
-        message.info(`Update Success`);
-        // settoggle1(true);
-        setIsModalOpen(false);
-        setIsPasswordModalOpen(false);
+    // const handleOk = () => {
+    //     // setpic(true);
+    //     message.info(`Update Success`);
+    //     // settoggle1(true);
+    //     setIsModalOpen(false);
+    //     setIsPasswordModalOpen(false);
+    // };
+
+    const handleOk = async () => {
+        try {
+            const updateRecord = await http.patch(`/api/v1/admin/update`, {
+                first_name: firstname,
+                last_name: lastname,
+            });
+
+            toast.success(updateRecord.data.message);
+            setIsModalOpen(false);
+            setIsPasswordModalOpen(false);
+            const userData = localStorage.getItem('user');
+            const { first_name, last_name } = JSON.parse(userData as string);
+            setFirstname(first_name);
+            setLastname(last_name);
+            localStorage.setItem('user', JSON.stringify({...JSON.parse(userData as string), first_name: firstname, last_name: lastname}));
+          
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if (axiosError.response) {
+                    if (axiosError.response.status === 500) {
+                        toast.error('Server error occurred. Please try again later.');
+                    } else {
+                        toast.error(axiosError.response.data.message);
+                    }
+                } else if (axiosError.request) {
+                    console.log('Request Error', axiosError.request);
+                } else {
+                    console.log('Error', axiosError.message);
+                }
+                // resetForm();
+            }
+        }
     };
+
     const handleChangePassword = async () => {
         if (newPassword !== confirmPassword) {
             toast.error('New password and confirm password do not match.');
@@ -170,18 +208,12 @@ export default function HeaderPage({
         setIsModalOpen(false);
         setIsPasswordModalOpen(false);
     };
-    useEffect(() => {
-        // Fetch data from localStorage
-        const userData = localStorage.getItem('user');
-
-        if (userData) {
-            const { name, email } = JSON.parse(userData);
-            setName(name);
-            setEmail(email);
-        }
-    }, []);
-    const handleUsernameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-        setName(e.target.value);
+    
+    const handleFirstName: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setFirstname(e.target.value);
+    };
+    const handleLastName: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setLastname(e.target.value);
     };
     const handleEmailChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setEmail(e.target.value);
@@ -212,6 +244,19 @@ export default function HeaderPage({
             </Menu.Item>
         </Menu>
     );
+    useEffect(() => {
+        // Fetch data from localStorage
+        const userData = localStorage.getItem('user');
+
+        if (userData) {
+            const { first_name, last_name, email } = JSON.parse(userData);
+            setFirstname(first_name);
+            console.log(first_name);
+            console.log(last_name);
+            setLastname(last_name);
+            setEmail(email);
+        }
+    }, []);
 
     // this const is for handling the toggle of sidebar
     const handletoggle = () => {
@@ -223,8 +268,12 @@ export default function HeaderPage({
             <Flex justify="space-between" className="bg-gray-50  items-center">
                 <Flex>
                     <div>
-                        <Button className="text-xl ml-2 rounded-md" onClick={handletoggle} >
-                            {collapse ? <HiMiniBarsArrowDown className="rotate-[270deg]" /> : <HiMiniBarsArrowDown className="rotate-90" />}
+                        <Button className="text-xl ml-2 rounded-md" onClick={handletoggle}>
+                            {collapse ? (
+                                <HiMiniBarsArrowDown className="rotate-[270deg]" />
+                            ) : (
+                                <HiMiniBarsArrowDown className="rotate-90" />
+                            )}
                         </Button>
                     </div>
                     <div className="text-lg font-semibold">
@@ -232,16 +281,8 @@ export default function HeaderPage({
                     </div>
                 </Flex>
                 <Flex className="h-16" gap="small" align="center">
-                  
-
                     <div className="flex items-center gap-3 mr-2">
-                        <Tooltip
-                            title={
-                                
-                                <div className="flex  items-center">{Name}</div>
-                               
-                            }
-                        >
+                        <Tooltip title={<div className="flex  items-center">{firstname + '' + lastname}</div>}>
                             <div>
                                 {fileList.length === 0 ? (
                                     <Avatar className="" size="large" icon={<UserOutlined />} alt="avatar" />
@@ -289,8 +330,17 @@ export default function HeaderPage({
                                     size="large"
                                     placeholder="Name"
                                     // prefix={<UserOutlined />}
-                                    value={Name}
-                                    onChange={handleUsernameChange}
+                                    value={firstname}
+                                    onChange={handleFirstName}
+                                />
+                                <br></br>
+
+                                <Input
+                                    size="large"
+                                    placeholder="Name"
+                                    // prefix={<UserOutlined />}
+                                    value={lastname}
+                                    onChange={handleLastName}
                                 />
                                 <br></br>
                                 {/* <Input size="large" placeholder="Password" prefix={<RiLockPasswordLine />} /> */}
@@ -353,7 +403,6 @@ export default function HeaderPage({
                             </Flex>
                         </Modal>
 
-                        
                         <Dropdown overlay={menu} trigger={['click']} className="text-xl mr-2 " placement="bottom">
                             <a className="ant-dropdown-link " onClick={(e) => e.preventDefault()}>
                                 <TiArrowSortedDown />

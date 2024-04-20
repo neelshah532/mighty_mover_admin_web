@@ -33,6 +33,30 @@ export const CETAGORIES_DATA_COL=(currentPage:number,pageSize:number):ColumnProp
         align: 'center' as AlignType,
     },
 ];
+export const SUBCATEGORIES_DATA_COL: ColumnProps<Categories>[] = [
+    {
+        title: 'Index',
+        dataIndex: 'id',
+        render: (_, __, index) =>  index + 1,
+        align: 'center' as AlignType,
+    },
+    {
+        title: 'Name',
+        dataIndex: 'name',
+        align: 'center' as AlignType,
+        render: (_, record: Categories) => <Redirect id={record.id} name={record.name} />,
+    },
+    {
+        title: 'Description',
+        dataIndex: 'description',
+        align: 'center' as AlignType,
+    },
+    {
+        title: 'Created Date    ',
+        dataIndex: 'created_at',
+        align: 'center' as AlignType,
+    },
+];
 
 // export const Categories_page: Categories[] = [
 //     {

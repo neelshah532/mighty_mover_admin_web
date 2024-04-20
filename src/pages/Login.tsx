@@ -37,7 +37,8 @@ const Login: React.FC = () => {
             toast.success(response.data.message);
             const obj = {
                 id: response.data.data.id,
-                name: response.data.data.first_name + ' ' + response.data.data.last_name,
+                first_name: response.data.data.first_name,
+                last_name: response.data.data.last_name,
                 email: response.data.data.email,
                 token: response.data.data.jwt,
             };

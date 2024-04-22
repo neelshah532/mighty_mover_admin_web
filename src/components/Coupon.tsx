@@ -10,6 +10,8 @@ import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { AlignType, coupon } from '../assets/dto/data.type';
 import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
+import { setPage } from '../redux/pageSlice';
 
 export default function Coupon() {
     const [modal, setmodal] = useState(false);
@@ -136,9 +138,11 @@ export default function Coupon() {
             setloading(false)
         }
     };
+    const dispatch=useDispatch()
     useEffect(() => {
+        dispatch(setPage("Coupon"))
         fetchData();
-    }, []);
+    }, [dispatch]);
 
     const handleedit = async () => {
         try {
@@ -155,8 +159,8 @@ export default function Coupon() {
         <div>
             <Card title="Coupons" className="m-2">
                 <div className="flex justify-end mb-2">
-                    <Button type="primary" style={{ backgroundColor: '#2967ff' }} onClick={openmodal}>
-                        Add Coupon
+                    <Button style={{ backgroundColor: '#ffffff', color: '#2967ff' }} onClick={openmodal}>
+                       + Add Coupon
                     </Button>
                 </div>
                 {loading ? (

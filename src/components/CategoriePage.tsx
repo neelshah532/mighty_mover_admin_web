@@ -291,8 +291,8 @@ function CategoriePage() {
                 <>
                     <Card title="Categories page" className="m-2">
                         <div className="flex justify-end mb-2">
-                            <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#2967ff' }}>
-                                {ADD_ITEM}
+                            <Button  onClick={handleAdd}style={{ backgroundColor: '#ffffff', color: '#2967ff' }}>
+                                + {ADD_ITEM}
                             </Button>
                         </div>
                         {loading ? (

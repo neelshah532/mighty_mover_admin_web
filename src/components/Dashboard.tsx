@@ -15,8 +15,6 @@ import {
     MONTHLY_TARGET,
 } from '../assets/constant/constant';
 // import { PieChart } from '../components/piechart';
-import { LineChart } from '../components/linechart';
-
 import DoughnutChart from '../components/DoughnutChart';
 
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
@@ -26,6 +24,7 @@ import { ProgressProps } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { setPage } from '../redux/pageSlice';
+import Linechart from './Linechart';
 export default function Dashboard() {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -59,7 +58,7 @@ export default function Dashboard() {
         );
     // const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
     return (
-        <div className="overflow-hidden ">
+        <div className="overflow-hidden container">
             <div className="grid grid-cols-5 gap-2 m-4 w-auto ">
                 {/* <div className="w-full h-full"> */}
                 <Card bordered={false} className="w-full bg-blue-50">
@@ -151,19 +150,19 @@ export default function Dashboard() {
                             <div className="w-full">
                                 <span className="font-semibold text-lg">Line Chart</span>
                                 <div style={{ width: '100%', height: '100%' }}>
-                                    <LineChart />
+                                    <Linechart   />
                                 </div>
                             </div>
                         </div>
                     </Card>
                     <Card className="w-full border border-slate-400 flex flex-col items-center justify-center">
-                            <div className="w-full">
-                                <span className="font-semibold text-lg">Pie Chart</span>
-                            </div>
+                        <div className="w-full">
+                            <span className="font-semibold text-lg">Pie Chart</span>
+                        </div>
                         <div className="flex justify-center items-center">
-                                <div style={{ width: '100%', height: '100%' }}>
-                                    <DoughnutChart />
-                                </div>
+                            <div style={{ width: '100%', height: '100%' }}>
+                                <DoughnutChart />
+                            </div>
                         </div>
                     </Card>
                 </Flex>

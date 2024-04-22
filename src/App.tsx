@@ -1,63 +1,29 @@
-// import { useLayoutEffect, useState } from 'react';
-// import { Routes, Route, Navigate } from 'react-router-dom';
-// import Login from './pages/Login';
-// import Pages from './components/pages';
-// function App() {
-//     const [isLoggedIn, setIsLoggedIn] = useState(false);
-//     const [isLoading, setIsLoading] = useState(false);
-
-//     useLayoutEffect(() => {
-//         const user = sessionStorage.getItem('user');
-//         if (user) {
-//             setIsLoggedIn(true);
-//         }
-//         setIsLoading(false);
-//     }, []);
-
-//     if (isLoading) {
-//         return (
-//             <div className="h-screen bg-white overflow-hidden">
-//                 <h1>Loading...</h1>
-//             </div>
-//         );
-//     }
-
-//     return (
-//         <Routes>
-//             {!isLoggedIn ? <Route path="/login" element={<Login />} /> : <Route path="*" element={<Pages />} />}
-//             {/* Redirect to login if not logged in */}
-//             <Route path="*" element={<Navigate to="/login" />} />
-//         </Routes>
-//     );
-// }
-
-// export default App;
-
-import Login from './pages/Login';
+import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import ProtectedRoutes from './utils/ProtectedRoutes';
-// import Admin from './pages/admin';
-import PublicRoute from './utils/PublicRoute';
-import '.././src/App.css';
-import Settings from './components/Settings';
-import Dashboard from './components/Dashboard';
-import Order_page from './components/Order_page';
-import Payment_page from './components/Payment_page';
-import Blog from './components/Blog';
-import Delivery_partner from './components/Delivery_partner';
-import FixedLayout from './components/Layout';
-import UserPage from './components/UserTable';
-import { LineChart } from './components/linechart';
-import CategoriePage from './components/CategoriePage';
-import SubCategory from './components/SubCategory';
-import City from './components/City';
-import Coupon from './components/Coupon';
-import Show_blog from './components/Show_blog';
-import Vehicle from './components/Vehicle';
-import VIewAdmin from './components/VIewAdmin';
+import Loader from './components/Loader';
+import "./App.css"
+const Login = lazy(() => import('./pages/Login'));
+const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
+const PublicRoute = lazy(() => import('./utils/PublicRoute'));
+const Settings = lazy(() => import('./components/Settings'));
+const Dashboard = lazy(() => import('./components/Dashboard'));
+const Order_page = lazy(() => import('./components/Order_page'));
+const Payment_page = lazy(() => import('./components/Payment_page'));
+const Blog = lazy(() => import('./components/Blog'));
+const Delivery_partner = lazy(() => import('./components/Delivery_partner'));
+const FixedLayout = lazy(() => import('./components/Layout'));
+const UserPage = lazy(() => import('./components/UserTable'));
+const CategoriePage = lazy(() => import('./components/CategoriePage'));
+const SubCategory = lazy(() => import('./components/SubCategory'));
+const City = lazy(() => import('./components/City'));
+const Coupon = lazy(() => import('./components/Coupon'));
+const Show_blog = lazy(() => import('./components/Show_blog'));
+const Vehicle = lazy(() => import('./components/Vehicle'));
+const VIewAdmin = lazy(() => import('./components/VIewAdmin'));
+
 function App() {
     return (
-        <>
+        <Suspense fallback={<Loader />}>
             <Routes>
                 <Route element={<ProtectedRoutes />}>
                     <Route element={<FixedLayout />}>
@@ -68,7 +34,7 @@ function App() {
                         <Route path="/settings/blog-settings" element={<Blog />} />
                         <Route path="/settings/user-settings" element={<UserPage />} />
                         <Route path="/delivery-partner" element={<Delivery_partner />} />
-                        <Route path="/linechart" element={<LineChart />} />
+
                         <Route path="/categories" element={<CategoriePage />} />
                         <Route path="/categories/:id" element={<SubCategory />} />
                         <Route path="/city" element={<City />} />
@@ -81,9 +47,8 @@ function App() {
                 <Route element={<PublicRoute />}>
                     <Route path="/login" element={<Login />} />
                 </Route>
-                {/* <Route path="*" element={<Navigate to="/login" />} /> */}
             </Routes>
-        </>
+        </Suspense>
     );
 }
 

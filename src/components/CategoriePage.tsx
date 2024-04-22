@@ -281,18 +281,18 @@ function CategoriePage() {
                     </Flex>
                 ) : ( */}
                 <>
-                    <Card title="Categories page" className="m-2">
-                        <div className="flex justify-end mb-2">
-                            <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#2967ff' }}>
-                                {ADD_ITEM}
-                            </Button>
-                        </div>
-                        {loading ? (
-                            <Flex gap="middle" className="w-full h-full justify-center ">
-                                <Spin size="large" />
-                            </Flex>
-                        ) : (
-                            <>
+                    <div className="flex justify-end mb-2">
+                        <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#2967ff' }}>
+                            {ADD_ITEM}
+                        </Button>
+                    </div>
+                    {loading ? (
+                        <Flex gap="middle" className="w-full h-full justify-center ">
+                            <Spin size="large" />
+                        </Flex>
+                    ) : (
+                        <>
+                            <Card title="Categories page" className="m-2">
                                 <Table
                                     rowClassName="text-center"
                                     dataSource={categoriesData}
@@ -317,9 +317,9 @@ function CategoriePage() {
                                     total={total}
                                     pageSize={10}
                                 />
-                            </>
-                        )}
-                    </Card>
+                            </Card>
+                        </>
+                    )}
                 </>
                 {/* )} */}
                 <Modal

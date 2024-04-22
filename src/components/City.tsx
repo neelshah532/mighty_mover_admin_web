@@ -222,18 +222,18 @@ function City() {
     };
     return (
         <div>
-            <Card title="Cities" className="m-2">
-                <div className="flex justify-end mb-2">
-                    <Button type="primary" style={{ backgroundColor: '#2967ff' }} onClick={openmodal}>
-                        Add City
-                    </Button>
-                </div>
-                {loading ? (
-                    <Flex gap="middle" className="w-full h-full justify-center ">
-                        <Spin size="large" />
-                    </Flex>
-                ) : (
-                    <>
+            <div className="flex justify-end mb-2">
+                <Button type="primary" style={{ backgroundColor: '#2967ff' }} onClick={openmodal}>
+                    Add City
+                </Button>
+            </div>
+            {loading ? (
+                <Flex gap="middle" className="w-full h-full justify-center ">
+                    <Spin size="large" />
+                </Flex>
+            ) : (
+                <>
+                    <Card title="Cities" className="m-2">
                         <Table
                             rowClassName="text-center"
                             dataSource={citydata}
@@ -244,9 +244,9 @@ function City() {
                             sticky
                             className="w-full"
                         ></Table>
-                    </>
-                )}
-            </Card>
+                    </Card>
+                </>
+            )}
             <Modal
                 title="Add City"
                 open={modal}

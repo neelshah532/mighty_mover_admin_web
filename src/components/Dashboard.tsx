@@ -150,7 +150,7 @@ export default function Dashboard() {
                             <div className="w-full">
                                 <span className="font-semibold text-lg">Line Chart</span>
                                 <div style={{ width: '100%', height: '100%' }}>
-                                    <Linechart   />
+                                    <Linechart />
                                 </div>
                             </div>
                         </div>

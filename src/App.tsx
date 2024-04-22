@@ -1,7 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Loader from './components/Loader';
-import "./App.css"
+import './App.css';
+
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
 const PublicRoute = lazy(() => import('./utils/PublicRoute'));
@@ -20,7 +21,7 @@ const Coupon = lazy(() => import('./components/Coupon'));
 const Show_blog = lazy(() => import('./components/Show_blog'));
 const Vehicle = lazy(() => import('./components/Vehicle'));
 const VIewAdmin = lazy(() => import('./components/VIewAdmin'));
-
+const AdminAdd = lazy(() => import('./components/AdminAdd'));
 function App() {
     return (
         <Suspense fallback={<Loader />}>
@@ -42,6 +43,7 @@ function App() {
                         <Route path="/show_edit_delete" element={<Show_blog />} />
                         <Route path="/vehicle" element={<Vehicle />} />
                         <Route path="/admin" element={<VIewAdmin />} />
+                        <Route path="/admin/add" element={<AdminAdd />}></Route>
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

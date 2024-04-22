@@ -14,7 +14,7 @@ import { TbHelmet } from "react-icons/tb";
 import { GiSteeringWheel } from "react-icons/gi";
 
 import { FaMotorcycle } from "react-icons/fa6";
-
+import { RiUserSettingsLine } from "react-icons/ri";
 
 export const DASHBOARD_CONTENT = [
     {
@@ -933,6 +933,11 @@ export const SIDE_PANEL = {
             navigate:"/drivers",
             icon: <GiSteeringWheel />
         }
+        {
+            name: 'Staff Managment',
+            navigate: '/staff',
+            icon:<RiUserSettingsLine/>,
+        },
         
         
     ],

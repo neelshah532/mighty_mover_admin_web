@@ -62,7 +62,7 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                     className="mt-3 group/item"
                     theme="light"
                     triggerSubMenuAction="hover"
-                    mode="vertical"
+                    mode="inline"
                     selectedKeys={[location.pathname]}
                 >
                     {SIDE_PANEL.menu.map((item) => (

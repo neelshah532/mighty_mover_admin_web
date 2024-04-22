@@ -124,6 +124,13 @@ interface driver {
     shift:string
 }
 
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog,vehicle,driver};
+interface staff_data{
+    id:string;
+    role:string;
+    user:number;
+    description:string;
+
+}
+export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog,vehicle,driver,staff_data};
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

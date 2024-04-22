@@ -130,7 +130,7 @@ export default function Blog() {
                         autoComplete="off"
                         layout="vertical"
                     >
-                        <div className="flex flex-col items-center justify-center w-full border-2 gap-2 p-4">
+                        <div className="flex flex-col items-center justify-center w-full gap-2 p-4">
                             {BLOG_SETTINGS_STRING.settings.map((item) => (
                                 <Form.Item<FieldType>
                                     label={item.label}
@@ -200,32 +200,3 @@ export default function Blog() {
         </>
     );
 }
-// const toolbarOptions = [
-//     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-//     ['blockquote', 'code-block'],
-//     ['link','formula'],
-
-//     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-//     [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-//     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-//     [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-//     [{ 'direction': 'rtl' }],                         // text direction
-
-//     [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-//     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-//     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-//     [{ 'font': [] }],
-//     [{ 'align': [] }],
-
-//     ['clean']                                         // remove formatting button
-//   ];
-//         let quill = new Quill('#editor', {
-//            modules: {
-//               toolbar: toolbarOptions
-//            },
-//            theme: 'snow'
-//         });
-//         function consoleHTMLContent() {
-//            console.log(JSON.stringify(quill.getContents()));
-//         }

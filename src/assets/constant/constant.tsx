@@ -11,7 +11,7 @@ import { TbSettingsCog } from 'react-icons/tb';
 import { FaCity } from "react-icons/fa";
 import { RiCoupon2Fill } from "react-icons/ri";
 import { FaMotorcycle } from "react-icons/fa6";
-
+import { RiUserSettingsLine } from "react-icons/ri";
 
 export const DASHBOARD_CONTENT = [
     {
@@ -926,9 +926,9 @@ export const SIDE_PANEL = {
             icon: <FaMotorcycle />,
         },
         {
-            name: 'Admin',
-            navigate: '/admin',
-            icon: <RiUserSettingsFill />,
+            name: 'Staff Managment',
+            navigate: '/staff-management',
+            icon: <RiUserSettingsLine />,
         },
     ],
     submenu_key: 'settings',

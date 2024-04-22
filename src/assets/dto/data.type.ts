@@ -119,6 +119,13 @@ interface vehicle {
     vehicle_num: string;
     widht: number;
 }
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity, coupon, blog, vehicle, AdminsDisplay };
+interface staff_data{
+    id:string;
+    role:string;
+    user:number;
+    description:string;
+
+}
+export type { Order, DeliveryPartner, User, Categories, city, UpdateCity, coupon, blog, vehicle,staff_data, AdminsDisplay };
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

@@ -1,7 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Loader from './components/Loader';
-import "./App.css"
+import './App.css';
+
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
 const PublicRoute = lazy(() => import('./utils/PublicRoute'));
@@ -19,8 +20,11 @@ const City = lazy(() => import('./components/City'));
 const Coupon = lazy(() => import('./components/Coupon'));
 const Show_blog = lazy(() => import('./components/Show_blog'));
 const Vehicle = lazy(() => import('./components/Vehicle'));
-const VIewAdmin = lazy(() => import('./components/VIewAdmin'));
-
+const StaffManagement = lazy(() => import('./components/Staff'));
+const AdminAdd = lazy(() => import('./components/AdminAdd'));
+const Role_management = lazy(() => import('./components/Role_management'));
+// import Staff from './components/Staff';
+// import Role_management from './components/Role_management';
 function App() {
     return (
         <Suspense fallback={<Loader />}>
@@ -34,14 +38,15 @@ function App() {
                         <Route path="/settings/blog-settings" element={<Blog />} />
                         <Route path="/settings/user-settings" element={<UserPage />} />
                         <Route path="/delivery-partner" element={<Delivery_partner />} />
-
                         <Route path="/categories" element={<CategoriePage />} />
                         <Route path="/categories/:id" element={<SubCategory />} />
                         <Route path="/city" element={<City />} />
                         <Route path="/coupon" element={<Coupon />} />
                         <Route path="/show_edit_delete" element={<Show_blog />} />
                         <Route path="/vehicle" element={<Vehicle />} />
-                        <Route path="/admin" element={<VIewAdmin />} />
+                        <Route path="/staff-management" element={<StaffManagement />} />
+                        <Route path="/staff-management/role-management" element={<Role_management />} />
+                        <Route path="/staff-management/add" element={<AdminAdd />}></Route>
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

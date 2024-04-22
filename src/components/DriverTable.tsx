@@ -105,6 +105,7 @@ export default function DriverTable() {
         message_error(error);
     } finally {
         setLoading(false);
+        setdeleteModalVisible(false)
     }
     }
 

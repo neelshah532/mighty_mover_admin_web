@@ -9,11 +9,15 @@ const Redirect = (record: Partial<Categories>) => {
     return <a onClick={() => navigate(`/categories/${record.id}`)}>{record.name}</a>;
 };
 
-export const CETAGORIES_DATA_COL=(currentPage:number,pageSize:number):ColumnProps<Categories>[] => [
+export const CETAGORIES_DATA_COL = (currentPage: number, pageSize: number): ColumnProps<Categories>[] => [
     {
-        title: 'Index',
+        title: 'Sr.No.',
         dataIndex: 'id',
         render: (_, __, index) => (currentPage - 1) * pageSize + index + 1,
+        // render: (_: any, record: Categories, index: number) => {
+        //     const limit = pagination?.limit ?? 10;
+        //     return <>{(currentPage - 1) * pageSize + index + 1};</>;
+        // },
         align: 'center' as AlignType,
     },
     {
@@ -35,7 +39,7 @@ export const CETAGORIES_DATA_COL=(currentPage:number,pageSize:number):ColumnProp
 ];
 export const SUBCATEGORIES_DATA_COL: ColumnProps<Categories>[] = [
     {
-        title: 'Index',
+        title: 'Sr.No.',
         dataIndex: 'id',
         render: (_, __, index) =>  index + 1,
         align: 'center' as AlignType,

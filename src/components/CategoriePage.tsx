@@ -79,6 +79,22 @@ function CategoriePage() {
             ),
         },
     ];
+    const handleError = (error: Error) => {
+        if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<{
+                status: number;
+                message: string;
+            }>;
+            if (axiosError.response) {
+                console.log('Response Error', axiosError.response);
+                toast.error(axiosError.response.data.message);
+            } else if (axiosError.request) {
+                console.log('Request Error', axiosError.request);
+            } else {
+                console.log('Error', axiosError.message);
+            }
+        }
+    };
     const handleEnable = async (id: string, currentStatus: string) => {
         try {
             const changeStatus = currentStatus === 'active' ? 1 : 0;
@@ -98,20 +114,7 @@ function CategoriePage() {
             }
             //  fetchData();
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
 
@@ -137,20 +140,7 @@ function CategoriePage() {
             setCurrentEditValue('');
             fetchData();
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
 
@@ -177,20 +167,7 @@ function CategoriePage() {
             fetchData();
             setDeleteModalVisible(false);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
     //handle radioButton
@@ -223,20 +200,7 @@ function CategoriePage() {
                 toast.error(res.data.message);
             }
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
 
@@ -247,58 +211,62 @@ function CategoriePage() {
     const fetchData = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await http.get(`/api/v1/Categories?limit=10&page=${(currentPage - 1) * 10}`);
-            console.log(currentPage);
+            const response = await http.get(`/api/v1/Categories`);
+            // console.log(currentPage);
             // console.log(response.data.data);
             setCategoriesData(response.data.data);
             // console.log(total);
             setTotal(response.data.total);
             setLoading(false);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         } finally {
             setLoading(false);
         }
     }, [currentPage]);
-    const HandlePagination = async (page: number) => {
-        console.log(page);
-        try {
-            const skip = (page - 1) * 10;
-            console.log(skip);
-            const response = await http.get(`/api/v1/Categories?limit=10&page=${skip}`);
-            setCategoriesData(response.data.data);
-            setTotal(response.data.total);
-            setCurrentPage(page);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
+    const HandlePagination = useCallback(
+        async (page: number) => {
+            setLoading(true);
+
+            try {
+                const limit = 10;
+                const offset = (page - 1) * limit;
+                const response = await http.get(`/api/v1/Categories`, {
+                    params: {
+                        limit,
+                        offset,
+                        currentPage: page,
+                    },
+                });
+
+                if (response.data?.status === 1) {
+                    setCategoriesData(response.data.data);
+                    setTotal(response.data.total);
+                    setCurrentPage(currentPage);
                 } else {
-                    console.log('Error', axiosError.message);
+                    toast.error(response.data.message);
                 }
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    const axiosError = error as AxiosError<{
+                        status: number;
+                        message: string;
+                    }>;
+                    if (axiosError.response) {
+                        console.log('Response Error', axiosError.response);
+                        toast.error(axiosError.response.data.message);
+                    } else if (axiosError.request) {
+                        console.log('Request Error', axiosError.request);
+                    } else {
+                        console.log('Error', axiosError.message);
+                    }
+                }
+            } finally {
+                setLoading(false);
             }
-        }
-    };
+        },
+        [currentPage]
+    );
     useEffect(() => {
         dispatch(setPage('Category'));
         void fetchData();
@@ -345,7 +313,7 @@ function CategoriePage() {
                                 ></Table>
                                 <Pagination
                                     current={currentPage}
-                                    onChange={(page) => HandlePagination(page)}
+                                    onChange={() => HandlePagination(currentPage)}
                                     total={total}
                                     pageSize={10}
                                 />

@@ -116,6 +116,14 @@ interface vehicle{
 
 }
 
+interface notification {
+    id:string,
+    title:string,
+    date:string,
+    time:string,
+    status:string
+}
+
 interface driver {
     id:string,
     name:string,
@@ -131,6 +139,6 @@ interface staff_data{
     description:string;
 
 }
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog,vehicle,driver,staff_data};
+export type { Order, DeliveryPartner, User, Categories, city, UpdateCity ,coupon,blog,vehicle,driver,staff_data,notification};
 export type { DataType };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

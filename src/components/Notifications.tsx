@@ -4,32 +4,31 @@ import http from '../http/http';
 import { toast } from 'sonner';
 import axios, { AxiosError } from 'axios';
 // import { VEHICLE_DATA_COL } from '../assets/constant/vehicle';
-import { AlignType, driver } from '../assets/dto/data.type';
-import { FaEdit } from 'react-icons/fa';
-import { MdDelete } from 'react-icons/md';
-import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
+import { AlignType, notification } from '../assets/dto/data.type';
+import { DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 import { useForm } from 'antd/es/form/Form';
-import { DRIVER_DATA_COL } from '../assets/constant/driver_constant';
+import { NOTIFICATION_DATA_COL } from '../assets/constant/notifications';
 
-export default function DriverTable() {
+export default function Notifications() {
     const [driverId, setDriverId] = useState('');
     const [loading, setLoading] = useState(false);
     const [vehicledata, setvehicledata] = useState([]);
     const [deleteModalVisible, setdeleteModalVisible] = useState(false)
     const [editmodalVisible, seteditmodalVisible] = useState(false)
+    const [isScheduled,setIsScheduled] = useState(false);
     const [form] = useForm()
     const vehicle_data_col = [
-        ...DRIVER_DATA_COL,
+        ...NOTIFICATION_DATA_COL,
         {
             title: "Status",
             key: "status",
             dataIndex: "status",
             align: 'center' as AlignType,
-            render: (_:driver, record: driver, index: number) => (
+            render: (_, record: notification, index: number) => (
                 <div>
-                    <Button>
-                        Active
-                    </Button>
+                    <div>
+                        {isScheduled ? "Scheduled" : "Published"}
+                    </div>
                 </div>
             )
         },
@@ -37,37 +36,28 @@ export default function DriverTable() {
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
-            render: (_:driver, record:driver) => (
-                <div className="flex gap-2 justify-center">
-                    <div>
-                        <button className="py-3 px-4 bg-blue-500 text-white rounded" onClick={() => editclick(record)}>
-                            <FaEdit />
-                        </button>
-                    </div>
-                    <div>
-                        <button className="py-3 px-4 bg-red-500 text-white rounded" onClick={() => deleteDriver(record)}>
-                            <MdDelete />
-                        </button>
-                    </div>
+            render: (_, record:notification) => (
+                <div>
+                    {isScheduled ? <Button>Edit</Button> : <Button>Details</Button>}
                 </div>
             ),
         },
     ];
 
 
-    const deleteDriver = (record:driver) => {
+    const deleteDriver = (record) => {
         setdeleteModalVisible(true)
         setDriverId(record.id)
     }
 
-    const editclick = (record: driver) => {
+    const editclick = (record: any) => {
         seteditmodalVisible(true)
         form.setFieldsValue(record);
     }
     const fetchData = async () => {
         setLoading(true);
         try {
-            const response = await http.get('/api/v1/driver?limit=10');
+            const response = await http.post('/api/v1/notifications');
             toast.success(response.data.message);
             setvehicledata(response.data.data);
             console.log(response.data.data);
@@ -96,21 +86,21 @@ export default function DriverTable() {
     };
     const handleDeleteConfirm = async () => {
         setLoading(true)
-        try{
+        try {
             const response = await http.delete(`api/v1/driver/deleteAccount/${driverId}`)
             toast.success(response.data.message)
             setLoading(false)
         }
-         catch (error) {
-        message_error(error);
-    } finally {
-        setLoading(false);
-        setdeleteModalVisible(false)
-    }
+        catch (error) {
+            message_error(error);
+        } finally {
+            setLoading(false);
+            setdeleteModalVisible(false)
+        }
     }
 
     const handleedit = async () => {
-        
+
     }
 
     useEffect(() => {
@@ -118,7 +108,7 @@ export default function DriverTable() {
     }, []);
     return (
         <div>
-            <Card title="Driver" className="m-2">
+            <Card title="Notifications" className="m-2">
                 {loading ? (
                     <Flex gap="middle" className="w-full h-full justify-center ">
                         <Spin size="large" />

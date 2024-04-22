@@ -57,6 +57,7 @@ import Vehicle from './components/Vehicle';
 import Staff from './components/Staff';
 import Role_management from './components/Role_management';
 import DriverTable from './components/DriverTable';
+import Notifications from './components/Notifications';
 function App() {
     return (
         <>
@@ -82,6 +83,7 @@ function App() {
 
 
                         <Route path="/drivers" element={<DriverTable/>}/>
+                        <Route path="/notifications" element={<Notifications />} />
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

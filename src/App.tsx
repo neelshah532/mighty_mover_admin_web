@@ -20,10 +20,11 @@ const City = lazy(() => import('./components/City'));
 const Coupon = lazy(() => import('./components/Coupon'));
 const Show_blog = lazy(() => import('./components/Show_blog'));
 const Vehicle = lazy(() => import('./components/Vehicle'));
-const VIewAdmin = lazy(() => import('./components/VIewAdmin'));
+const StaffManagement = lazy(() => import('./components/Staff'));
 const AdminAdd = lazy(() => import('./components/AdminAdd'));
-import Staff from './components/Staff';
-import Role_management from './components/Role_management';
+const Role_management = lazy(() => import('./components/Role_management'));
+// import Staff from './components/Staff';
+// import Role_management from './components/Role_management';
 function App() {
     return (
         <Suspense fallback={<Loader />}>
@@ -37,17 +38,15 @@ function App() {
                         <Route path="/settings/blog-settings" element={<Blog />} />
                         <Route path="/settings/user-settings" element={<UserPage />} />
                         <Route path="/delivery-partner" element={<Delivery_partner />} />
-
                         <Route path="/categories" element={<CategoriePage />} />
                         <Route path="/categories/:id" element={<SubCategory />} />
                         <Route path="/city" element={<City />} />
                         <Route path="/coupon" element={<Coupon />} />
                         <Route path="/show_edit_delete" element={<Show_blog />} />
                         <Route path="/vehicle" element={<Vehicle />} />
-                        <Route path="/staff" element={<Staff />} />
-                        <Route path="/staff/role-management" element={<Role_management />} />
-                        
-
+                        <Route path="/staff-management" element={<StaffManagement />} />
+                        <Route path="/staff-management/role-management" element={<Role_management />} />
+                        <Route path="/staff-management/add" element={<AdminAdd />}></Route>
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

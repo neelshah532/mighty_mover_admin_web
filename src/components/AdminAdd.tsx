@@ -1,11 +1,11 @@
-import React from 'react'
+// import React from 'react'
 
 function AdminAdd() {
   return (
    <>
      <div className='container'>
         <div>
-            
+
         </div>
      </div>
    </>

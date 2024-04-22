@@ -927,13 +927,8 @@ export const SIDE_PANEL = {
         },
         {
             name: 'Staff Managment',
-            navigate: '/staff',
-            icon:<RiUserSettingsLine/>,
-        },
-        {
-            name: 'Admin',
-            navigate: '/admin',
-            icon: <RiUserSettingsFill />,
+            navigate: '/staff-management',
+            icon: <RiUserSettingsLine />,
         },
     ],
     submenu_key: 'settings',

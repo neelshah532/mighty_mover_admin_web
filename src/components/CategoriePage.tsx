@@ -282,8 +282,12 @@ function CategoriePage() {
                 ) : ( */}
                 <>
                     <div className="flex justify-end mb-2">
-                        <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#2967ff' }}>
-                            {ADD_ITEM}
+                        <Button
+                            
+                            onClick={handleAdd}
+                            style={{ color: '#2967ff', backgroundColor: '#ffffff' }}
+                        >
+                            +{ADD_ITEM}
                         </Button>
                     </div>
                     {loading ? (

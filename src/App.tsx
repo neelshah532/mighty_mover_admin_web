@@ -22,6 +22,8 @@ const Show_blog = lazy(() => import('./components/Show_blog'));
 const Vehicle = lazy(() => import('./components/Vehicle'));
 const VIewAdmin = lazy(() => import('./components/VIewAdmin'));
 const AdminAdd = lazy(() => import('./components/AdminAdd'));
+import Staff from './components/Staff';
+import Role_management from './components/Role_management';
 function App() {
     return (
         <Suspense fallback={<Loader />}>
@@ -42,8 +44,10 @@ function App() {
                         <Route path="/coupon" element={<Coupon />} />
                         <Route path="/show_edit_delete" element={<Show_blog />} />
                         <Route path="/vehicle" element={<Vehicle />} />
-                        <Route path="/admin" element={<VIewAdmin />} />
-                        <Route path="/admin/add" element={<AdminAdd />}></Route>
+                        <Route path="/staff" element={<Staff />} />
+                        <Route path="/staff/role-management" element={<Role_management />} />
+                        
+
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

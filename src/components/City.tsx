@@ -9,6 +9,8 @@ import { AlignType, city } from '../assets/dto/data.type';
 import { CITY_DATA_COL } from '../assets/constant/city';
 import { MdDelete } from 'react-icons/md';
 import { FaEdit } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { setPage } from '../redux/pageSlice';
 
 function City() {
     const [citydata, setcitydata] = useState<city[]>([]);
@@ -190,10 +192,11 @@ function City() {
             }
         }
     };
-
+    const dispatch=useDispatch()
     useEffect(() => {
+        dispatch(setPage("City"))
         fetchData();
-    }, [page]);
+    }, [page,dispatch]);
 
     const add_city = async () => {
         console.log(form);
@@ -223,8 +226,8 @@ function City() {
     return (
         <div>
             <div className="flex justify-end mb-2">
-                <Button type="primary" style={{ backgroundColor: '#2967ff' }} onClick={openmodal}>
-                    Add City
+                <Button style={{ backgroundColor: '#ffffff', color: '#2967ff' }} onClick={openmodal}>
+                   + Add City
                 </Button>
             </div>
             {loading ? (

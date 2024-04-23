@@ -1,18 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface Permission {
-    section: string;
-    permission: string[];
+    section: null | string;
+    permission: null | string[];
 }   
 
 interface Role {
-    id: string;
-    name: string;
-    permission: Permission[];
+    id: null | string;
+    name: null | string;
+    permission: null | Permission[];
 }
 
 interface InitialState {
-    roles: Role[];
+    roles: null | Role[];
 }
 
 const localState = localStorage.getItem('user') || '';

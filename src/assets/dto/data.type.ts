@@ -141,6 +141,18 @@ interface addCategories {
 
 }
 
+
+interface Role {
+    section: string;
+    permission: { section: string; permission: string[] }[];
+}
+interface RolePermissionState {
+    roles: Role[];
+}
+
+interface RootState {
+    rolePermission: RolePermissionState;
+}
 export type {
     Order,
     DeliveryPartner,
@@ -155,5 +167,5 @@ export type {
     AdminsDisplay,
     addCategories,
 };
-export type { DataType, FormValues };
+export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype, };

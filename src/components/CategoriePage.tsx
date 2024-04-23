@@ -1,7 +1,7 @@
 import { Button, Card, Descriptions, Flex, Form, Input, Modal, Pagination, Radio, Spin, Table } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
-import { AlignType, Categories, addCategories } from '../assets/dto/data.type';
+import { AlignType, Categories, RootState, addCategories } from '../assets/dto/data.type';
 import { CETAGORIES_DATA_COL } from '../assets/constant/categories';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
@@ -19,17 +19,7 @@ type FieldType = {
     description?: string;
     // status?: string;
 };
-interface Role {
-    section: string;
-    permission: { section: string; permission: string[] }[];
-}
-interface RolePermissionState {
-    roles: Role[];
-}
 
-interface RootState {
-    rolePermission: RolePermissionState;
-}
 function CategoriePage() {
     //use redux to display name of page
 
@@ -57,14 +47,32 @@ function CategoriePage() {
             key: 'status',
             dataIndex: 'status',
             align: 'center',
-            render: (_, record) => (
-                <Button
-                    onClick={() => handleEnable(record.id, String(record.status))}
-                    className={record.status === 'active' ? 'text-green-500' : 'text-red-500'}
-                >
-                    {record.status}
-                </Button>
-            ),
+            render: (_, record) => {
+                const statusPermission = rolePermission.some(
+                    (role: { section: string; permission: string[] }) =>
+                        role.section === 'categories' && role.permission.includes('write')
+                );
+                if (!statusPermission) {
+                    return (
+                        <div className="flex justify-center">
+                            <div
+                                className={`${record.status === 'active' ? 'text-[#25a55e]  p-3 w-28  rounded-[5px]  bg-[#F2FCF7]' : 'text-red-500 p-3 w-28  rounded-[5px]  bg-[#FDF4F5]'}  `}
+                            >
+                                {record.status}
+                            </div>
+                        </div>
+                    );
+                }
+               
+                return (
+                    <Button
+                        onClick={() => handleEnable(record.id, String(record.status))}
+                        className={`${record.status === 'active' ? 'text-green-500' : 'text-red-500'}  `}
+                    >
+                        {record.status}
+                    </Button>
+                );
+            },
         },
         {
             title: 'Action',
@@ -73,10 +81,9 @@ function CategoriePage() {
             render: (_, record: Categories) => {
                 const editPermission = rolePermission.some(
                     (role: { section: string; permission: string[] }) =>
-                        
                         role.section === 'categories' && role.permission.includes('write')
                 );
-                
+
                 console.log(editPermission);
                 const deletePermission = rolePermission.some(
                     (role: { section: string; permission: string[] }) =>
@@ -88,7 +95,7 @@ function CategoriePage() {
                             <button
                                 onClick={() => handleEdit(record, record.id)}
                                 disabled={!editPermission}
-                                className="py-3 px-4 bg-blue-500 text-white rounded"
+                                className={`py-3 px-4 rounded ${editPermission ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500'}`}
                             >
                                 <FaEdit />
                             </button>
@@ -124,6 +131,14 @@ function CategoriePage() {
             },
         },
     ];
+
+// there is a handle addItem Permissions check
+  const addItemPermission = rolePermission.some(
+      (role: { section: string; permission: string[] }) =>
+          role.section === 'categories' && role.permission.includes('delete')
+  );
+
+// there is a HandleError component
     const handleError = (error: Error) => {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{
@@ -319,6 +334,7 @@ function CategoriePage() {
         void fetchData(currentPage);
     }, [dispatch, fetchData, currentPage]);
 
+
     return (
         <>
             <div>
@@ -328,8 +344,9 @@ function CategoriePage() {
                     </Flex>
                 ) : ( */}
                 <>
+                    
                     <div className="flex justify-end mb-2">
-                        <Button onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
+                        <Button disabled={!addItemPermission} onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
                             +{ADD_ITEM}
                         </Button>
                     </div>

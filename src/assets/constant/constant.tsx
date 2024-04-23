@@ -911,22 +911,22 @@ export const SIDE_PANEL = {
         {
             name: 'City',
             navigate: '/city',
-            icon:<FaCity/>,
+            icon: <FaCity />,
         },
         {
             name: 'Coupon',
             navigate: '/coupon',
-            icon:<RiCoupon2Fill/>,
+            icon: <RiCoupon2Fill />,
         },
         {
             name: 'Blog',
             navigate: '/show_edit_delete',
-            icon:<BiSolidMessageEdit/>,
+            icon: <BiSolidMessageEdit />,
         },
         {
             name: 'Vehicle',
             navigate: '/vehicle',
-            icon:<FaMotorcycle/>,
+            icon: <FaMotorcycle />,
         },
         {
             name:"Driver",
@@ -935,15 +935,13 @@ export const SIDE_PANEL = {
         },
         {
             name: 'Staff Managment',
-            navigate: '/staff',
-            icon:<RiUserSettingsLine/>,
+            navigate: '/staff-management',
+            icon: <RiUserSettingsLine />,
         },{
             name:"Notifications",
             navigate:"/notifications",
             icon: < IoIosNotifications />
         }
-        
-        
     ],
     submenu_key: 'settings',
     submenu_title: 'Settings',

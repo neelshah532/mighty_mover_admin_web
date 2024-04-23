@@ -27,10 +27,10 @@ export const options = {
     },
 };
 
-export function LineChart() {
+export default function Linechart() {
     return (
         <>
-            <Line options={options} data={LINE_CHART} width={"6px"}  height={"4px"}/>
+            <Line options={options} data={LINE_CHART} width={'6px'} height={'4px'} />
         </>
     );
 }

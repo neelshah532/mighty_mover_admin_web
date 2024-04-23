@@ -2,9 +2,9 @@
 import { PieChart, Pie, Legend } from 'recharts';
 
 const data01 = [
-    { name: 'Group A', value: 400, fill: '#2967ff' },
-    { name: 'Group B', value: 300, fill: '#7CC674' },
-    { name: 'Group C', value: 400, fill: '#F4C145' },
+    { name: 'Group A', value: 400, fill: '#2967ff', borderColor: 'white', borderWidth: 1 },
+    { name: 'Group B', value: 300, fill: '#7CC674', borderColor: 'white', borderWidth: 1 },
+    { name: 'Group C', value: 400, fill: '#F4C145', borderColor: 'white', borderWidth: 1 },
 ];
 
 export default function App() {
@@ -12,6 +12,7 @@ export default function App() {
         top: 10,
         left: 350,
         lineHeight: '30px',
+        maxHeight: 200,
     };
     return (
         // <div style={{ width: '600px', height: '357px' }}>

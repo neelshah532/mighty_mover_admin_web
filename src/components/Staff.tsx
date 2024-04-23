@@ -59,7 +59,7 @@ function VIewAdmin() {
 
     return (
         <>
-            <div>
+            <div className='container'>
                
                 <>
                     <div className="flex justify-end mb-2">
@@ -101,7 +101,9 @@ function VIewAdmin() {
                                    total={total}
                                    pageSize={10}
                                /> */}
+                               
                             </Card>
+                            
                         </>
                     )}
                 </>

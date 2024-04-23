@@ -2,7 +2,7 @@ import { Button, Card, Flex, Form, Input, Modal, Spin, Table } from 'antd';
 import http from '../http/http';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 import { useForm } from 'antd/es/form/Form';
 import { AlignType, city } from '../assets/dto/data.type';
@@ -11,6 +11,7 @@ import { MdDelete } from 'react-icons/md';
 import { FaEdit } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
+import { ColumnProps } from 'antd/es/table';
 
 function City() {
     const [citydata, setcitydata] = useState<city[]>([]);
@@ -20,7 +21,7 @@ function City() {
     const [form] = useForm();
     const [editform] = useForm();
     const [editId, seteditId] = useState('');
-    const [page, setpage] = useState<number>(1);
+    // const [page, setpage] = useState<number>(1);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
     const [loading, setloading] = useState(false);
@@ -65,7 +66,7 @@ function City() {
         }
     };
 
-    const crud_city_data = [
+    const crud_city_data: ColumnProps<city>[] = [
         ...CITY_DATA_COL,
         {
             title: 'Status',
@@ -108,10 +109,10 @@ function City() {
         },
     ];
 
-    const fetchData = async () => {
+    const fetchData = useCallback( async () => {
         setloading(true);
         try {
-            const response = await http.get(`/api/v1/admin/city?limit=10&page=${page}`);
+            const response = await http.get(`/api/v1/admin/city`);
             setcitydata(response.data.data);
             settotal(response.data.total);
             setloading(false);
@@ -133,7 +134,7 @@ function City() {
         } finally {
             setloading(false);
         }
-    };
+    },[]);
     const handleEnable = async (id: string) => {
         try {
             const response = await http.patch(`/api/v1/admin/city/status/${id}`);
@@ -195,8 +196,8 @@ function City() {
     const dispatch=useDispatch()
     useEffect(() => {
         dispatch(setPage("City"))
-        fetchData();
-    }, [page,dispatch]);
+        void fetchData();
+    }, [dispatch, fetchData]);
 
     const add_city = async () => {
         console.log(form);
@@ -227,7 +228,7 @@ function City() {
         <div>
             <div className="flex justify-end mb-2">
                 <Button style={{ backgroundColor: '#ffffff', color: '#2967ff' }} onClick={openmodal}>
-                   + Add City
+                    + Add City
                 </Button>
             </div>
             {loading ? (
@@ -242,7 +243,7 @@ function City() {
                             dataSource={citydata}
                             pagination={{ pageSize: 10, total: total }}
                             columns={crud_city_data}
-                            onChange={(e) => setpage(e.current)}
+                            onChange={(pagination) => setPage(pagination.current || 1)}
                             bordered
                             sticky
                             className="w-full"

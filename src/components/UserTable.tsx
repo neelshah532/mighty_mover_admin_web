@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect } from 'react';
 import { Empty, Card, Table, Button, Modal } from 'antd';
 import { USER_DATA_COL, USER_TABLE } from '../assets/constant/constant';
@@ -37,12 +34,12 @@ const UserPage: React.FC = () => {
     }, [data]);
 
     const handleEnable = (index: number) => {
-        setEnable(prevEnable => {
+        setEnable((prevEnable) => {
             const updatedEnable = [...prevEnable];
             updatedEnable[index] = !updatedEnable[index];
             return updatedEnable;
         });
-    }
+    };
 
     const handleEdit = (record: User) => {
         setModal2Open(true);
@@ -52,11 +49,11 @@ const UserPage: React.FC = () => {
     const columns: ColumnProps<User>[] = [
         ...USER_DATA_COL,
         {
-            title: "Status",
-            key: "status",
-            dataIndex: "status",
+            title: 'Status',
+            key: 'status',
+            dataIndex: 'status',
             align: 'center' as AlignType,
-            render: (_, record: User, index: number) => (
+            render: (_, __, index: number) => (
                 <div>
                     <Button
                         onClick={() => handleEnable(index)}
@@ -65,7 +62,7 @@ const UserPage: React.FC = () => {
                         {enable[index] ? 'Enable' : 'Disable'}
                     </Button>
                 </div>
-            )
+            ),
         },
         {
             title: 'Action',
@@ -91,7 +88,7 @@ const UserPage: React.FC = () => {
     const handleDelete = (index: number) => {
         console.log(index);
         USER_TABLE.splice(index, 1);
-        setEnable(prevEnable => {
+        setEnable((prevEnable) => {
             const updatedEnable = [...prevEnable];
             updatedEnable.splice(index, 1);
             return updatedEnable;

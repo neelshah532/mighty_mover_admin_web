@@ -55,7 +55,7 @@ const Settings: React.FC = () => (
                             {SETTINGS_STRING.section1.map((item) => (
                                 <Form.Item<FieldType>
                                     label={item.label}
-                                    name={item.name}
+                                    name={item.name as "label" | "name" | "placeholder" | "message" | ["label"] | ["name"] | ["placeholder"] | ["message"] | undefined}
                                     rules={[{ required: item.req, message: item.message }]}
                                 >
                                     <Input placeholder={item.placeholder} />

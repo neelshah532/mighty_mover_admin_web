@@ -88,17 +88,17 @@ interface AdminsDisplay {
     align?: AlignType | undefined;
 }
 interface city {
+    id: string;
     city_name: string;
     country_name: string;
     created_at: string;
-    id: string;
     status: string | boolean;
     align?: AlignType | undefined;
 }
 
 interface UpdateCity {
-    country_name: string;
     city_name: string;
+    country_name: string;
 }
 interface coupon {
     id: string;
@@ -108,6 +108,7 @@ interface coupon {
     discount_type: string;
     discount_value: number;
     expiry_date: string;
+    status: string | boolean;
     max_usage_count: number;
 }
 interface blog {
@@ -153,6 +154,11 @@ interface RolePermissionState {
 interface RootState {
     rolePermission: RolePermissionState;
 }
+interface FileInfo {
+    file: File;
+    
+}
+
 export type {
     Order,
     DeliveryPartner,
@@ -166,6 +172,7 @@ export type {
     staff_data,
     AdminsDisplay,
     addCategories,
+    FileInfo,
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype, };

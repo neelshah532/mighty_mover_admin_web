@@ -1,5 +1,5 @@
-import { Button, Card, Descriptions, Flex, Form, Input, Modal, Pagination, Radio, Spin, Table } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Card,  Flex, Form, Input, Modal,  Radio, Spin, Table } from 'antd';
+import  { useCallback, useEffect, useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
 import { AlignType, Categories, RootState, addCategories } from '../assets/dto/data.type';
 import { CETAGORIES_DATA_COL } from '../assets/constant/categories';
@@ -100,22 +100,7 @@ function CategoriePage() {
                                 <FaEdit />
                             </button>
                         </div>
-                        {/* {rolePermission.some(
-                        (role: { section: string; permission: string[] }) =>
-                            role.section === 'categories' && role.permission.includes('edit')
-                    ) && (
-                        <div>
-                            <button
-                                {...(rolePermission.permission.includes('edit')
-                                    ? { disabled: false }
-                                    : { disabled: true })}
-                                onClick={() => handleEdit(record, record.id)}
-                                className="py-3 px-4 bg-blue-500 text-white rounded"
-                            >
-                                <FaEdit />
-                            </button>
-                        </div>
-                    )} */}
+                        
 
                         <div>
                             <button

@@ -1,25 +1,22 @@
 import { Button, Form, Input, Modal, Radio, Table } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SUBCATEGORIES_DATA_COL } from '../assets/constant/categories';
 import http from '../http/http';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
-import { AlignType, Categories } from '../assets/dto/data.type';
+import { AlignType, Categories, RootState, addCategories } from '../assets/dto/data.type';
 import { ColumnProps } from 'antd/es/table';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { useForm } from 'antd/es/form/Form';
 import { ADD_ITEM, BACK_BUTTON, CANCEL, DELETE, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
 
 const SubCategory = () => {
     //use redux to display name of page
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(setPage('SubCategory'));
-    }, [dispatch]);
 
     //this is id is fetch param from url
     const params = useParams();
@@ -32,46 +29,94 @@ const SubCategory = () => {
     // const [statusId, setStatusId] = useState('');
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
-    const [radioValue, setRadioValue] = useState<number>(0);
+    const [total, setTotal] = useState(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    console.log(rolePermission);
+
     // this is subcategorie const is use for perform on status and actions
 
     const subcetagories_data_col: ColumnProps<Categories>[] = [
-        ...SUBCATEGORIES_DATA_COL,
+        ...SUBCATEGORIES_DATA_COL(currentPage, 10),
         {
             title: 'Status',
             key: 'status',
             dataIndex: 'status',
             align: 'center',
-            render: (_, record) => (
-                <Button
-                    onClick={() => handleEnable(record.id, String(record.status))}
-                    className={record.status === 'active' ? 'text-green-500' : 'text-red-500'}
-                >
-                    {record.status}
-                </Button>
-            ),
+            render: (_, record) => {
+                const statusPermission = rolePermission.some(
+                    (role: { section: string; permission: string[] }) =>
+                        role.section === 'subcategory' && role.permission.includes('write')
+                );
+                if (!statusPermission) {
+                    return (
+                        <div className="flex justify-center">
+                            <div
+                                className={`${record.status === 'active' ? 'text-[#25a55e]  p-3 w-28  rounded-[5px]  bg-[#F2FCF7]' : 'text-red-500 p-3 w-28  rounded-[5px]  bg-[#FDF4F5]'}  `}
+                            >
+                                {record.status}
+                            </div>
+                        </div>
+                    );
+                }
+
+                return (
+                    <Button
+                        onClick={() => handleEnable(record.id, String(record.status))}
+                        className={`${record.status === 'active' ? 'text-green-500' : 'text-red-500'}  `}
+                    >
+                        {record.status}
+                    </Button>
+                );
+            },
         },
         {
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
-            render: (_, record: Categories) => (
-                <div className="flex gap-2 justify-center">
-                    <div>
-                        <button onClick={() => handleEdit(record, record.id)}>
-                            <FaEdit />
-                        </button>
+            render: (_, record: Categories) => {
+                const editPermission = rolePermission.some(
+                    (role: { section: string; permission: string[] }) =>
+                        role.section === 'categories' && role.permission.includes('write')
+                );
+
+                console.log(editPermission);
+                const deletePermission = rolePermission.some(
+                    (role: { section: string; permission: string[] }) =>
+                        role.section === 'categories' && role.permission.includes('delete')
+                );
+                return (
+                    <div className="flex gap-2 justify-center">
+                        <div>
+                            <button
+                                onClick={() => handleEdit(record, record.id)}
+                                disabled={!editPermission}
+                                className={`py-3 px-4 rounded ${editPermission ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500'}`}
+                            >
+                                <FaEdit />
+                            </button>
+                        </div>
+
+                        <div>
+                            <button
+                                onClick={() => handleDelete(record.id)}
+                                disabled={!deletePermission}
+                                className="py-3 px-4 bg-red-500 text-white rounded"
+                            >
+                                <MdDelete />
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <button onClick={() => handleDelete(record.id)}>
-                            <MdDelete />
-                        </button>
-                    </div>
-                </div>
-            ),
+                );
+            },
         },
     ];
-
+    // there is a handle addItem Permissions check
+    const addItemPermission = rolePermission.some(
+        (role: { section: string; permission: string[] }) =>
+            role.section === 'categories' && role.permission.includes('delete')
+    );
     //handle status change of subcategories
     const handleEnable = async (id: string, currentStatus: string) => {
         // setStatusId(id);
@@ -86,7 +131,7 @@ const SubCategory = () => {
                 toast.success(statusUpdate.data.message);
                 console.log(statusUpdate.data.message);
                 console.log(statusUpdate.data.data.status);
-                fetchData();
+                fetchData(currentPage);
             } else {
                 toast.error(statusUpdate.data.message);
             }
@@ -130,7 +175,7 @@ const SubCategory = () => {
             );
             toast.success(updateRecord.data.message);
             setCurrentEditValue('');
-            fetchData();
+            fetchData(currentPage);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{
@@ -175,7 +220,7 @@ const SubCategory = () => {
         try {
             const deleteRecord = await http.delete(`/api/v1/subcategories/${deleteItemId}/?category_id=${params.id}`);
             console.log(deleteRecord.data);
-            fetchData();
+            fetchData(currentPage);
             setDeleteModalVisible(false);
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -207,20 +252,22 @@ const SubCategory = () => {
 
     // handle to add-subcategory model to add subcategories
 
-    const handleAdditems = async () => {
+    const handleAdditems = async (addparams: addCategories) => {
         // console.log('add item');
+        console.log('Formdata:', addparams);
         // setAddItem(false);
         try {
             const res = await http.post(`/api/v1/subcategories/?category_id=${params.id}`, {
-                ...addForm.getFieldsValue(),
-                status: radioValue,
+                name: addparams?.name,
+                description: addparams?.description,
+                status: addparams?.status,
             });
             console.log(res);
             if (res.status === 200) {
                 toast.success(res.data.message);
                 setAddItem(false);
                 addForm.resetFields();
-                fetchData();
+                fetchData(currentPage);
                 console.log(res.data.data);
             } else {
                 toast.error(res.data.message);
@@ -243,43 +290,47 @@ const SubCategory = () => {
         }
     };
     //handle radioButton
-    const handleRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setRadioValue(e.target.value);
-    };
+
     // create fetchData function to fetch data from api
-    const fetchData = useCallback(async () => {
-        // setLoading(true);
-        try {
-            const response = await http.get(`api/v1/subcategories/?category_id=${params.id}`);
-            // const data = await response.json();
-            // console.log(response);
-            setCategoriesData(response.data.data);
-            // setLoading(false);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
+    const fetchData = useCallback(
+        async (page: number) => {
+            // setLoading(true);
+            try {
+                const response = await http.get(`api/v1/subcategories/?category_id=${params.id}`);
+                // const data = await response.json();
+                // console.log(response);
+                setCategoriesData(response.data.data);
+                setTotal(response.data.total);
+                setCurrentPage(page);
+                // setLoading(false);
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    const axiosError = error as AxiosError<{
+                        status: number;
+                        message: string;
+                    }>;
+                    if (axiosError.response) {
+                        console.log('Response Error', axiosError.response);
+                        toast.error(axiosError.response.data.message);
+                    } else if (axiosError.request) {
+                        console.log('Request Error', axiosError.request);
+                    } else {
+                        console.log('Error', axiosError.message);
+                    }
                 }
             }
-        }
-        // finally {
-        //     setLoading(false);
-        // }
-    }, [params.id]);
+            // finally {
+            //     setLoading(false);
+            // }
+        },
+        [params.id]
+    );
 
     //use effect to load api
     useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+        dispatch(setPage('SubCategory'));
+        void fetchData(currentPage);
+    }, [fetchData, dispatch, currentPage]);
 
     //handle to back a categories page
     const handleBack = () => {
@@ -292,13 +343,22 @@ const SubCategory = () => {
             {/* <Card title="SubCategory page" className="m-2"> */}
             <div className="flex justify-end mb-4 gap-5">
                 <div className=" ">
-                    <Button type="primary" onClick={handleBack} style={{ backgroundColor: '#2967ff' }}>
+                    <Button
+                        type="primary"
+                        onClick={handleBack}
+                        style={{ color: '#2967ff', backgroundColor: '#ffffff' }}
+                    >
                         {BACK_BUTTON}
                     </Button>
                 </div>
                 <div className="">
-                    <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#2967ff' }}>
-                        {ADD_ITEM}
+                    <Button
+                        disabled={!addItemPermission}
+                        type="primary"
+                        onClick={handleAdd}
+                        style={{ color: '#2967ff', backgroundColor: '#ffffff' }}
+                    >
+                        +{ADD_ITEM}
                     </Button>
                 </div>
             </div>
@@ -306,9 +366,16 @@ const SubCategory = () => {
             <Table
                 rowClassName="text-center"
                 dataSource={categoriesData}
-                pagination={{ pageSize: 10 }}
+                pagination={{
+                    pageSize: 10,
+                    total: total,
+                    current: currentPage,
+                    onChange: (page) => {
+                        fetchData(page);
+                    },
+                }}
                 columns={subcetagories_data_col}
-                bordered
+                // bordered
                 sticky
                 className="w-full rounded-lg shadow-lg
                     "
@@ -355,8 +422,8 @@ const SubCategory = () => {
 
             {/* modal for add subcategory  */}
 
-            <Modal title="Add SubCategory" open={addItem} footer={null}>
-                <Form form={addForm} autoComplete="off" className="w-full ">
+            <Modal title="Add SubCategory" open={addItem} onCancel={handleAddItemModelClose} footer={null}>
+                <Form form={addForm} onFinish={handleAdditems} autoComplete="off" className="w-full ">
                     <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input name!' }]}>
                         <Input />
                     </Form.Item>
@@ -372,19 +439,15 @@ const SubCategory = () => {
                         name="status"
                         rules={[{ required: true, message: 'Please select your status' }]}
                     >
-                        <Radio.Group value={radioValue} onChange={() => handleRadioButton} defaultValue={0}>
-                            <Radio value={0} onClick={() => console.log(0)}>
-                                active
-                            </Radio>
-                            <Radio value={1} onClick={() => console.log(1)}>
-                                inactive
-                            </Radio>
+                        <Radio.Group>
+                            <Radio value={0}>active</Radio>
+                            <Radio value={1}>inactive</Radio>
                         </Radio.Group>
                     </Form.Item>
 
                     <div className="flex gap-3 justify-end">
                         <Button onClick={handleAddItemModelClose}>{CANCEL}</Button>
-                        <Button onClick={handleAdditems}>{ADD_ITEM}</Button>
+                        <Button htmlType="submit">{ADD_ITEM}</Button>
                     </div>
                 </Form>
             </Modal>

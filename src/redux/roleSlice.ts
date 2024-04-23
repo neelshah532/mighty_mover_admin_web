@@ -35,8 +35,9 @@ const rolePermissionSlice = createSlice({
         setRoles: (state, action) => {
             state.roles = action.payload;
         },
+        resetState: () => initialState,
     },
 });
 
-export const { setRoles } = rolePermissionSlice.actions;
+export const { setRoles, resetState } = rolePermissionSlice.actions;
 export default rolePermissionSlice.reducer;

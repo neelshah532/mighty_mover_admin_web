@@ -1,9 +1,11 @@
-import { lazy, Suspense } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Loader from './components/Loader';
 import './App.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './assets/dto/data.type';
+
+import { resetState } from './redux/roleSlice'; 
 
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
@@ -29,30 +31,20 @@ const Role_management = lazy(() => import('./components/Role_management'));
 // import Role_management from './components/Role_management';
 function App() {
     const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
-    // console.log(rolePermission);
-    // const sectionName = [
-    //     'order',
-    //     'payment',
-    //     'settings',
-    //     'blog',
-    //     'delivery-partner',
-    //     'categories',
-    //     'city',
-    //     'coupon',
-    //     'show_edit_delete',
-    //     'vehicle',
-    //     'staff-management',
-    //     'staff-management/role-management',
-    //     'staff-management/add',
-    //     'staff-management',
-    // ];
-    // // const section = rolePermission[0].section.includes(sectionName.join(','));
-
-    // const sectionPermission = sectionName.filter((name) => rolePermission[0].section.includes(name));
-    // console.log(sectionPermission);
+ 
     console.log(rolePermission);
     const sectionPermission = rolePermission.map((role) => role.section);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
+useEffect(() => {
+    const localState = localStorage.getItem('user');
+    if (!localState) {
+        // Reset Redux state and redirect to login route if localStorage is cleared
+        dispatch(resetState());
+        navigate('/login');
+    }
+}, [dispatch, navigate]);
     return (
         <Suspense fallback={<Loader />}>
             <Routes>

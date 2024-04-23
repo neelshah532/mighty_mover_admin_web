@@ -72,6 +72,13 @@ interface Categories {
     created_at: string;
     align?: AlignType | undefined;
 }
+interface FormValues {
+    first_name: string;
+    last_name: string;
+    email: string;
+    role_name: string;
+    password: string;
+}
 interface AdminsDisplay {
     id: string;
     first_name: string;
@@ -127,5 +134,5 @@ interface staff_data{
 
 }
 export type { Order, DeliveryPartner, User, Categories, city, UpdateCity, coupon, blog, vehicle,staff_data, AdminsDisplay };
-export type { DataType };
-export { shipdata, paymenttype, deliverypartner, vehicletype };
+export type { DataType, FormValues };
+export { shipdata, paymenttype, deliverypartner, vehicletype, };

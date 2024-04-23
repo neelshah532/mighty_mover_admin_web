@@ -1,12 +1,11 @@
-import logo from "../assets/Images/Group 1.svg"
+import { Spin } from 'antd';
+
 export default function Loader() {
-  return (
-    <>
-        <div className="w-full h-lvh bg-amber-50 flex justify-center items-center">
-            <div className="animate-ping">
-                <img src={logo} className="scale-200"></img>
+    return (
+        <>
+            <div className="fixed top-0 left-0 w-full h-full bg-slate-100 bg-opacity-70 flex justify-center items-center z-50">
+                <Spin size="large" />
             </div>
-        </div>
-    </>
-  )
+        </>
+    );
 }

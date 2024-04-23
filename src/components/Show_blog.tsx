@@ -2,8 +2,8 @@ import { Button, Card, Flex, Form, FormProps, Image, Input, Modal, Spin, Table, 
 import { BLOG_DATA } from '../assets/constant/blog_constant';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-import { AlignType, blog } from '../assets/dto/data.type';
-import { useEffect, useState } from 'react';
+import { AlignType, FileInfo, blog } from '../assets/dto/data.type';
+import { useCallback, useEffect, useState } from 'react';
 import http from '../http/http';
 import { toast } from 'sonner';
 import axios, { AxiosError } from 'axios';
@@ -17,6 +17,9 @@ import ReactQuill, { Quill } from 'react-quill';
 import { useForm } from 'antd/es/form/Form';
 import formhttp from '../http/Form_data';
 import { UploadOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { setPage } from '../redux/pageSlice';
+import { ColumnProps } from 'antd/es/table';
 
 export default function Show_blog() {
     const [loading, setloading] = useState(false);
@@ -24,13 +27,13 @@ export default function Show_blog() {
     const [deletemodal, setdeletemodal] = useState(false);
     const [deleteid, setdeleteid] = useState('');
     const [openeditmodal, seteditmodal] = useState(false);
-    const [editid,seteditid]=useState("")
-    const [editdata, seteditdata] = useState({});
+    const [editid, seteditid] = useState('');
+    // const [editdata, seteditdata] = useState({});
     const [data] = useForm();
-    const [value, setValue] = useState<valueinterface>({ title: '', description: '', author_name: '', documentId: '' });
+    // const [value, setValue] = useState<valueinterface>({ title: '', description: '', author_name: '', documentId: '' });
     const [imgid, setimgid] = useState('');
     const [imgurl, setimgurl] = useState('');
-    const [fk_document,setfk_document]=useState("")
+    const [fk_document, setfk_document] = useState('');
     interface valueinterface {
         title: string;
         description: string;
@@ -75,29 +78,27 @@ export default function Show_blog() {
                 documentId: imgid,
             });
             toast.success(response.data.message);
-            fetchData()
+            fetchData();
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
         data.resetFields();
     };
 
-    const handlechange = async (info: any) => {
+    const handlechange = async (info: FileInfo) => {
         const { file } = info;
         const formData = new FormData();
-        const fileData: any = file;
-        console.log(fileData);
         formData.append('type', 'blog');
-        formData.append('image', fileData);
+        formData.append('image', file);
         try {
             const response = await formhttp.patch(`/api/v1/document/update/${fk_document}`, formData);
             setimgid(response.data.data.document_id);
-            setimgurl(response.data.data.document)
+            setimgurl(response.data.data.document);
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
-    const fetchData = async () => {
+    const fetchData = useCallback( async () => {
         setloading(true);
         try {
             const response = await blog_admin();
@@ -105,18 +106,18 @@ export default function Show_blog() {
             setAllBlogData(response.data.data);
             setloading(false);
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         } finally {
             setloading(false);
         }
-    };
+    },[]);
 
-    const edit_modal_open_function = async (id: any) => {
-        seteditid(id)
+    const edit_modal_open_function = async (id: string) => {
+        seteditid(id);
         seteditmodal(!openeditmodal);
         try {
             const response = await blog_admin_get_one(id);
-            setfk_document(response.data.data.fk_document)
+            setfk_document(response.data.data.fk_document);
             console.log(response.data.data);
             setimgurl(response.data.data.document);
             data.setFieldsValue({
@@ -124,15 +125,13 @@ export default function Show_blog() {
                 author_name: response.data.data.author_name,
                 description: response.data.data.description,
             });
-            data.setFieldValue("description", response.data.data.description.ops.insert.split("").splice(0,10).join())
-          
-            
+            data.setFieldValue('description', response.data.data.description.ops.insert.split('').splice(0, 10).join());
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
 
-    const message_error = (error: any) => {
+    const message_error = (error: Error) => {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{
                 status: number;
@@ -148,9 +147,11 @@ export default function Show_blog() {
         }
     };
 
+    const dispatch = useDispatch();
     useEffect(() => {
+        dispatch(setPage('Blog'));
         fetchData();
-    }, []);
+    }, [dispatch, fetchData]);
 
     const handledelete = async () => {
         try {
@@ -159,7 +160,7 @@ export default function Show_blog() {
             setdeleteid('');
             fetchData();
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
     const handlemodaldelete = (id: string) => {
@@ -167,8 +168,7 @@ export default function Show_blog() {
         setdeletemodal(!deletemodal);
     };
 
-
-    const blogdata = [
+    const blogdata : ColumnProps<blog>[] = [
         ...BLOG_DATA,
         {
             title: 'Action',
@@ -178,15 +178,17 @@ export default function Show_blog() {
                 <div className="flex gap-2 justify-center">
                     <div>
                         <button
-                        className="py-3 px-4 bg-blue-500 text-white rounded" 
-                        onClick={() => edit_modal_open_function(record.id)}>
+                            className="py-3 px-4 bg-blue-500 text-white rounded"
+                            onClick={() => edit_modal_open_function(record.id)}
+                        >
                             <FaEdit />
                         </button>
                     </div>
                     <div>
                         <button
-                         className="py-3 px-4 bg-red-500 text-white rounded"
-                        onClick={() => handlemodaldelete(record.id)}>
+                            className="py-3 px-4 bg-red-500 text-white rounded"
+                            onClick={() => handlemodaldelete(record.id)}
+                        >
                             <MdDelete />
                         </button>
                     </div>
@@ -230,7 +232,13 @@ export default function Show_blog() {
             >
                 <p>{DELETE_CONFIRMATION}</p>
             </Modal>
-            <Modal title="Edit Blog" width={900} open={openeditmodal} footer={false} onCancel={()=>seteditmodal(false )}>
+            <Modal
+                title="Edit Blog"
+                width={900}
+                open={openeditmodal}
+                footer={false}
+                onCancel={() => seteditmodal(false)}
+            >
                 <div className="flex justify-center items-center mt-2">
                     <Form
                         form={data}
@@ -245,7 +253,16 @@ export default function Show_blog() {
                                 <Form.Item<FieldNamesType>
                                     key={index}
                                     label={item.label}
-                                    name={item.name}
+                                    name={
+                                        item.name as
+                                            | 'label'
+                                            | 'value'
+                                            | 'children'
+                                            | ['label']
+                                            | ['value']
+                                            | ['children']
+                                            | undefined
+                                    }
                                     rules={[{ required: false, message: item.message }]}
                                     className="w-1/2"
                                 >
@@ -266,7 +283,7 @@ export default function Show_blog() {
                                         <Upload
                                             action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                                             listType="picture"
-                                            customRequest={handlechange}
+                                            customRequest={() => void handlechange}
                                         >
                                             <Button icon={<UploadOutlined />}>Upload New Banner</Button>
                                         </Upload>
@@ -281,14 +298,10 @@ export default function Show_blog() {
                                 className="w-1/2"
                                 style={{ fontSize: '100px' }}
                             >
-                                <ReactQuill
-                                    theme="snow"
-                                    className="h-[300px] "
-                                    id="quill"
-                                />
+                                <ReactQuill theme="snow" className="h-[300px] " id="quill" />
                             </Form.Item>
                             <Form.Item className="w-1/2 mt-6">
-                                <Button type="primary" htmlType="submit" className="bg-blue-500 w-full" >
+                                <Button type="primary" htmlType="submit" className="bg-blue-500 w-full">
                                     Submit
                                 </Button>
                             </Form.Item>

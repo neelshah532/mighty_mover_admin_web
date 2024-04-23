@@ -1,7 +1,7 @@
-import { Button, Card, Flex, Form, Input, Modal, Pagination, Radio, Spin, Table } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Card,  Flex, Form, Input, Modal,  Radio, Spin, Table } from 'antd';
+import  { useCallback, useEffect, useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
-import { AlignType, Categories } from '../assets/dto/data.type';
+import { AlignType, Categories, RootState, addCategories } from '../assets/dto/data.type';
 import { CETAGORIES_DATA_COL } from '../assets/constant/categories';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
@@ -10,7 +10,7 @@ import { ADD_ITEM, CANCEL, DELETE, DELETE_CONFIRMATION, EDIT_ITEM } from '../ass
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import http from '../http/http';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
 // import Loader from './Loader';
 type FieldType = {
@@ -19,6 +19,7 @@ type FieldType = {
     description?: string;
     // status?: string;
 };
+
 function CategoriePage() {
     //use redux to display name of page
 
@@ -32,53 +33,113 @@ function CategoriePage() {
     const [addItem, setAddItem] = useState(false);
     const [CurrentEditValue, setCurrentEditValue] = useState('');
     const [loading, setLoading] = useState(false);
-    const [radioValue, setRadioValue] = useState<number>(1);
+    // const [radioValue, setRadioValue] = useState<number>(0);
     const [form] = useForm();
     const [addForm] = useForm();
     const dispatch = useDispatch();
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    console.log(rolePermission);
     // const categories_page = Categories_page;
     const cetagories_data_col: ColumnProps<Categories>[] = [
-        ...CETAGORIES_DATA_COL(currentPage, 5),
+        ...CETAGORIES_DATA_COL(currentPage, 10),
         {
             title: 'Status',
             key: 'status',
             dataIndex: 'status',
             align: 'center',
-            render: (_, record) => (
-                <Button
-                    onClick={() => handleEnable(record.id, String(record.status))}
-                    className={record.status === 'active' ? 'text-green-500' : 'text-red-500'}
-                >
-                    {record.status}
-                </Button>
-            ),
+            render: (_, record) => {
+                const statusPermission = rolePermission.some(
+                    (role: { section: string; permission: string[] }) =>
+                        role.section === 'categories' && role.permission.includes('write')
+                );
+                if (!statusPermission) {
+                    return (
+                        <div className="flex justify-center">
+                            <div
+                                className={`${record.status === 'active' ? 'text-[#25a55e]  p-3 w-28  rounded-[5px]  bg-[#F2FCF7]' : 'text-red-500 p-3 w-28  rounded-[5px]  bg-[#FDF4F5]'}  `}
+                            >
+                                {record.status}
+                            </div>
+                        </div>
+                    );
+                }
+               
+                return (
+                    <Button
+                        onClick={() => handleEnable(record.id, String(record.status))}
+                        className={`${record.status === 'active' ? 'text-green-500' : 'text-red-500'}  `}
+                    >
+                        {record.status}
+                    </Button>
+                );
+            },
         },
         {
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
-            render: (_, record: Categories) => (
-                <div className="flex gap-2 justify-center">
-                    <div>
-                        <button
-                            onClick={() => handleEdit(record, record.id)}
-                            className="py-3 px-4 bg-blue-500 text-white rounded"
-                        >
-                            <FaEdit />
-                        </button>
+            render: (_, record: Categories) => {
+                const editPermission = rolePermission.some(
+                    (role: { section: string; permission: string[] }) =>
+                        role.section === 'categories' && role.permission.includes('write')
+                );
+
+                console.log(editPermission);
+                const deletePermission = rolePermission.some(
+                    (role: { section: string; permission: string[] }) =>
+                        role.section === 'categories' && role.permission.includes('delete')
+                );
+                return (
+                    <div className="flex gap-2 justify-center">
+                        <div>
+                            <button
+                                onClick={() => handleEdit(record, record.id)}
+                                disabled={!editPermission}
+                                className={`py-3 px-4 rounded ${editPermission ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500'}`}
+                            >
+                                <FaEdit />
+                            </button>
+                        </div>
+                        
+
+                        <div>
+                            <button
+                                onClick={() => handleDelete(record.id)}
+                                disabled={!deletePermission}
+                                className="py-3 px-4 bg-red-500 text-white rounded"
+                            >
+                                <MdDelete />
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <button
-                            onClick={() => handleDelete(record.id)}
-                            className="py-3 px-4 bg-red-500 text-white rounded"
-                        >
-                            <MdDelete />
-                        </button>
-                    </div>
-                </div>
-            ),
+                );
+            },
         },
     ];
+
+// there is a handle addItem Permissions check
+  const addItemPermission = rolePermission.some(
+      (role: { section: string; permission: string[] }) =>
+          role.section === 'categories' && role.permission.includes('delete')
+  );
+
+// there is a HandleError component
+    const handleError = (error: Error) => {
+        if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<{
+                status: number;
+                message: string;
+            }>;
+            if (axiosError.response) {
+                console.log('Response Error', axiosError.response);
+                toast.error(axiosError.response.data.message);
+            } else if (axiosError.request) {
+                console.log('Request Error', axiosError.request);
+            } else {
+                console.log('Error', axiosError.message);
+            }
+        }
+    };
     const handleEnable = async (id: string, currentStatus: string) => {
         try {
             const changeStatus = currentStatus === 'active' ? 1 : 0;
@@ -92,36 +153,16 @@ function CategoriePage() {
                 toast.success(statusUpdate.data.message);
                 console.log(statusUpdate.data.message);
                 console.log(statusUpdate.data.data.status);
-                fetchData();
+                fetchData(currentPage);
             } else {
                 toast.error(statusUpdate.data.message);
             }
             //  fetchData();
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
 
-    // const handleEnable = (index: number) => {
-    //     setEnable((prevEnable) => {
-    //         const updatedEnable = [...prevEnable];
-    //         updatedEnable[index] = !updatedEnable[index];
-    //         return updatedEnable;
-    //     });
-    // };
     const handleEdit = (record: Categories, id: string) => {
         setModal2Open(true);
         form.setFieldsValue(record);
@@ -135,22 +176,9 @@ function CategoriePage() {
             const updateRecord = await http.patch(`/api/v1/Categories/${CurrentEditValue}`, form.getFieldsValue({}));
             toast.success(updateRecord.data.message);
             setCurrentEditValue('');
-            fetchData();
+            fetchData(currentPage);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
 
@@ -174,29 +202,16 @@ function CategoriePage() {
         try {
             const deleteRecord = await http.delete(`/api/v1/Categories/${deleteItemId}`);
             console.log(deleteRecord.data);
-            fetchData();
+            fetchData(currentPage);
             setDeleteModalVisible(false);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
     //handle radioButton
-    const handleRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setRadioValue(e.target.value);
-    };
+    // const handleRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setRadioValue(parseInt(e.target.value));
+    // };
 
     //handle add item
     const handleAdd = () => {
@@ -205,38 +220,30 @@ function CategoriePage() {
     const handleAddItemModelClose = () => {
         setAddItem(false);
     };
-    const handleAdditems = async () => {
+    const handleAdditems = async (params: addCategories) => {
+        console.log('Formdata:', params);
+
         // console.log('add item');
         // setAddItem(false);
         try {
-            const res = await http.post('/api/v1/Categories', { ...addForm.getFieldsValue(), status: radioValue });
-            console.log(res);
-            console.log(res.data.data.status);
+            // console.log(radioValue);
+            const res = await http.post('/api/v1/Categories', {
+                name: params?.name,
+                description: params?.description,
+                status: params?.status,
+            });
+
             if (res.status === 200) {
                 toast.success(res.data.message);
                 setAddItem(false);
                 addForm.resetFields();
-
-                fetchData();
+                fetchData(currentPage);
                 console.log(res.data.data);
             } else {
                 toast.error(res.data.message);
             }
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
 
@@ -244,65 +251,74 @@ function CategoriePage() {
     const [categoriesData, setCategoriesData] = useState<Categories[]>([]);
 
     // api calling section
-    const fetchData = useCallback(async () => {
-        setLoading(true);
-        try {
-            const response = await http.get(`/api/v1/Categories?limit=10&page=${(currentPage - 1) * 10}`);
-            console.log(currentPage);
-            // console.log(response.data.data);
-            setCategoriesData(response.data.data);
-            // console.log(total);
-            setTotal(response.data.total);
-            setLoading(false);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
+    const fetchData = useCallback(
+        async (page: number) => {
+            setLoading(true);
+            try {
+                const skip = (page - 1) * 10;
+                const response = await http.get(`/api/v1/Categories?limit=10&offset=${skip}`);
+                console.log(currentPage);
+                // console.log(response.data.data);
+                setCategoriesData(response.data.data);
+                // console.log(total);
+                setCurrentPage(page);
+
+                setTotal(response.data.total);
+                setLoading(false);
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    const axiosError = error as AxiosError<{
+                        status: number;
+                        message: string;
+                    }>;
+                    if (axiosError.response) {
+                        console.log('Response Error', axiosError.response);
+                        toast.error(axiosError.response.data.message);
+                    } else if (axiosError.request) {
+                        console.log('Request Error', axiosError.request);
+                    } else {
+                        console.log('Error', axiosError.message);
+                    }
                 }
+            } finally {
+                setLoading(false);
             }
-        } finally {
-            setLoading(false);
-        }
-    }, [currentPage]);
-    const HandlePagination = async (page: number) => {
-        console.log(page);
-        try {
-            const skip = (page - 1) * 10;
-            console.log(skip);
-            const response = await http.get(`/api/v1/Categories?limit=10&page=${skip}`);
-            setCategoriesData(response.data.data);
-            setTotal(response.data.total);
-            setCurrentPage(page);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
-        }
-    };
+        },
+        [currentPage]
+    );
+
+    // const HandlePagination = async (page: number) => {
+    //     console.log(page);
+    //     try {
+    //         const skip = (page - 1) * 10;
+    //         console.log(skip);
+    //         const response = await http.get(`/api/v1/Categories?limit=10&offset=${skip}`);
+    //         setCategoriesData(response.data.data);
+    //         setTotal(response.data.total);
+    //         setCurrentPage(page);
+    //         // fetchData();
+    //     } catch (error) {
+    //         if (axios.isAxiosError(error)) {
+    //             const axiosError = error as AxiosError<{
+    //                 status: number;
+    //                 message: string;
+    //             }>;
+    //             if (axiosError.response) {
+    //                 console.log('Response Error', axiosError.response);
+    //                 toast.error(axiosError.response.data.message);
+    //             } else if (axiosError.request) {
+    //                 console.log('Request Error', axiosError.request);
+    //             } else {
+    //                 console.log('Error', axiosError.message);
+    //             }
+    //         }
+    //     }
+    // };
     useEffect(() => {
         dispatch(setPage('Category'));
-        void fetchData();
+        void fetchData(currentPage);
     }, [dispatch, fetchData, currentPage]);
+
 
     return (
         <>
@@ -313,45 +329,45 @@ function CategoriePage() {
                     </Flex>
                 ) : ( */}
                 <>
-                    <Card title="Categories page" className="m-2">
-                        <div className="flex justify-end mb-2">
-                            <Button type="primary" onClick={handleAdd} style={{ backgroundColor: '#2967ff' }}>
-                                {ADD_ITEM}
-                            </Button>
-                        </div>
-                        {loading ? (
-                            <Flex gap="middle" className="w-full h-full justify-center ">
-                                <Spin size="large" />
-                            </Flex>
-                        ) : (
-                            <>
+                    
+                    <div className="flex justify-end mb-2">
+                        <Button disabled={!addItemPermission} onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
+                            +{ADD_ITEM}
+                        </Button>
+                    </div>
+                    {loading ? (
+                        <Flex gap="middle" className="w-full h-full justify-center ">
+                            <Spin size="large" />
+                        </Flex>
+                    ) : (
+                        <>
+                            <Card title="Categories page" className="m-2">
                                 <Table
                                     rowClassName="text-center"
                                     dataSource={categoriesData}
-                                    // pagination={{
-                                    //     pageSize: 5,
-                                    //     total: total,
-                                    //     current: currentPage,
-                                    //     onChange: (page) =>{
-                                    //         setCurrentPage(page)
-                                    //         fetchData();
-                                    //     },
-                                    // }}
-                                    pagination={false}
+                                    pagination={{
+                                        pageSize: 10,
+                                        total: total,
+                                        current: currentPage,
+                                        onChange: (page) => {
+                                            fetchData(page);
+                                        },
+                                    }}
+                                    // pagination={false}
                                     columns={cetagories_data_col}
                                     // bordered
                                     sticky
                                     className="w-full"
                                 ></Table>
-                                <Pagination
+                                {/* <Pagination
                                     current={currentPage}
                                     onChange={(page) => HandlePagination(page)}
                                     total={total}
                                     pageSize={10}
-                                />
-                            </>
-                        )}
-                    </Card>
+                                /> */}
+                            </Card>
+                        </>
+                    )}
                 </>
                 {/* )} */}
                 <Modal
@@ -395,7 +411,7 @@ function CategoriePage() {
                     </Form>
                 </Modal>
                 <Modal title="Add Category" open={addItem} onCancel={handleAddItemModelClose} footer={null}>
-                    <Form form={addForm} autoComplete="off" className="w-full ">
+                    <Form form={addForm} onFinish={handleAdditems} autoComplete="off" className="w-full ">
                         <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input name!' }]}>
                             <Input />
                         </Form.Item>
@@ -411,19 +427,15 @@ function CategoriePage() {
                             name="status"
                             rules={[{ required: true, message: 'Please select your status' }]}
                         >
-                            <Radio.Group value={radioValue} onChange={() => handleRadioButton} defaultValue={0}>
-                                <Radio value={0} onClick={() => console.log(0)}>
-                                    Active
-                                </Radio>
-                                <Radio value={1} onClick={() => console.log(1)}>
-                                    Inactive
-                                </Radio>
+                            <Radio.Group>
+                                <Radio value={0}>active</Radio>
+                                <Radio value={1}>inactive</Radio>
                             </Radio.Group>
                         </Form.Item>
 
                         <div className="flex gap-3 justify-end">
                             <Button onClick={handleAddItemModelClose}>{CANCEL}</Button>
-                            <Button onClick={handleAdditems}>{ADD_ITEM}</Button>
+                            <Button htmlType="submit">{ADD_ITEM}</Button>
                         </div>
                     </Form>
                 </Modal>

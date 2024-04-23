@@ -31,7 +31,6 @@ export default function HeaderPage({
     const [lastname, setLastname] = useState('');
     const [Email, setEmail] = useState('');
     // const [toggle1, settoggle1] = useState(false);
-    const [toggle, settoggle] = useState(true);
     const [pic, setPic] = useState<string | null>(null);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -43,13 +42,7 @@ export default function HeaderPage({
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const fetchdata = setTimeout(() => {
-            settoggle(false);
-        }, 0);
-
-        return () => clearTimeout(fetchdata);
-    }, []);
+  
 
     const handleLogout = async () => {
         try {

@@ -72,6 +72,13 @@ interface Categories {
     created_at: string;
     align?: AlignType | undefined;
 }
+interface FormValues {
+    first_name: string;
+    last_name: string;
+    email: string;
+    role_name: string;
+    password: string;
+}
 interface AdminsDisplay {
     id: string;
     first_name: string;
@@ -81,17 +88,17 @@ interface AdminsDisplay {
     align?: AlignType | undefined;
 }
 interface city {
+    id: string;
     city_name: string;
     country_name: string;
     created_at: string;
-    id: string;
     status: string | boolean;
     align?: AlignType | undefined;
 }
 
 interface UpdateCity {
-    country_name: string;
     city_name: string;
+    country_name: string;
 }
 interface coupon {
     id: string;
@@ -101,6 +108,7 @@ interface coupon {
     discount_type: string;
     discount_value: number;
     expiry_date: string;
+    status: string | boolean;
     max_usage_count: number;
 }
 interface blog {
@@ -119,6 +127,52 @@ interface vehicle {
     vehicle_num: string;
     widht: number;
 }
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity, coupon, blog, vehicle, AdminsDisplay };
-export type { DataType };
-export { shipdata, paymenttype, deliverypartner, vehicletype };
+interface staff_data{
+    id:string;
+    role:string;
+    user:number;
+    description:string;
+
+}
+
+interface addCategories {
+    name: string;
+    description: string;
+    status: string | boolean;
+
+}
+
+
+interface Role {
+    section: string;
+    permission: { section: string; permission: string[] }[];
+}
+interface RolePermissionState {
+    roles: Role[];
+}
+
+interface RootState {
+    rolePermission: RolePermissionState;
+}
+interface FileInfo {
+    file: File;
+    
+}
+
+export type {
+    Order,
+    DeliveryPartner,
+    User,
+    Categories,
+    city,
+    UpdateCity,
+    coupon,
+    blog,
+    vehicle,
+    staff_data,
+    AdminsDisplay,
+    addCategories,
+    FileInfo,
+};
+export type { DataType, FormValues, RootState };
+export { shipdata, paymenttype, deliverypartner, vehicletype, };

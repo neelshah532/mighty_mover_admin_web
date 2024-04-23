@@ -4,12 +4,13 @@ import HeaderPage from './HeaderPage';
 import SiderPage from '../components/SiderPage';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { store } from '../app/store';
+import { RootState } from '../app/store';
+// import { store } from '../app/store';
 
 const { Content } = Layout;
 
 const FixedLayout: React.FC = () => {
-    const currentPage = useSelector((state) => state.page.currentPage);
+    const currentPage = useSelector((state: RootState) => state.page.currentPage);
 
     const [collapse, setcollapse] = useState(false);
 

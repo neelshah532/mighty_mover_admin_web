@@ -1,5 +1,5 @@
 import { Button, Card, DatePicker, Flex, Form, Input, Modal, Radio, Spin, Table } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 import { useForm } from 'antd/es/form/Form';
 import http from '../http/http';
@@ -10,6 +10,9 @@ import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { AlignType, coupon } from '../assets/dto/data.type';
 import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
+import { setPage } from '../redux/pageSlice';
+import { ColumnProps } from 'antd/es/table';
 
 export default function Coupon() {
     const [modal, setmodal] = useState(false);
@@ -21,7 +24,7 @@ export default function Coupon() {
     const [editmodal, seteditmodal] = useState(false);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
-    const [loading,setloading]=useState(false)
+    const [loading, setloading] = useState(false);
 
     const handleDelete = async (id: string) => {
         showDeleteModal(id);
@@ -52,11 +55,11 @@ export default function Coupon() {
 
             fetchData();
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
 
-    const coupon_col_data = [
+    const coupon_col_data: ColumnProps<coupon>[] = [
         ...COUPON_DATA_COL,
         {
             title: 'Status',
@@ -73,19 +76,21 @@ export default function Coupon() {
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
-            render: (_, record: city) => (
+            render: (_, record: coupon) => (
                 <div className="flex gap-2 justify-center">
                     <div>
-                        <button 
-                        className="py-3 px-4 bg-blue-500 text-white rounded"
-                        onClick={() => editmodal_function(record, record.id)}>
+                        <button
+                            className="py-3 px-4 bg-blue-500 text-white rounded"
+                            onClick={() => editmodal_function(record, record.id)}
+                        >
                             <FaEdit />
                         </button>
                     </div>
                     <div>
                         <button
-                         className="py-3 px-4 bg-red-500 text-white rounded"
-                        onClick={() => handleDelete(record.id)}>
+                            className="py-3 px-4 bg-red-500 text-white rounded"
+                            onClick={() => handleDelete(record.id)}
+                        >
                             <MdDelete />
                         </button>
                     </div>
@@ -96,7 +101,7 @@ export default function Coupon() {
     const openmodal = () => {
         setmodal(!modal);
     };
-    const message_error = (error: any) => {
+    const message_error = (error: Error) => {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{
                 status: number;
@@ -119,26 +124,27 @@ export default function Coupon() {
             form.resetFields();
             openmodal();
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
-    const fetchData = async () => {
-        setloading(true)
+    const fetchData = useCallback( async () => {
+        setloading(true);
         try {
             const response = await http.get('/api/v1/coupons');
             setcoupondata(response.data.data);
             console.log(response.data);
-            setloading(false)
+            setloading(false);
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
+        } finally {
+            setloading(false);
         }
-        finally{
-            setloading(false)
-        }
-    };
+    },[]);
+    const dispatch=useDispatch()
     useEffect(() => {
-        fetchData();
-    }, []);
+        dispatch(setPage("Coupon"))
+        void fetchData();
+    }, [dispatch, fetchData]);
 
     const handleedit = async () => {
         try {
@@ -147,24 +153,24 @@ export default function Coupon() {
             fetchData();
             seteditmodal(false);
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
 
     return (
         <div>
-            <Card title="Coupons" className="m-2">
-                <div className="flex justify-end mb-2">
-                    <Button type="primary" style={{ backgroundColor: '#2967ff' }} onClick={openmodal}>
-                        Add Coupon
-                    </Button>
-                </div>
-                {loading ? (
-                    <Flex gap="middle" className="w-full h-full justify-center ">
-                        <Spin size="large" />
-                    </Flex>
-                ) : (
-                    <>
+            <div className="flex justify-end mb-2">
+                <Button style={{ backgroundColor: '#ffffff', color: '#2967ff' }} onClick={openmodal}>
+                   + Add Coupon
+                </Button>
+            </div>
+            {loading ? (
+                <Flex gap="middle" className="w-full h-full justify-center ">
+                    <Spin size="large" />
+                </Flex>
+            ) : (
+                <>
+                    <Card title="Coupons" className="m-2">
                         <Table
                             rowClassName="text-center"
                             dataSource={coupondata}
@@ -174,9 +180,9 @@ export default function Coupon() {
                             sticky
                             className="w-full"
                         ></Table>
-                    </>
-                )}
-            </Card>
+                    </Card>
+                </>
+            )}
             <Modal
                 title="Add City"
                 open={modal}

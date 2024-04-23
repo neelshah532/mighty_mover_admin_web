@@ -41,7 +41,9 @@ const Login: React.FC = () => {
                 last_name: response.data.data.last_name,
                 email: response.data.data.email,
                 token: response.data.data.jwt,
+                permissions: response.data.data.permission,
             };
+            console.log(obj);
             // dispatch(AdminAdd({ email: email, password: password, role: response.data.role }));
             dispatch(AdminAdd(obj));
             localStorage.setItem('user', JSON.stringify(obj));

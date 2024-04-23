@@ -27,13 +27,11 @@ interface MenuItem {
 export default function SiderPage({ collapse }: { collapse: boolean }) {
     // const data: Order[] = ORDER_TABLE;
     // const [toggle1, settoggle1] = useState(false);
-    useEffect(() => {
-        window.location.pathname;
-    }, []);
+    
 
     // const [collapse, setcollapse] = useState(false);
     const { rolePermission } = useSelector((state: RootState) => state);
-    console.log(rolePermission);
+    // console.log(rolePermission);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -41,11 +39,15 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
     const filteredMenu: MenuItem[] = SIDE_PANEL.menu.filter((item) => {
         return rolePermission.roles.some((role: Role) => {
             return role.permission.some((permission) => {
-                console.log(role.permission);
+                // console.log(role.permission);
                 return permission.section === item.name.toLowerCase();
             });
         });
     });
+    useEffect(() => {
+        window.location.pathname;
+        
+    }, []);
     return (
         <div className="h-screen sticky top-0">
             <Sider

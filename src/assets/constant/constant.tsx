@@ -693,7 +693,6 @@ const generateRandomData = (length: number, min: number, max: number): number[] 
     for (let i = 0; i < length; i++) {
         data.push(getRandomNumber(min, max));
     }
-    console.log(data)
     return data;
 };
 

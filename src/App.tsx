@@ -31,7 +31,7 @@ function App() {
             <Routes>
                 <Route element={<ProtectedRoutes />}>
                     <Route element={<FixedLayout />}>
-                        <Route path="/" element={<Dashboard />} />
+                         <Route path="/" element={<Dashboard />} />
                         <Route path="/orders" element={<Order_page />} />
                         <Route path="/payments" element={<Payment_page />} />
                         <Route path="/settings/order-settings" element={<Settings />} />

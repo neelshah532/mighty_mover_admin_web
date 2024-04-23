@@ -133,6 +133,27 @@ interface staff_data{
     description:string;
 
 }
-export type { Order, DeliveryPartner, User, Categories, city, UpdateCity, coupon, blog, vehicle,staff_data, AdminsDisplay };
+
+interface addCategories {
+    name: string;
+    description: string;
+    status: string | boolean;
+
+}
+
+export type {
+    Order,
+    DeliveryPartner,
+    User,
+    Categories,
+    city,
+    UpdateCity,
+    coupon,
+    blog,
+    vehicle,
+    staff_data,
+    AdminsDisplay,
+    addCategories,
+};
 export type { DataType, FormValues };
 export { shipdata, paymenttype, deliverypartner, vehicletype, };

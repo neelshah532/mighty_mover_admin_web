@@ -267,20 +267,7 @@ function CategoriePage() {
                 setTotal(response.data.total);
                 setLoading(false);
             } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    const axiosError = error as AxiosError<{
-                        status: number;
-                        message: string;
-                    }>;
-                    if (axiosError.response) {
-                        console.log('Response Error', axiosError.response);
-                        toast.error(axiosError.response.data.message);
-                    } else if (axiosError.request) {
-                        console.log('Request Error', axiosError.request);
-                    } else {
-                        console.log('Error', axiosError.message);
-                    }
-                }
+                handleError(error as Error);
             } finally {
                 setLoading(false);
             }

@@ -2,11 +2,12 @@ import { ColumnProps } from 'antd/es/table';
 import { AlignType, blog } from '../dto/data.type';
 import comment1 from '../Images/icons/comment-alt-message.svg';
 import heart from "../Images/icons/heart.svg"
-export const BLOG_DATA: ColumnProps<blog>[] = [
+export const BLOG_DATA = (currentPage: number, pageSize: number): ColumnProps<blog>[] => [
     {
         title: 'Index',
         dataIndex: 'id',
-        render: (_, __, index) => index + 1,
+        render: (_, __, index) => (currentPage - 1) * pageSize + index + 1,
+
         align: 'center' as AlignType,
         width: '70px',
     },

@@ -11,7 +11,6 @@ import { useDispatch } from 'react-redux';
 // import { Navigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import Loader from '../components/Loader';
-import { GiConsoleController } from 'react-icons/gi';
 // import { AdminAdd } from '../redux/userSlice';
 // interface User {
 //     email: string;

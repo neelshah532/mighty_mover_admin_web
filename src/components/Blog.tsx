@@ -10,8 +10,10 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import formhttp from '../http/Form_data';
 import http from '../http/http';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FileInfo } from '../assets/dto/data.type';
+import { useDispatch } from 'react-redux';
+import { setPage } from '../redux/pageSlice';
 interface valueinterface {
     title: string;
     description: string;
@@ -31,7 +33,11 @@ export default function Blog() {
     // const [value, setValue] = useState<valueinterface>({title:"",description:"",author_name:"",documentId:""});
 
     // console.log(value)
+    const dispatch = useDispatch();
 
+   useEffect(() => {
+       dispatch(setPage('Add Blogs')); 
+   }, [dispatch]);
     const onFinish: FormProps<valueinterface>['onFinish'] = async (values: valueinterface) => {
         const toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -115,12 +121,12 @@ export default function Blog() {
                 {/* <div className=''>
                     <h1 className='text-xl font-bold p-4'>Edit Blog Settings</h1>
                 </div> */}
-                <div className="border-b border-black">
+                {/* <div className="border-b border-black">
                     <div className="flex ml-2 gap-2 items-center">
                         <IoMdSettings className="size-7 mt-2" />
-                        <h2 className="font-semibold text-lg mt-2">Blog Settings</h2>
+                        <h2 className="font-semibold text-lg mt-2">Blog Add</h2>
                     </div>
-                </div>
+                </div> */}
                 <div>
                     <Form
                         form={data}

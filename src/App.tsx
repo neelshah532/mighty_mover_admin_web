@@ -62,7 +62,7 @@ function App() {
                             <Route path="/payments" element={<Payment_page />} />
                         )}
                         <Route path="/settings/order-settings" element={<Settings />} />
-                        <Route path="/settings/blog-settings" element={<Blog />} />
+                        <Route path="/blog/add" element={<Blog />} />
                         <Route path="/settings/user-settings" element={<UserPage />} />
                         {sectionPermission?.includes('delivery partner') && (
                             <Route path="/delivery-partner" element={<Delivery_partner />} />

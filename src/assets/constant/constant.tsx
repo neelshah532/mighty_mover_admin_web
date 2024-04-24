@@ -939,11 +939,11 @@ export const SIDE_PANEL = {
             icon: <TbSettingsCog />,
             name: 'Order Settings',
         },
-        {
-            navigate: '/settings/blog-settings',
-            icon: <BiSolidMessageEdit />,
-            name: 'Blog Settings',
-        },
+        // {
+        //     navigate: '/settings/blog-settings',
+        //     icon: <BiSolidMessageEdit />,
+        //     name: 'Blog Settings',
+        // },
         {
             navigate: '/settings/user-settings',
             icon: <RiUserSettingsFill />,

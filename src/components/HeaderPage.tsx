@@ -16,11 +16,11 @@ import { Adminlogout } from '../redux/userSlice';
 import http from '../http/http';
 import Loader from './Loader';
 import { HiMiniBarsArrowDown } from 'react-icons/hi2';
-import { userData } from '../assets/userData';
+// import { userData } from '../assets/userData';
 import { IoMdSettings } from 'react-icons/io';
 import { BiSolidMessageEdit } from 'react-icons/bi';
-import { RiUserSettingsFill } from 'react-icons/ri';
-import { TbSettingsCog } from 'react-icons/tb';
+// import { RiUserSettingsFill } from 'react-icons/ri';
+// import { TbSettingsCog } from 'react-icons/tb';
 import { FaCity } from 'react-icons/fa';
 import { RiCoupon2Fill } from 'react-icons/ri';
 import { FaMotorcycle } from 'react-icons/fa6';
@@ -112,14 +112,14 @@ export default function HeaderPage({
             toast.success(updateRecord.data.message);
             setIsModalOpen(false);
             setIsPasswordModalOpen(false);
-           const userData = JSON.parse(localStorage.getItem('user') as string);
-           userData.first_name = firstname;
-           userData.last_name = lastname;
-           localStorage.setItem('user', JSON.stringify(userData));
+            const userData = JSON.parse(localStorage.getItem('user') as string);
+            userData.first_name = firstname;
+            userData.last_name = lastname;
+            localStorage.setItem('user', JSON.stringify(userData));
 
-           // Update state variables from local storage
-           setFirstname(userData.first_name);
-           setLastname(userData.last_name);
+            // Update state variables from local storage
+            setFirstname(userData.first_name);
+            setLastname(userData.last_name);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{
@@ -308,10 +308,19 @@ export default function HeaderPage({
             break;
     }
     return (
-        <div className="w-full sticky top-0 z-10">
+        <div className="w-full sticky top-0 z-10 ">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
             <Flex justify="space-between" className="bg-gray-50  items-center">
                 <Flex>
+                    <div>
+                        <Button className="text-xl ml-5 rounded-md" onClick={handletoggle}>
+                            {collapse ? (
+                                <HiMiniBarsArrowDown className="rotate-[270deg]" />
+                            ) : (
+                                <HiMiniBarsArrowDown className="rotate-90" />
+                            )}
+                        </Button>
+                    </div>
                     <div className="text-lg font-semibold flex gap-2 justify-center items-center ml-4">
                         <div>{logo}</div>
                         <div>
@@ -320,15 +329,6 @@ export default function HeaderPage({
                     </div>
                 </Flex>
                 <Flex className="h-16" gap="small" align="center">
-                    <div>
-                        <Button className="text-xl ml-2 rounded-md" onClick={handletoggle}>
-                            {collapse ? (
-                                <HiMiniBarsArrowDown className="rotate-[270deg]" />
-                            ) : (
-                                <HiMiniBarsArrowDown className="rotate-90" />
-                            )}
-                        </Button>
-                    </div>
                     <div className="flex items-center gap-3 mr-2">
                         <Tooltip title={<div className="flex  items-center">{firstname + '' + lastname}</div>}>
                             <div>

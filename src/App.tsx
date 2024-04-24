@@ -2,7 +2,6 @@ import { lazy, Suspense, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Loader from './components/Loader';
 import './App.css';
-import Role_data from './components/Role_data';
 import { useDispatch, useSelector } from 'react-redux';
 // import { RootState } from './app/store';
 import { RootState } from './assets/dto/data.type';
@@ -28,6 +27,7 @@ const Vehicle = lazy(() => import('./components/Vehicle'));
 const StaffManagement = lazy(() => import('./components/Staff'));
 const AdminAdd = lazy(() => import('./components/AdminAdd'));
 const Role_management = lazy(() => import('./components/Role_management'));
+const Role_data = lazy(() => import('./components/Role_data'));
 // import Staff from './components/Staff';
 // import Role_management from './components/Role_management';
 function App() {
@@ -58,7 +58,9 @@ function App() {
                     <Route element={<FixedLayout />}>
                         <Route path="/" element={<Dashboard />} />
                         {sectionPermission?.includes('order') && <Route path="/orders" element={<Order_page />} />}
-                        {sectionPermission?.includes('payment') && <Route path="/payments" element={<Payment_page />} />}
+                        {sectionPermission?.includes('payment') && (
+                            <Route path="/payments" element={<Payment_page />} />
+                        )}
                         <Route path="/settings/order-settings" element={<Settings />} />
                         <Route path="/settings/blog-settings" element={<Blog />} />
                         <Route path="/settings/user-settings" element={<UserPage />} />
@@ -85,6 +87,9 @@ function App() {
                         )}
                         {sectionPermission?.includes('addAdmin') && (
                             <Route path="/staff-management/add" element={<AdminAdd />}></Route>
+                        )}
+                        {sectionPermission?.includes('addAdmin') && (
+                            <Route path="/staff-management/role-management/add" element={<Role_data />}></Route>
                         )}
                     </Route>
                 </Route>

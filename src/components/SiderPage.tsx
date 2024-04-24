@@ -4,7 +4,7 @@ import { SIDE_PANEL } from '../assets/constant/constant';
 import { useLocation, useNavigate } from 'react-router-dom';
 // import { IoArrowBack } from 'react-icons/io5';
 import { useEffect } from 'react';
-import logo from '../assets/Images/Group 1.svg';
+// import logo from '../assets/Images/Group 1.svg';
 import { useSelector } from 'react-redux';
 interface Role {
     id: string;
@@ -51,7 +51,7 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
         
     }, []);
     return (
-        <div className="h-screen sticky top-0">
+        <div className="h-screen sticky top-0 shadow-lg">
             <Sider
                 theme="light"
                 collapsed={collapse}
@@ -62,6 +62,7 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                     left: 0,
                     top: 0,
                     bottom: 0,
+                    
                 }}
             >
                 {/* <Flex className="mt-4" gap={collapse ? 0 : 10}> */}
@@ -82,8 +83,8 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                             </Button>
                         </div> */}
                 {/* </Flex> */}
-                <div className="flex justify-center mt-4">
-                    <div className="w-[130px]">
+                <div className="flex justify-center mt-5">
+                    <div className="w-8/12">
                         <NavLogo/>
 
                     </div>
@@ -93,6 +94,9 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                     theme="light"
                     triggerSubMenuAction="hover"
                     mode="inline"
+                    style={{
+                        border: "0px"
+                    }}
                     selectedKeys={[location.pathname]}
                 >
                     {filteredMenu.map((item) => (

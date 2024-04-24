@@ -122,10 +122,11 @@ interface vehicle {
 
 interface notification {
     id:string,
+    description:string,
     title:string,
     date:string,
     time:string,
-    status:string
+    notification_status:string
 }
 
 interface driver {

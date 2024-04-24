@@ -1,74 +1,70 @@
-import { Button, Card, Flex, Form, Input, Modal, Select, Spin, Table } from 'antd';
-import { useEffect, useState } from 'react';
-import http from '../http/http';
-import { toast } from 'sonner';
-import axios, { AxiosError } from 'axios';
-// import { VEHICLE_DATA_COL } from '../assets/constant/vehicle';
+import { Button, Card, Flex, Spin, Table } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
+import { ColumnProps } from 'antd/es/table';
 import { AlignType, notification } from '../assets/dto/data.type';
-import { DELETE_CONFIRMATION, OK } from '../assets/constant/model';
-import { useForm } from 'antd/es/form/Form';
+import axios, { AxiosError } from 'axios';
+import { toast } from 'sonner';
+import http from '../http/http';
+import { useDispatch } from 'react-redux';
+import { setNotificationPage } from '../redux/notificationSlice';
 import { NOTIFICATION_DATA_COL } from '../assets/constant/notifications';
+import { useNavigate } from 'react-router-dom';
 
-export default function Notifications() {
-    const [driverId, setDriverId] = useState('');
+
+function Notifications() {
+    const navigate = useNavigate();
+
+
+    const handleChange = async (record: notification) => {
+        try {
+            const individualNotification = await http.get(`/api/v1/notifications/${record.id}`);
+            console.log(individualNotification.data)
+            navigate(`/notifications/${record.id}`);
+        } catch (error) {
+            console.error('Error fetching individual notification:', error);
+        }
+    };
+
+
+
+    const Redirect = (record: notification) => {
+        return record.notification_status === 'scheduled' ? <Button onClick={()=>handleChange(record)}>Edit</Button> : <Button onClick={()=>handleChange(record)}>Details</Button>;
+    };
+   
+
+    
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [total, setTotal] = useState(0);
+    
+
+    const [addItem, setAddItem] = useState(false);  
+
     const [loading, setLoading] = useState(false);
-    const [vehicledata, setvehicledata] = useState([]);
-    const [deleteModalVisible, setdeleteModalVisible] = useState(false)
-    const [editmodalVisible, seteditmodalVisible] = useState(false)
-    const [isScheduled,setIsScheduled] = useState(false);
-    const [form] = useForm()
-    const vehicle_data_col = [
-        ...NOTIFICATION_DATA_COL,
+
+    const dispatch = useDispatch();
+    const notifications_data_col: ColumnProps<notification>[] = [
+        ...NOTIFICATION_DATA_COL(currentPage,10),
         {
-            title: "Status",
-            key: "status",
-            dataIndex: "status",
-            align: 'center' as AlignType,
-            render: (_, record: notification, index: number) => (
-                <div>
-                    <div>
-                        {isScheduled ? "Scheduled" : "Published"}
-                    </div>
+            title: 'Status',
+            key: 'status',
+            dataIndex: 'status',
+            align: 'center',
+            render: (_:notification, record:notification) => (
+                <div
+                    className={`${record.notification_status === 'published' ? 'text-green-500 bg-green-50' : 'text-orange-500 bg-orange-50'} rounded-lg p-1`}
+                >
+                    {record.notification_status === 'published' ? 'Published' : 'Scheduled'}
                 </div>
-            )
+            ),
         },
         {
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
-            render: (_, record:notification) => (
-                <div>
-                    {isScheduled ? <Button>Edit</Button> : <Button>Details</Button>}
-                </div>
-            ),
+            render: (_, record: notification) => <Redirect notification_status={record.notification_status} id={record.id} title={record.title} date={record.date} time={record.time}/>,
         },
     ];
-
-
-    const deleteDriver = (record) => {
-        setdeleteModalVisible(true)
-        setDriverId(record.id)
-    }
-
-    const editclick = (record: any) => {
-        seteditmodalVisible(true)
-        form.setFieldsValue(record);
-    }
-    const fetchData = async () => {
-        setLoading(true);
-        try {
-            const response = await http.post('/api/v1/notifications');
-            toast.success(response.data.message);
-            setvehicledata(response.data.data);
-            console.log(response.data.data);
-            setLoading(false);
-        } catch (error) {
-            message_error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-    const message_error = (error: any) => {
+    const handleError = (error: Error) => {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{
                 status: number;
@@ -84,116 +80,80 @@ export default function Notifications() {
             }
         }
     };
-    const handleDeleteConfirm = async () => {
-        setLoading(true)
+
+    //handle add item
+    const handleAdd = () => {
+        setAddItem(true);
+    };
+ 
+
+    // their is a section where fetch data of categorie items using useState
+    const [notificationData, setNotificationData] = useState<notification[]>([]);
+
+    // api calling section
+    const fetchData = useCallback(async (page:number) => {
+        setLoading(true);
         try {
-            const response = await http.delete(`api/v1/driver/deleteAccount/${driverId}`)
-            toast.success(response.data.message)
-            setLoading(false)
-        }
-        catch (error) {
-            message_error(error);
+            const skip = (page - 1) * 10;
+            const response = await http.get(`/api/v1/notifications?offset=${skip}`);
+            setNotificationData(response.data.data);
+            setCurrentPage(page)
+            setTotal(response.data.total);
+            setLoading(false);
+        } catch (error) {
+            handleError(error as Error);
         } finally {
             setLoading(false);
-            setdeleteModalVisible(false)
         }
-    }
-
-    const handleedit = async () => {
-
-    }
+    }, []);
 
     useEffect(() => {
-        fetchData();
-    }, []);
-    return (
-        <div>
-            <Card title="Notifications" className="m-2">
-                {loading ? (
-                    <Flex gap="middle" className="w-full h-full justify-center ">
-                        <Spin size="large" />
-                    </Flex>
-                ) : (
-                    <>
-                        <Table
-                            rowClassName="text-center"
-                            dataSource={vehicledata}
-                            pagination={{ pageSize: 10 }}
-                            columns={vehicle_data_col}
-                            bordered
-                            sticky
-                            className="w-full"
-                        ></Table>
-                    </>
-                )}
-            </Card>
+        dispatch(setNotificationPage('Notification'));
+        void fetchData(currentPage);
+    }, [dispatch, fetchData, currentPage]);
 
-            <Modal
-                title="Confirm Deletion"
-                open={deleteModalVisible}
-                onCancel={() => setdeleteModalVisible(false)}
-                footer={
-                    <div className="flex gap-3 justify-end">
-                        <Button type="primary" htmlType="submit" onClick={handleDeleteConfirm}>
-                            {OK}
+    return (
+        <>
+            <div>
+                <>
+                    <div className="flex justify-end mb-2">
+                        <Button
+                            onClick={handleAdd}
+                            className='text-[#2967ff]'
+                            // style={{ color: '#2967ff', backgroundColor: '#ffffff' }}
+                        >
+                            +Add New Notification
                         </Button>
                     </div>
-                }
-            >
-                <p>{DELETE_CONFIRMATION}</p>
-            </Modal>
-            <Modal
-                title="Edit Vehicle"
-                open={editmodalVisible}
-                onCancel={() => seteditmodalVisible(false)}
-                footer={
-                    <div className="flex gap-3 justify-end">
-                        <Button type="primary" htmlType="submit" onClick={handleedit}>
-                            {OK}
-                        </Button>
-                    </div>
-                }
-            >
-                <Form form={form}>
-                    <Form.Item
-                        label="Name"
-                        name="name"
-                        rules={[{ required: true, message: 'Please input name!' }]}
-                        className="w-full"
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        label="Email"
-                        name="email"
-                        rules={[{ required: true, message: 'Please add email' }]}
-                        className="w-full"
-                    >
-                        <Input className="w-full" />
-                    </Form.Item>
-                    <Form.Item
-                        label="Contact"
-                        name="contact"
-                        rules={[{ required: true, message: 'Please add contact' }]}
-                        className="w-full"
-                    >
-                        <Input className="w-full" />
-                    </Form.Item>
-                    <Form.Item
-                        label="Shift"
-                        name="shift"
-                        rules={[{ required: true, message: 'Please add shift' }]}
-                        className="w-full"
-                    >
-                        {/* <Input className="w-full" /> */}
-                        <Select>
-                            <Select.Option value="day">Day</Select.Option>
-                            <Select.Option value="night">Night</Select.Option>
-                            <Select.Option value="both">Both</Select.Option>
-                        </Select>
-                    </Form.Item>
-                </Form>
-            </Modal>
-        </div>
+
+                    {loading ? (
+                        <Flex gap="middle" className="w-full h-full justify-center ">
+                            <Spin size="large" />
+                        </Flex>
+                    ) : (
+                        <>
+                            <Card title="Notifications" className="m-2">
+                                <Table
+                                    dataSource={notificationData}
+                                        pagination={{
+                                            total: total,
+                                            current: currentPage,
+                                            onChange: (page) => {
+                                                fetchData(page);
+                                            },
+                                        }}
+                                    columns={notifications_data_col}
+                                    sticky
+                                    className="w-full"
+                                ></Table>
+                               
+                            </Card>
+                        </>
+                    )}
+                </>
+            </div>
+        </>
     );
 }
+
+export default Notifications;

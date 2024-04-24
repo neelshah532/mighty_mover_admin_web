@@ -23,6 +23,9 @@ const Vehicle = lazy(() => import('./components/Vehicle'));
 const StaffManagement = lazy(() => import('./components/Staff'));
 const AdminAdd = lazy(() => import('./components/AdminAdd'));
 const Role_management = lazy(() => import('./components/Role_management'));
+const DriverTable = lazy(() => import('./components/DriverTable'))
+const Notifications = lazy(()=>import('./components/Notifications'))
+const IndividualNotificationDetails = lazy(()=>import('./components/IndividualNotificationDetails'))
 // import Staff from './components/Staff';
 // import Role_management from './components/Role_management';
 function App() {
@@ -47,6 +50,9 @@ function App() {
                         <Route path="/staff-management" element={<StaffManagement />} />
                         <Route path="/staff-management/role-management" element={<Role_management />} />
                         <Route path="/staff-management/add" element={<AdminAdd />}></Route>
+                        <Route path='/drivers' element={<DriverTable/>}></Route>
+                        <Route path='/notifications' element={<Notifications/>}></Route>
+                        <Route path='/notifications/:id' element={<IndividualNotificationDetails/>}></Route>
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

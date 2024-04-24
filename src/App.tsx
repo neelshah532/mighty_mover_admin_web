@@ -3,9 +3,9 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Loader from './components/Loader';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
+// import { RootState } from './app/store';
 import { RootState } from './assets/dto/data.type';
-
-import { resetState } from './redux/roleSlice'; 
+import { resetState } from './redux/roleSlice';
 
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
@@ -30,54 +30,59 @@ const Role_management = lazy(() => import('./components/Role_management'));
 // import Staff from './components/Staff';
 // import Role_management from './components/Role_management';
 function App() {
+    // const user = useSelector((state: RootState) => state.user.user);
     const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
- 
-    console.log(rolePermission);
-    const sectionPermission = rolePermission.map((role) => role.section);
+    // console.log(user);
+    // const sectionPermission = user.map((role: any) => role.section);
+    // const sectionPermission = user.permission ? user.permission.map((role) => role.sectionName) : [];
+      const sectionPermission = rolePermission?.map((role) => role.section);
+
+    console.log(sectionPermission);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-useEffect(() => {
-    const localState = localStorage.getItem('user');
-    if (!localState) {
-        // Reset Redux state and redirect to login route if localStorage is cleared
-        dispatch(resetState());
-        navigate('/login');
-    }
-}, [dispatch, navigate]);
+    useEffect(() => {
+        const localState = localStorage.getItem('user');
+        if (!localState) {
+            dispatch(resetState());
+            navigate('/login');
+        }
+        
+    }, [dispatch, navigate]);
+
     return (
         <Suspense fallback={<Loader />}>
             <Routes>
                 <Route element={<ProtectedRoutes />}>
                     <Route element={<FixedLayout />}>
                         <Route path="/" element={<Dashboard />} />
-                        {sectionPermission.includes('order') && <Route path="/orders" element={<Order_page />} />}
-                        {sectionPermission.includes('payment') && <Route path="/payments" element={<Payment_page />} />}
+                        {sectionPermission?.includes('order') && <Route path="/orders" element={<Order_page />} />}
+                        {sectionPermission?.includes('payment') && <Route path="/payments" element={<Payment_page />} />}
                         <Route path="/settings/order-settings" element={<Settings />} />
                         <Route path="/settings/blog-settings" element={<Blog />} />
                         <Route path="/settings/user-settings" element={<UserPage />} />
-                        {sectionPermission.includes('delivery partner') && (
+                        {sectionPermission?.includes('delivery partner') && (
                             <Route path="/delivery-partner" element={<Delivery_partner />} />
                         )}
-                        {sectionPermission.includes('categories') && (
+                        {sectionPermission?.includes('categories') && (
                             <Route path="/categories" element={<CategoriePage />} />
                         )}
-                        {sectionPermission.includes('subcategory') && (
+                        {sectionPermission?.includes('subcategory') && (
                             <Route path="/categories/:id" element={<SubCategory />} />
                         )}
-                        {sectionPermission.includes('city') && <Route path="/city" element={<City />} />}
-                        {sectionPermission.includes('coupon') && <Route path="/coupon" element={<Coupon />} />}
-                        {sectionPermission.includes('blog') && (
+                        {sectionPermission?.includes('city') && <Route path="/city" element={<City />} />}
+                        {sectionPermission?.includes('coupon') && <Route path="/coupon" element={<Coupon />} />}
+                        {sectionPermission?.includes('blog') && (
                             <Route path="/show_edit_delete" element={<Show_blog />} />
-                        )}{' '}
-                        {sectionPermission.includes('vehicle') && <Route path="/vehicle" element={<Vehicle />} />}
-                        {sectionPermission.includes('staff management') && (
+                        )}
+                        {sectionPermission?.includes('vehicle') && <Route path="/vehicle" element={<Vehicle />} />}
+                        {sectionPermission?.includes('staff management') && (
                             <Route path="/staff-management" element={<StaffManagement />} />
                         )}
-                        {sectionPermission.includes('role-managemnet') && (
+                        {sectionPermission?.includes('role-managemnet') && (
                             <Route path="/staff-management/role-management" element={<Role_management />} />
                         )}
-                        {sectionPermission.includes('addAdmin') && (
+                        {sectionPermission?.includes('addAdmin') && (
                             <Route path="/staff-management/add" element={<AdminAdd />}></Route>
                         )}
                     </Route>

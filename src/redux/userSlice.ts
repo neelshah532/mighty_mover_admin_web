@@ -5,14 +5,14 @@ interface User {
     email: string;
 }
 interface Permission {
-    section: string;
-    permissions: string[];
+    section: null | string;
+    permissions: null | string[];
 }
 
 interface initialState {
     user: {
         id: null | string;
-        first_name: null | string;
+        first_name: null | User;
         last_name: null | User;
         email: null | User;
         token: null | string;
@@ -55,6 +55,7 @@ const userSlice = createSlice({
         Categoriedata: (state, action) => {
             state.user = action.payload;
         },
+        // resetState: () => initialState,
     },
 });
 export const { AdminAdd, Adminlogout, Categoriedata } = userSlice.actions;

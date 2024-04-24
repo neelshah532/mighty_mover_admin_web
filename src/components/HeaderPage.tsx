@@ -16,6 +16,7 @@ import { Adminlogout } from '../redux/userSlice';
 import http from '../http/http';
 import Loader from './Loader';
 import { HiMiniBarsArrowDown } from 'react-icons/hi2';
+import { userData } from '../assets/userData';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 export default function HeaderPage({
@@ -41,8 +42,6 @@ export default function HeaderPage({
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-  
 
     const handleLogout = async () => {
         try {
@@ -72,6 +71,20 @@ export default function HeaderPage({
         }
     };
 
+    useEffect(() => {
+        // Fetch data from localStorage
+        const userData = localStorage.getItem('user');
+
+        if (userData) {
+            const { first_name, last_name, email } = JSON.parse(userData);
+            setFirstname(first_name);
+            console.log(first_name);
+            console.log(last_name);
+            setLastname(last_name);
+            setEmail(email);
+        }
+    }, []);
+
     // const handleOk = () => {
     //     // setpic(true);
     //     message.info(`Update Success`);
@@ -90,12 +103,14 @@ export default function HeaderPage({
             toast.success(updateRecord.data.message);
             setIsModalOpen(false);
             setIsPasswordModalOpen(false);
-            const userData = localStorage.getItem('user');
-            const { first_name, last_name } = JSON.parse(userData as string);
-            setFirstname(first_name);
-            setLastname(last_name);
-            localStorage.setItem('user', JSON.stringify({...JSON.parse(userData as string), first_name: firstname, last_name: lastname}));
-          
+           const userData = JSON.parse(localStorage.getItem('user') as string);
+           userData.first_name = firstname;
+           userData.last_name = lastname;
+           localStorage.setItem('user', JSON.stringify(userData));
+
+           // Update state variables from local storage
+           setFirstname(userData.first_name);
+           setLastname(userData.last_name);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{
@@ -201,7 +216,7 @@ export default function HeaderPage({
         setIsModalOpen(false);
         setIsPasswordModalOpen(false);
     };
-    
+
     const handleFirstName: ChangeEventHandler<HTMLInputElement> = (e) => {
         setFirstname(e.target.value);
     };
@@ -237,19 +252,6 @@ export default function HeaderPage({
             </Menu.Item>
         </Menu>
     );
-    useEffect(() => {
-        // Fetch data from localStorage
-        const userData = localStorage.getItem('user');
-
-        if (userData) {
-            const { first_name, last_name, email } = JSON.parse(userData);
-            setFirstname(first_name);
-            console.log(first_name);
-            console.log(last_name);
-            setLastname(last_name);
-            setEmail(email);
-        }
-    }, []);
 
     // this const is for handling the toggle of sidebar
     const handletoggle = () => {
@@ -341,8 +343,7 @@ export default function HeaderPage({
                                 <div className="flex justify-end mt-4 gap-3">
                                     <Button onClick={handleCancel}>Cancel</Button>
                                     <Button type="primary" onClick={handleOk} className="bg-blue-500 hover:bg-blue-600">
-                                        {/* {isLoading ? <Loader /> : 'OK'} */}
-                                        Save Changes
+                                        {isLoading ? <Loader /> : ' Save Changes'}
                                     </Button>
                                 </div>
                             </Flex>

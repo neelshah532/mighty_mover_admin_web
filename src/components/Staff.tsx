@@ -8,7 +8,6 @@ import http from '../http/http';
 import { useDispatch } from 'react-redux';
 import { AdminsDisplay } from '../assets/dto/data.type';
 import { setPage } from '../redux/pageSlice';
-import { TiPlusOutline } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
 
 function VIewAdmin() {
@@ -19,7 +18,7 @@ function VIewAdmin() {
 
     const createAdmin = () => {
         navigate('/staff-management/add');
-    }
+    };
     const createRole = () => {
         navigate('/staff-management/role-management');
     };
@@ -59,15 +58,17 @@ function VIewAdmin() {
 
     return (
         <>
-            <div>
+            <div className='container'>
                
                 <>
                     <div className="flex justify-end mb-2">
-                        <div>
-                            <Button icon={<TiPlusOutline />} className="mr-4" onClick={createAdmin}>
-                                Create New Admin User
+                        <div className="p-2">
+                            <Button className="mr-4 text-[#2967ff] " onClick={createAdmin}>
+                                + Create New Admin User
                             </Button>
-                            <Button icon={<TiPlusOutline /> } onClick={createRole}>Create New Role</Button>
+                            <Button onClick={createRole} className="text-[#2967ff]">
+                                + Role Management
+                            </Button>
                         </div>
                     </div>
                     {loading ? (
@@ -101,12 +102,12 @@ function VIewAdmin() {
                                    total={total}
                                    pageSize={10}
                                /> */}
+                               
                             </Card>
+                            
                         </>
                     )}
                 </>
-
-               
             </div>
         </>
     );

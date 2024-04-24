@@ -4,13 +4,19 @@ interface User {
     last_name: string;
     email: string;
 }
+interface Permission {
+    section: null | string;
+    permissions: null | string[];
+}
+
 interface initialState {
     user: {
         id: null | string;
-        first_name: null | string;
+        first_name: null | User;
         last_name: null | User;
         email: null | User;
         token: null | string;
+        permission: null | Permission[];
     };
 }
 
@@ -24,6 +30,8 @@ const initialState: initialState = {
         last_name: userData.lastname,
         email: userData.email,
         token: userData.token,
+        permission: userData.permission,
+        
     },
 };
 const userSlice = createSlice({
@@ -40,12 +48,14 @@ const userSlice = createSlice({
                 last_name: null,
                 email: null,
                 token: null,
+                permission: null,
             };
             localStorage.clear();
         },
         Categoriedata: (state, action) => {
             state.user = action.payload;
         },
+        // resetState: () => initialState,
     },
 });
 export const { AdminAdd, Adminlogout, Categoriedata } = userSlice.actions;

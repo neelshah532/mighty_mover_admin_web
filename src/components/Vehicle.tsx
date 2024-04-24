@@ -1,17 +1,20 @@
     import { Button, Card, Flex, Form, Input, Modal, Spin, Table } from 'antd';
-    import { useEffect, useState } from 'react';
+    import { useCallback, useEffect, useState } from 'react';
     import http from '../http/http';
     import { toast } from 'sonner';
     import axios, { AxiosError } from 'axios';
     import { VEHICLE_DATA_COL } from '../assets/constant/vehicle';
-    import { AlignType } from '../assets/dto/data.type';
+    import { AlignType, vehicle } from '../assets/dto/data.type';
     import { FaEdit } from 'react-icons/fa';
     import { MdDelete } from 'react-icons/md';
     import {  DELETE_CONFIRMATION, OK } from '../assets/constant/model';
     import { useForm } from 'antd/es/form/Form';
 import { setPage } from '../redux/pageSlice';
 import { useDispatch } from 'react-redux';
-
+import { ColumnProps } from 'antd/es/table';
+interface StringValues {
+    [key: string]: string;
+}
     export default function Vehicle() {
         const [loading, setLoading] = useState(false);
         const [vehicledata, setvehicledata] = useState([]);
@@ -19,13 +22,13 @@ import { useDispatch } from 'react-redux';
         const [editmodalVisible,seteditmodalVisible]=useState(false)
         const [editid,seteditid]=useState("")
         const [form]=useForm()
-        const vehicle_data_col = [
+        const vehicle_data_col: ColumnProps<vehicle>[] = [
             ...VEHICLE_DATA_COL,
             {
                 title: 'Action',
                 key: 'action',
                 align: 'center' as AlignType,
-                render: (_, record: city) => (
+                render: (_, record: vehicle) => (
                     <div className="flex gap-2 justify-center">
                         <div>
                             <button className="py-3 px-4 bg-blue-500 text-white rounded" onClick={()=>editclick(record)}>
@@ -42,17 +45,16 @@ import { useDispatch } from 'react-redux';
             },
         ];
 
-        const editclick=(record:any)=>{
-            seteditid(record.id)
-            seteditmodalVisible(true)
+        const editclick = (record: vehicle) => {
+            seteditid(record.id);
+            seteditmodalVisible(true);
             form.setFieldsValue(record);
-
-        }
-        const deleteclick=(record:any)=>{
+        };
+        const deleteclick=(record:vehicle)=>{
             seteditid(record.id)
             setdeleteModalVisible(true)
         }   
-        const fetchData = async () => {
+        const fetchData = useCallback( async () => {
             setLoading(true);
             try {
                 const response = await http.get('/api/v1/driver/vehicle?limit=1');
@@ -61,12 +63,12 @@ import { useDispatch } from 'react-redux';
                 console.log(response.data.data);
                 setLoading(false);
             } catch (error) {
-                message_error(error);
+                message_error(error as Error);
             } finally {
                 setLoading(false);
             }
-        };
-        const message_error = (error: any) => {
+        },[]);
+        const message_error = (error: Error) => {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{
                     status: number;
@@ -91,16 +93,16 @@ import { useDispatch } from 'react-redux';
                 seteditid("")
             }
             catch(error){
-                message_error(error)
+                message_error(error as Error);
             }
         }
 
         const handleedit=async()=>{
             const values = form.getFieldsValue();
-            const stringValues = {};
-            for (const key in values) {
-                stringValues[key] = String(values[key]);
-            }
+            const stringValues: StringValues = {};
+           for (const key in values) {
+               stringValues[key] = String(values[key]);
+           }
             try{
                 const response=await http.patch(`/api/v1/driver/vehicle/${editid}`,stringValues)
                 console.log(response.data.data)
@@ -111,15 +113,15 @@ import { useDispatch } from 'react-redux';
 
             }
             catch(error){
-                message_error(error)
+                message_error(error as Error);
             }
         }
         
         const dispatch=useDispatch()
         useEffect(() => {
             dispatch(setPage("Vehicle"))
-            fetchData();
-        }, []);
+            void fetchData();
+        }, [dispatch, fetchData]);
         return (
             <div>
                 <Card title="Vehicle" className="m-2">

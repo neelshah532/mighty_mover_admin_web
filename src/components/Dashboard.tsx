@@ -24,7 +24,7 @@ import { ProgressProps } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { setPage } from '../redux/pageSlice';
-import Linechart from './Linechart';
+import Linechart from './linechart';
 export default function Dashboard() {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -168,8 +168,8 @@ export default function Dashboard() {
                 </Flex>
             </div>
 
-            <div className="w-[100%] m-4 flex gap-2">
-                <div className="">
+            <div className="max-w-[1176px] m-4 flex gap-2">
+                <div >
                     <Card bordered={false} className="w-full flex-1 h-full border border-slate-400 ">
                         <div className="flex flex-col justify-center items-center gap-4 ">
                             <div className="text-xl font-bold text-center"> {MONTHLY_TARGET}</div>
@@ -183,7 +183,7 @@ export default function Dashboard() {
                         </div>
                     </Card>
                 </div>
-                <div className="w-[70%] ">
+                <div className="w-full ">
                     <div className="grid grid-cols-4 flex-wrap w-full h-auto gap-2 ">
                         {DASHBOARD_CONTENT.map((item, index) => (
                             <>
@@ -202,8 +202,8 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            <div className="w-full m-4">
-                <div className="w-[30%] border border-slate-400">
+            <div className="w-full m-4 ">
+                <div className="w-[30%] border border-slate-400 rounded-lg">
                     <div className="  w-full h-full">
                         <Card className="w-full flex-1" title={PURCHASE_ORDER_STATUS}>
                             <div className="flex gap-2 ">

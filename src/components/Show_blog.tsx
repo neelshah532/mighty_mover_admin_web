@@ -2,14 +2,14 @@ import { Button, Card, Flex, Form, FormProps, Image, Input, Modal, Spin, Table, 
 import { BLOG_DATA } from '../assets/constant/blog_constant';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-import { AlignType, blog } from '../assets/dto/data.type';
-import { useEffect, useState } from 'react';
+import { AlignType, FileInfo, RootState, blog } from '../assets/dto/data.type';
+import { useCallback, useEffect, useState } from 'react';
 import http from '../http/http';
 import { toast } from 'sonner';
 import axios, { AxiosError } from 'axios';
 
 import { blog_admin, blog_admin_get_one } from '../http/staticTokenService';
-import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
+import { ADD_ITEM, CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 
 import { BLOG_SETTINGS_STRING } from '../assets/constant/constant';
 import { FieldNamesType } from 'antd/es/cascader';
@@ -17,8 +17,10 @@ import ReactQuill, { Quill } from 'react-quill';
 import { useForm } from 'antd/es/form/Form';
 import formhttp from '../http/Form_data';
 import { UploadOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
+import { ColumnProps } from 'antd/es/table';
+import { useNavigate } from 'react-router-dom';
 
 export default function Show_blog() {
     const [loading, setloading] = useState(false);
@@ -27,12 +29,16 @@ export default function Show_blog() {
     const [deleteid, setdeleteid] = useState('');
     const [openeditmodal, seteditmodal] = useState(false);
     const [editid, seteditid] = useState('');
-    const [editdata, seteditdata] = useState({});
+    // const [editdata, seteditdata] = useState({});
     const [data] = useForm();
-    const [value, setValue] = useState<valueinterface>({ title: '', description: '', author_name: '', documentId: '' });
+    // const [value, setValue] = useState<valueinterface>({ title: '', description: '', author_name: '', documentId: '' });
     const [imgid, setimgid] = useState('');
     const [imgurl, setimgurl] = useState('');
     const [fk_document, setfk_document] = useState('');
+    const [total, setTotal] = useState(0);
+
+    const [currentPage, setCurrentPage] = useState<number>(1);
+
     interface valueinterface {
         title: string;
         description: string;
@@ -77,43 +83,43 @@ export default function Show_blog() {
                 documentId: imgid,
             });
             toast.success(response.data.message);
-            fetchData();
+            fetchData(currentPage);
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
         data.resetFields();
     };
 
-    const handlechange = async (info: any) => {
+    const handlechange = async (info: FileInfo) => {
         const { file } = info;
         const formData = new FormData();
-        const fileData: any = file;
-        console.log(fileData);
         formData.append('type', 'blog');
-        formData.append('image', fileData);
+        formData.append('image', file);
         try {
             const response = await formhttp.patch(`/api/v1/document/update/${fk_document}`, formData);
             setimgid(response.data.data.document_id);
             setimgurl(response.data.data.document);
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
-    const fetchData = async () => {
+    const fetchData = useCallback(async (page: number) => {
         setloading(true);
         try {
-            const response = await blog_admin();
+            const response = await blog_admin(page);
+            setCurrentPage(page);
+            setTotal(response.data.total);
 
             setAllBlogData(response.data.data);
             setloading(false);
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         } finally {
             setloading(false);
         }
-    };
+    }, []);
 
-    const edit_modal_open_function = async (id: any) => {
+    const edit_modal_open_function = async (id: string) => {
         seteditid(id);
         seteditmodal(!openeditmodal);
         try {
@@ -128,11 +134,11 @@ export default function Show_blog() {
             });
             data.setFieldValue('description', response.data.data.description.ops.insert.split('').splice(0, 10).join());
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
 
-    const message_error = (error: any) => {
+    const message_error = (error: Error) => {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{
                 status: number;
@@ -151,17 +157,17 @@ export default function Show_blog() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(setPage('Blog'));
-        fetchData();
-    }, []);
+        void fetchData(currentPage);
+    }, [dispatch, fetchData]);
 
     const handledelete = async () => {
         try {
             const response = await http.delete(`/api/v1/blog/post/${deleteid}`);
             toast.success(response.data.message);
             setdeleteid('');
-            fetchData();
+            fetchData(currentPage);
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
     const handlemodaldelete = (id: string) => {
@@ -169,55 +175,92 @@ export default function Show_blog() {
         setdeletemodal(!deletemodal);
     };
 
-    const blogdata = [
-        ...BLOG_DATA,
-        {
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    console.log(rolePermission);
+
+    const hasEditPermission = rolePermission.some(
+        (role: { section: string; permission: string[] }) =>
+            role.section === 'blog' && role.permission.includes('write')
+    );
+    const hasDeletePermission = rolePermission.some(
+        (role: { section: string; permission: string[] }) =>
+            role.section === 'blog' && role.permission.includes('delete')
+    );
+    const blogdata: ColumnProps<blog>[] = [...BLOG_DATA(currentPage, 10)];
+    if (hasEditPermission || hasDeletePermission) {
+        blogdata.push({
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
             render: (_, record: blog) => (
                 <div className="flex gap-2 justify-center">
-                    <div>
-                        <button
-                            className="py-3 px-4 bg-blue-500 text-white rounded"
-                            onClick={() => edit_modal_open_function(record.id)}
-                        >
-                            <FaEdit />
-                        </button>
-                    </div>
-                    <div>
-                        <button
-                            className="py-3 px-4 bg-red-500 text-white rounded"
-                            onClick={() => handlemodaldelete(record.id)}
-                        >
-                            <MdDelete />
-                        </button>
-                    </div>
+                    {hasEditPermission && (
+                        <div>
+                            <button
+                                className="py-3 px-4 bg-blue-500 text-white rounded"
+                                onClick={() => edit_modal_open_function(record.id)}
+                            >
+                                <FaEdit />
+                            </button>
+                        </div>
+                    )}
+                    {hasDeletePermission && (
+                        <div>
+                            <button
+                                className="py-3 px-4 bg-red-500 text-white rounded"
+                                onClick={() => handlemodaldelete(record.id)}
+                            >
+                                <MdDelete />
+                            </button>
+                        </div>
+                    )}
                 </div>
             ),
-        },
-    ];
+        });
+    }
+    const addItemPermission = rolePermission.some(
+        (role: { section: string; permission: string[] }) =>
+            role.section === 'blog' && role.permission.includes('create')
+    );
+    const navigate = useNavigate();
+    const handleAdd = () => {
+        navigate('/blog/add');
+    };
     return (
         <div>
-            <Card title="Blogs" className="m-2">
-                {loading ? (
-                    <Flex gap="middle" className="w-full h-full justify-center ">
-                        <Spin size="large" />
-                    </Flex>
-                ) : (
-                    <>
+            <div className="flex justify-end mb-2">
+                {addItemPermission && (
+                    <Button onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
+                        +{ADD_ITEM}
+                    </Button>
+                )}
+            </div>
+            {loading ? (
+                <Flex gap="middle" className="w-full h-full justify-center ">
+                    <Spin size="large" />
+                </Flex>
+            ) : (
+                <>
+                    <Card title="Blogs" className="m-2">
                         <Table
                             rowClassName="text-center"
                             dataSource={AllBlogData}
-                            pagination={{ pageSize: 10 }}
+                            pagination={{
+                                pageSize: 10,
+                                total: total,
+                                current: currentPage,
+                                onChange: (page) => {
+                                    fetchData(page);
+                                },
+                            }}
                             columns={blogdata}
                             bordered
                             sticky
                             className="w-full"
                         ></Table>
-                    </>
-                )}
-            </Card>
+                    </Card>
+                </>
+            )}
             <Modal
                 title="Confirm Deletion"
                 open={deletemodal}
@@ -254,7 +297,16 @@ export default function Show_blog() {
                                 <Form.Item<FieldNamesType>
                                     key={index}
                                     label={item.label}
-                                    name={item.name}
+                                    name={
+                                        item.name as
+                                            | 'label'
+                                            | 'value'
+                                            | 'children'
+                                            | ['label']
+                                            | ['value']
+                                            | ['children']
+                                            | undefined
+                                    }
                                     rules={[{ required: false, message: item.message }]}
                                     className="w-1/2"
                                 >
@@ -275,7 +327,7 @@ export default function Show_blog() {
                                         <Upload
                                             action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                                             listType="picture"
-                                            customRequest={handlechange}
+                                            customRequest={() => void handlechange}
                                         >
                                             <Button icon={<UploadOutlined />}>Upload New Banner</Button>
                                         </Upload>

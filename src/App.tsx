@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Loader from './components/Loader';
 import './App.css';
+import Role_data from './components/Role_data';
 
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
@@ -45,8 +46,10 @@ function App() {
                         <Route path="/show_edit_delete" element={<Show_blog />} />
                         <Route path="/vehicle" element={<Vehicle />} />
                         <Route path="/staff-management" element={<StaffManagement />} />
-                        <Route path="/staff-management/role-management" element={<Role_management />} />
+                        <Route path="/staff-management/role-management" element={<Role_data />} />
                         <Route path="/staff-management/add" element={<AdminAdd />}></Route>
+                        <Route path="/staff-management/role-management/add" element={<Role_management />}></Route>
+
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

@@ -23,7 +23,8 @@ interface MenuItem {
     name: string;
     navigate: string;
     icon: JSX.Element;
-}
+}import NavLogo from '../assets/Images/icons/Navlogo';
+
 export default function SiderPage({ collapse }: { collapse: boolean }) {
     // const data: Order[] = ORDER_TABLE;
     // const [toggle1, settoggle1] = useState(false);

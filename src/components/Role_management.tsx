@@ -1,131 +1,139 @@
-import { Button, Card, Form, Input, Table } from 'antd';
-import { AlignType } from '../assets/dto/data.type';
-import { FaEdit } from 'react-icons/fa';
-import { MdDelete } from 'react-icons/md';
+    import { Button, Card, Checkbox, Form, Input } from 'antd';
+    import { useState } from 'react';
+import { toast } from 'sonner';
+import http from '../http/http';
+import axios, { AxiosError } from 'axios';
 
-export default function Role_management() {
-    const STAFF_DATA = [
-        {  section: 'Dashboard' },
-        {  section: 'Order' },
-        {  section: 'Payment' },
-        {  section: 'Delivery Partner' },
-        {  section: 'Categories' },
-        {  section: 'City' },
-        {  section: 'Coupon' },
-        {  section: 'Blog' },
-        {  section: 'Vehicle' },
-        {  section: 'Staff Management' },
-        {  section: 'Order Settings' },
-        {  section: 'Blog Settings' },
-        {  section: 'User Settings' },
+    export default function RoleManagement() {
+        const [form] = Form.useForm();
+        const [permissions, setPermissions] = useState({});
 
+        const STAFF_DATA = [
+            { section: 'Dashboard' },
+            { section: 'Order' },
+            { section: 'Payment' },
+            { section: 'Delivery Partner' },
+            { section: 'Categories' },
+            { section: 'City' },
+            { section: 'Coupon' },
+            { section: 'Blog' },
+            { section: 'Vehicle' },
+            { section: 'Staff Management' },
+            { section: 'Order Settings' },
+            { section: 'Blog Settings' },
+            { section: 'User Settings' },
+        ];
 
+        const onFinish = (values) => {
+            const formattedData = {
+                role_name: values.role_name,
+                description: values.description,
+                permissions: Object.entries(permissions).map(([section, permission]) => ({
+                    section,
+                    section_permission: permission,
+                })),
+            };
 
-    ];
+            console.log('Formatted data:', formattedData);
+            postData(formattedData)
 
-    const STAFF_DATA_COL = [
-        {
-            title: 'Index',
-            dataIndex: 'id',
-            render: (_, __, index) => index + 1,
-            align: 'center' as AlignType,
-            width:"70px"
-        },
-        {
-            title: 'Section',
-            dataIndex: 'section',
-            align: 'center' as AlignType,
-            width:"100px"
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            align: 'center' as AlignType,
-            width: '200px',
-            render: (_, record: any) => (
-                <div className="flex justify-center ">
-                    <div className="flex gap-10 items-center">
-                        <div className="flex gap-2 items-center">
-                            View<input type="checkbox"></input>
-                        </div>
-                        <div className="flex gap-2 items-center">
-                            Add<input type="checkbox"></input>
-                        </div>
-                        <div className="flex gap-2 items-center">
-                            Edit<input type="checkbox"></input>
-                        </div>
-                        <div className="flex gap-2 items-center">
-                            Delete<input type="checkbox"></input>
-                        </div>
-                    </div>
-                </div>
-            ),
-        },
-    ];
-    const onFinish = (values:any) => {
-        // Extract selected permissions
-        const selectedPermissions = [];
-        STAFF_DATA.forEach((item, index) => {
-            if (values[`view-${index}`]) {
-                selectedPermissions.push({ section: item.section, action: 'View' });
+            
+            form.resetFields();
+            setPermissions({});
+        };
+        const postData=async(formattedData:any)=>{
+            try{
+
+                const response = await http.post("/api/v1/admin/role",formattedData)
+                toast.success(response.data.message)
             }
-            if (values[`add-${index}`]) {
-                selectedPermissions.push({ section: item.section, action: 'Add' });
+            catch(error){
+                message_error(error)
             }
-            if (values[`edit-${index}`]) {
-                selectedPermissions.push({ section: item.section, action: 'Edit' });
+        }
+
+        const handlePermissionChange = (section, permission) => {
+            setPermissions((prevPermissions) => ({
+                ...prevPermissions,
+                [section]: permission,
+            }));
+        };
+        const message_error = (error: any) => {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    status: number;
+                    message: string;
+                }>;
+                if (axiosError.response) {
+                    toast.error(axiosError.response.data.message);
+                } else if (axiosError.request) {
+                    console.log('Request Error', axiosError.request);
+                } else {
+                    console.log('Error', axiosError.message);
+                }
             }
-            if (values[`delete-${index}`]) {
-                selectedPermissions.push({ section: item.section, action: 'Delete' });
-            }
-        });
+        };
 
-        // Add selected permissions to the form values
-        values.permissions = selectedPermissions;
+        return (
+            <div className="w-full flex justify-center items-center p-4">
+                <Card title="Add New Role" className="w-11/12 ">
+                    <Form form={form} onFinish={onFinish} className="w-full flex flex-col">
+                        <Form.Item
+                        rules={[{ required: true, message: 'Please add Name' }]}
+                        label="Role Name "
+                         name="role_name" className="w-[502px] flex flex-col gap-2">
+                            <Input placeholder="Add Role Name" className="py-2 placeholder:text-xs" />
+                        </Form.Item>
+                        <Form.Item
+                        rules={[{ required: true, message: 'Please add description' }]}
+                        label="Description"
 
-        // Send form data to backend or perform any other action
-        console.log('Form values:', values);
-    };
-
-    return (
-        <div className="w-full flex justify-center items-center p-4">
-            <Card title="Add New Role" className="w-11/12 ">
-                <Form className="w-full flex flex-col" onFinish={onFinish}>
-                    <Form.Item
-                        name="role_name"
-                        rules={[{ required: true, message: 'Please input City name!' }]}
-                        className="w-[502px] flex flex-col gap-2"
-                    >
-                        <div className="py-2 font-semibold">Role Name</div>
-                        <Input placeholder="Add Role Name" className="py-2 placeholder:text-xs" />
-                    </Form.Item>
-                    <Form.Item
-                        name="description"
-                        rules={[{ required: true, message: 'Please input City name!' }]}
-                        className="w-full flex flex-col gap-2 "
-                    >
-                        <div className="py-2 font-semibold">Role Description</div>
-                        <Input.TextArea
-                            className="border-2 border-gray-300 py-2 placeholder:text-xs"
-                            placeholder="Add Role Description"
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name="permission"
-                        rules={[{ required: true, message: 'Please input City name!' }]}
-                        className="w-full flex flex-col gap-2 "
-                    >
-                        <div className="py-2 font-semibold">Section Permission</div>
-                        <Table bordered columns={STAFF_DATA_COL} dataSource={STAFF_DATA}></Table>
-                    </Form.Item>
-                    <Form.Item >
-                      
-                        <Button  htmlType="submit">
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Card>
-        </div>
-    );
-}
+                         name="description" className="w-full flex flex-col gap-2">
+                            <Input.TextArea
+                                className="border-2 border-gray-300 py-2 placeholder:text-xs"
+                                placeholder="Add Role Description"
+                            />
+                        </Form.Item>
+                            <table className="w-full  text-center">
+                                <thead className="text-2xl">
+                                    <tr>
+                                        <th className="border-2">Index</th>
+                                        <th className="border-2">Section</th>
+                                        <th className="border-2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="text-sm">
+                                    {STAFF_DATA.map((item, index) => (
+                                        <tr key={index}>
+                                            <td className="border-2">{index + 1}</td>
+                                            <td className="border-2">{item.section}</td>
+                                            <td className="border-2">
+                                                <div className="flex justify-center">
+                                                    <Form.Item className="w-full flex flex-col gap-2 p-2 ">
+                                                    <Checkbox.Group
+                                                        onChange={(checkedValues) =>
+                                                            handlePermissionChange(item.section, checkedValues)
+                                                        }   
+                                                    >
+                                                        <Checkbox value="view">View</Checkbox>
+                                                        <Checkbox value="add">Add</Checkbox>
+                                                        <Checkbox value="edit">Edit</Checkbox>
+                                                        <Checkbox value="delete">Delete</Checkbox>
+                                                    </Checkbox.Group>
+                                                    </Form.Item>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        <Form.Item>
+                            <Button style={{"backgroundColor":"#2967ff","color":"white"}} htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Card>
+            </div>
+        );
+    }

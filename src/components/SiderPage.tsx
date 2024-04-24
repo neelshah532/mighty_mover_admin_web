@@ -24,6 +24,8 @@ interface MenuItem {
     navigate: string;
     icon: JSX.Element;
 }
+import NavLogo from '../assets/Images/icons/Navlogo';
+
 export default function SiderPage({ collapse }: { collapse: boolean }) {
     // const data: Order[] = ORDER_TABLE;
     // const [toggle1, settoggle1] = useState(false);
@@ -81,8 +83,9 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                         </div> */}
                 {/* </Flex> */}
                 <div className="flex justify-center mt-4">
-                    <div className="">
-                        <img src={logo} alt="logo" />
+                    <div className="w-[130px]">
+                        <NavLogo/>
+
                     </div>
                 </div>
                 <Menu

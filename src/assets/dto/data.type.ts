@@ -159,6 +159,12 @@ interface FileInfo {
     
 }
 
+interface role_data{
+    id:string;
+    role_name:string;
+    description:string;
+    created_at:string;
+}
 export type {
     Order,
     DeliveryPartner,
@@ -170,7 +176,7 @@ export type {
     blog,
     vehicle,
     staff_data,
-    AdminsDisplay,
+    AdminsDisplay,role_data,
     addCategories,
     FileInfo,
 };

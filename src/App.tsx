@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Loader from './components/Loader';
 import './App.css';
+import Role_data from './components/Role_data';
 import { useDispatch, useSelector } from 'react-redux';
 // import { RootState } from './app/store';
 import { RootState } from './assets/dto/data.type';

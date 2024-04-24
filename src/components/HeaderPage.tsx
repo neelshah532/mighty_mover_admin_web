@@ -1,7 +1,7 @@
 import { Tooltip, Flex, Modal, Upload, Avatar, Input, Button, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { PlusOutlined } from '@ant-design/icons';
-import { FaUser } from 'react-icons/fa';
+import { FaHome, FaRegUserCircle, FaUser } from 'react-icons/fa';
 import { useState, useEffect, ChangeEventHandler } from 'react';
 import ImgCrop from 'antd-img-crop';
 import type { GetProp, UploadProps, UploadFile } from 'antd';
@@ -17,6 +17,15 @@ import http from '../http/http';
 import Loader from './Loader';
 import { HiMiniBarsArrowDown } from 'react-icons/hi2';
 import { userData } from '../assets/userData';
+import { IoMdSettings } from 'react-icons/io';
+import { BiSolidMessageEdit } from 'react-icons/bi';
+import { RiUserSettingsFill } from 'react-icons/ri';
+import { TbSettingsCog } from 'react-icons/tb';
+import { FaCity } from 'react-icons/fa';
+import { RiCoupon2Fill } from 'react-icons/ri';
+import { FaMotorcycle } from 'react-icons/fa6';
+import { RiUserSettingsLine } from 'react-icons/ri';
+import { MdOutlineCategory, MdOutlineContactPage, MdOutlinePayment } from 'react-icons/md';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 export default function HeaderPage({
@@ -257,11 +266,60 @@ export default function HeaderPage({
     const handletoggle = () => {
         setcollapse(!collapse);
     };
+    let logo = null;
+
+    // Assign the logo based on the current page
+    switch (currentPage) {
+        case 'Dashboard':
+            logo = <FaHome />;
+            break;
+        case 'Order':
+            logo = <MdOutlineContactPage />;
+            break;
+        case 'Delivery Page':
+            logo = <FaRegUserCircle />;
+            break;
+        case 'Payment':
+            logo = <MdOutlinePayment />;
+            break;
+        case 'Category':
+            logo = <MdOutlineCategory />;
+            break;
+        case 'City':
+            logo = <FaCity />;
+            break;
+        case 'Coupon':
+            logo = <RiCoupon2Fill />;
+            break;
+        case 'Blog':
+            logo = <BiSolidMessageEdit />;
+            break;
+        case 'Vehicle':
+            logo = <FaMotorcycle />;
+            break;
+        case 'Admin':
+            logo = <RiUserSettingsLine />;
+            break;
+        case 'settings':
+            logo = <IoMdSettings />;
+            break;
+        default:
+            logo = null;
+            break;
+    }
     return (
         <div className="w-full sticky top-0 z-10">
             {/* <Header  className="z-10 w-full bg-white shadow-sm shadow-gray-400 border-2 border-red-500"> */}
             <Flex justify="space-between" className="bg-gray-50  items-center">
                 <Flex>
+                    <div className="text-lg font-semibold flex gap-2 justify-center items-center ml-4">
+                        <div>{logo}</div>
+                        <div>
+                            <h1 style={{ color: 'black' }}>{currentPage}</h1>
+                        </div>
+                    </div>
+                </Flex>
+                <Flex className="h-16" gap="small" align="center">
                     <div>
                         <Button className="text-xl ml-2 rounded-md" onClick={handletoggle}>
                             {collapse ? (
@@ -271,11 +329,6 @@ export default function HeaderPage({
                             )}
                         </Button>
                     </div>
-                    <div className="text-lg font-semibold">
-                        <h1 style={{ color: 'black', paddingLeft: 16 }}>{currentPage}</h1>
-                    </div>
-                </Flex>
-                <Flex className="h-16" gap="small" align="center">
                     <div className="flex items-center gap-3 mr-2">
                         <Tooltip title={<div className="flex  items-center">{firstname + '' + lastname}</div>}>
                             <div>

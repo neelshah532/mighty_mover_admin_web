@@ -8,7 +8,6 @@ import http from '../http/http';
 import { useDispatch } from 'react-redux';
 import { AdminsDisplay } from '../assets/dto/data.type';
 import { setPage } from '../redux/pageSlice';
-import { TiPlusOutline } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
 
 function VIewAdmin() {

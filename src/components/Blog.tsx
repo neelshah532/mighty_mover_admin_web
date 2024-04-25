@@ -10,10 +10,7 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import formhttp from '../http/Form_data';
 import http from '../http/http';
-import { useEffect, useState } from 'react';
-import { FileInfo } from '../assets/dto/data.type';
-import { useDispatch } from 'react-redux';
-import { setPage } from '../redux/pageSlice';
+import { useState } from 'react';
 interface valueinterface {
     title: string;
     description: string;
@@ -28,17 +25,12 @@ interface FieldType {
 }
 
 export default function Blog() {
-    const [data] = useForm<valueinterface>();
-    const [imgid, setimgid] = useState<string>('');
-    // const [value, setValue] = useState<valueinterface>({title:"",description:"",author_name:"",documentId:""});
+    const [data] = useForm();
+    const [value, setValue] = useState<valueinterface>({ title: '', description: '', author_name: '', documentId: '' });
+    const [imgid, setimgid] = useState('');
+    console.log(value);
 
-    // console.log(value)
-    const dispatch = useDispatch();
-
-   useEffect(() => {
-       dispatch(setPage('Add Blogs')); 
-   }, [dispatch]);
-    const onFinish: FormProps<valueinterface>['onFinish'] = async (values: valueinterface) => {
+    const onFinish: FormProps<valueinterface>['onFinish'] = async (values) => {
         const toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
             ['blockquote', 'code-block'],
@@ -76,30 +68,31 @@ export default function Blog() {
             });
             toast.success(response.data.message);
         } catch (error) {
-            message_error(error as Error);
+            message_error(error);
         }
         data.resetFields();
     };
 
     const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-        const { values, errorFields, outOfDate } = errorInfo;
-        console.log('Failed:', values, errorFields, outOfDate);
+        console.log('Failed:', errorInfo);
     };
 
-    const handlechange = async (info: FileInfo) => {
+    const handlechange = async (info: any) => {
         const { file } = info;
         const formData = new FormData();
+        const fileData: any = file;
+        console.log(fileData);
         formData.append('type', 'blog');
-        formData.append('image', file);
+        formData.append('image', fileData);
         try {
             const response = await formhttp.post('/api/v1/document', formData);
             setimgid(response.data.data.document_id);
         } catch (error) {
-            message_error(error as Error);
+            message_error(error);
         }
     };
 
-    const message_error = (error: Error) => {
+    const message_error = (error: any) => {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{
                 status: number;
@@ -121,12 +114,12 @@ export default function Blog() {
                 {/* <div className=''>
                     <h1 className='text-xl font-bold p-4'>Edit Blog Settings</h1>
                 </div> */}
-                {/* <div className="border-b border-black">
+                <div className="border-b border-black">
                     <div className="flex ml-2 gap-2 items-center">
                         <IoMdSettings className="size-7 mt-2" />
-                        <h2 className="font-semibold text-lg mt-2">Blog Add</h2>
+                        <h2 className="font-semibold text-lg mt-2">Blog Settings</h2>
                     </div>
-                </div> */}
+                </div>
                 <div>
                     <Form
                         form={data}
@@ -135,7 +128,7 @@ export default function Blog() {
                         // labelCol={{ span: 16 }}
                         // wrapperCol={{ span: 16 }}
                         onFinish={onFinish}
-                        onFinishFailed={() => void onFinishFailed}
+                        onFinishFailed={() => onFinishFailed}
                         autoComplete="off"
                         layout="vertical"
                     >
@@ -153,6 +146,7 @@ export default function Blog() {
                                             | ['label']
                                             | ['message']
                                             | ['placeholder']
+                                            | undefined
                                     }
                                     rules={[{ required: item.req, message: item.message }]}
                                     className="w-1/2"
@@ -169,7 +163,7 @@ export default function Blog() {
                                 <Upload
                                     action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                                     listType="picture"
-                                    customRequest={() => void handlechange}
+                                    customRequest={handlechange}
                                 >
                                     <Button icon={<UploadOutlined />}>Upload</Button>
                                 </Upload>

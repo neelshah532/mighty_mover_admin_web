@@ -55,12 +55,12 @@ interface DeliveryPartner {
 
 export type AlignType = 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent';
 interface User {
-    index: number;
-    name: string;
+    id: string;
+    first_name: string;
     email: string;
-    number: number;
-    RegisterDate: string;
-    status: boolean;
+    contact: number;
+    created_at: string;
+    status: string | boolean;
     align?: AlignType | undefined;
 }
 
@@ -84,7 +84,8 @@ interface AdminsDisplay {
     first_name: string;
     last_name: string;
     email: string;
-    // status: string | boolean;
+    status: string | boolean;
+    role: string;
     align?: AlignType | undefined;
 }
 interface city {
@@ -127,21 +128,25 @@ interface vehicle {
     vehicle_num: string;
     widht: number;
 }
-interface staff_data{
-    id:string;
-    role:string;
-    user:number;
-    description:string;
-
+interface staff_data {
+    id: string;
+    role: string;
+    user: number;
+    description: string;
 }
 
 interface addCategories {
     name: string;
     description: string;
     status: string | boolean;
-
 }
-
+interface addUsers {
+    first_name: string;
+    last_name: string;
+    email: string;
+    contact: number | string;
+    password: string;
+}
 
 interface Role {
     section: string;
@@ -156,7 +161,6 @@ interface RootState {
 }
 interface FileInfo {
     file: File;
-    
 }
 
 export type {
@@ -173,6 +177,7 @@ export type {
     AdminsDisplay,
     addCategories,
     FileInfo,
+    addUsers,
 };
 export type { DataType, FormValues, RootState };
-export { shipdata, paymenttype, deliverypartner, vehicletype, };
+export { shipdata, paymenttype, deliverypartner, vehicletype };

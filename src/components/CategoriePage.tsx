@@ -48,7 +48,7 @@ function CategoriePage() {
     const hasDeletePermission = rolePermission.some(
         (role: { section: string; permission: string[] }) =>
             role.section === 'categories' && role.permission.includes('delete')
-    );  
+    );
     const cetagories_data_col: ColumnProps<Categories>[] = [
         ...CETAGORIES_DATA_COL(currentPage, 10),
         {
@@ -85,7 +85,7 @@ function CategoriePage() {
         },
     ];
 
-       if( hasEditPermission || hasDeletePermission){
+    if (hasEditPermission || hasDeletePermission) {
         cetagories_data_col.push({
             title: 'Action',
             key: 'action',
@@ -115,15 +115,14 @@ function CategoriePage() {
                 </div>
             ),
         });
-       }
-           
+    }
 
     // there is a handle addItem Permissions check
     const addItemPermission = rolePermission.some(
         (role: { section: string; permission: string[] }) =>
             role.section === 'categories' && role.permission.includes('create')
     );
-   
+
     // there is a HandleError component
     const handleError = (error: Error) => {
         if (axios.isAxiosError(error)) {
@@ -274,7 +273,6 @@ function CategoriePage() {
         },
         [currentPage]
     );
-
 
     useEffect(() => {
         dispatch(setPage('Category'));

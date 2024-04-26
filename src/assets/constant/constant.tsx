@@ -1,9 +1,7 @@
-import { IoCashOutline } from 'react-icons/io5';
-import { FaCcStripe, FaHome, FaRegUserCircle } from 'react-icons/fa';
-import { FaRegCreditCard } from 'react-icons/fa';
+import { FaStripe, FaHome, FaRegUserCircle, FaRupeeSign } from 'react-icons/fa';
 import { MdOutlineCategory, MdOutlineContactPage, MdOutlinePayment, MdSpeakerPhone } from 'react-icons/md';
 import { ColumnProps } from 'antd/es/table';
-import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User, AlignType } from '../dto/data.type';
+import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User, AlignType, Payment } from '../dto/data.type';
 import { IoMdSettings } from 'react-icons/io';
 import { BiSolidMessageEdit } from 'react-icons/bi';
 import { RiUserSettingsFill } from 'react-icons/ri';
@@ -395,11 +393,11 @@ export const PAYMENT_DATA = [
     },
     {
         key: '2',
-        image: paymenttype.credit_debit,
+        image: paymenttype.cash,
         amount: 100,
         organiser_name: 'Neel',
         transfer_details: 'neel.s.patel03@gmail.com',
-        transfer_type: paymenttype.credit_debit,
+        transfer_type: paymenttype.cash,
         status: false,
     },
     {
@@ -413,11 +411,11 @@ export const PAYMENT_DATA = [
     },
     {
         key: '4',
-        image: paymenttype.upi,
+        image: paymenttype.stripe,
         amount: 100,
         organiser_name: 'Rahul',
         transfer_details: 'rahul.s.patel03@gmail.com',
-        transfer_type: paymenttype.upi,
+        transfer_type: paymenttype.stripe,
         status: true,
     },
 ];
@@ -425,101 +423,27 @@ export const PAYMENT_DATA = [
 export const PAYMENT_DATA_COL = [
     {
         title: 'Index',
-        dataIndex: 'key',
+        dataIndex: 'id',
+        render:(_,__,index)=>index+1,
+        align: 'center' as AlignType,
+        width: '70px'
+    },
+    {
+        title: 'Type',
+        dataIndex: 'payment_type',
     },
     {
         title: 'Image',
-        dataIndex: 'image',
-        render: (image: string) => {
-            if (image === 'Stripe') {
-                return (
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <FaCcStripe style={{ fontSize: 'xxx-large' }} />
-                    </div>
-                );
-            } else if (image === 'Credit_Debit') {
-                return (
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <FaRegCreditCard style={{ fontSize: 'xxx-large' }} />
-                    </div>
-                );
-            } else if (image === 'Cash') {
-                return (
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <IoCashOutline style={{ fontSize: 'xxx-large' }} />
-                    </div>
-                );
-            } else {
-                return (
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <MdSpeakerPhone style={{ fontSize: 'xxx-large' }} />
-                    </div>
-                );
-            }
-        },
+        dataIndex: 'payment_type',
+        // render:(text:Payment)=>text==="stripe" ? <FaStripe className='w-fit'/> : <FaRupeeSign className='w-fit'/>,
+        align:'center' as AlignType
     },
     {
-        title: 'Transfer Type',
-        dataIndex: 'transfer_type',
-    },
-    {
-        title: 'Amount',
-        dataIndex: 'amount',
-        render: (amount: number) => {
-            return <div className="font-semibold">Rs {amount}</div>;
-        },
-    },
-    {
-        title: 'Organiser Name',
-        dataIndex: 'organiser_name',
-    },
-    {
-        title: 'Transfer Details',
-        dataIndex: 'transfer_details',
-    },
-    {
-        title: 'Status',
-        dataIndex: 'status',
-        render: (status: boolean) => {
-            if (status === true) {
-                return (
-                    <div
-                        style={{
-                            padding: '3px',
-                            borderRadius: '5px',
-
-                            textAlign: 'center',
-                            fontWeight: '600',
-                            fontSize: 'medium',
-                            border: '1px solid #22c55e',
-                            color: "#22c55e",
-                            backgroundColor: "#F2FCF7"
-                        }}
-                    >
-                        Paid
-                    </div>
-                );
-            } else {
-                return (
-                    <div
-                        style={{
-                            padding: '3px',
-                            borderRadius: '5px',
-                            textAlign: 'center',
-                            fontWeight: '600',
-                            fontSize: 'medium',
-                            border: '1px solid #dc2626',
-                            color: "#dc2626",
-                            backgroundColor: "#FDF4F5"
-                        }}
-                    >
-                        Pending
-                    </div>
-                );
-            }
-        },
+        title:'Status',
+        dataIndex:'status'
     },
 ];
+
 export const LOGIN_DATA_STRING = {
     TITLE: 'Login to your account',
     SUBTITLE: 'Welcome to Mighty Movers',
@@ -928,17 +852,17 @@ export const SIDE_PANEL = {
             icon: <FaMotorcycle />,
         },
         {
-            name:"Driver",
-            navigate:"/drivers",
+            name: "Driver",
+            navigate: "/drivers",
             icon: <GiSteeringWheel />
         },
         {
             name: 'Staff Managment',
             navigate: '/staff-management',
             icon: <RiUserSettingsLine />,
-        },{
-            name:"Notifications",
-            navigate:"/notifications",
+        }, {
+            name: "Notification",
+            navigate: "/notifications",
             icon: < IoIosNotifications />
         }
     ],

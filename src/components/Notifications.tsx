@@ -32,16 +32,13 @@ function Notifications() {
     };
    
 
-    
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState(0);
-    
 
-    const [addItem, setAddItem] = useState(false);  
 
     const [loading, setLoading] = useState(false);
 
-    const dispatch = useDispatch();
+    
     const notifications_data_col: ColumnProps<notification>[] = [
         ...NOTIFICATION_DATA_COL(currentPage,10),
         {
@@ -61,7 +58,7 @@ function Notifications() {
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
-            render: (_, record: notification) => <Redirect notification_status={record.notification_status} id={record.id} title={record.title} date={record.date} time={record.time}/>,
+            render: (_, record: notification) => <Redirect notification_status={record.notification_status} id={record.id} title={record.title} date={record.date} time={record.time} description={record.description}/>,
         },
     ];
     const handleError = (error: Error) => {
@@ -81,16 +78,10 @@ function Notifications() {
         }
     };
 
-    //handle add item
-    const handleAdd = () => {
-        setAddItem(true);
-    };
- 
 
-    // their is a section where fetch data of categorie items using useState
     const [notificationData, setNotificationData] = useState<notification[]>([]);
 
-    // api calling section
+
     const fetchData = useCallback(async (page:number) => {
         setLoading(true);
         try {
@@ -106,7 +97,8 @@ function Notifications() {
             setLoading(false);
         }
     }, []);
-
+    
+    const dispatch = useDispatch();
     useEffect(() => {
         dispatch(setNotificationPage('Notification'));
         void fetchData(currentPage);
@@ -118,21 +110,20 @@ function Notifications() {
                 <>
                     <div className="flex justify-end mb-2">
                         <Button
-                            onClick={handleAdd}
+                            onClick={()=>navigate('/add-notification')}
                             className='text-[#2967ff]'
                             // style={{ color: '#2967ff', backgroundColor: '#ffffff' }}
                         >
                             +Add New Notification
                         </Button>
                     </div>
-
                     {loading ? (
                         <Flex gap="middle" className="w-full h-full justify-center ">
                             <Spin size="large" />
                         </Flex>
                     ) : (
                         <>
-                            <Card title="Notifications" className="m-2">
+                            <Card title="Notifications" className="m-2">                                
                                 <Table
                                     dataSource={notificationData}
                                         pagination={{
@@ -146,7 +137,6 @@ function Notifications() {
                                     sticky
                                     className="w-full"
                                 ></Table>
-                               
                             </Card>
                         </>
                     )}

@@ -17,9 +17,7 @@ enum shipdata {
 }
 enum paymenttype {
     stripe = 'Stripe',
-    credit_debit = 'Credit_Debit',
     cash = 'Cash',
-    upi = 'UPI',
 }
 enum deliverypartner {
     active = 'active',
@@ -160,6 +158,13 @@ interface addCategories {
 
 }
 
+interface Payment {
+    id:string,
+    type:string,
+    api_key:string,
+    secret_key:string,
+    status:string
+}
 
 interface Role {
     section: string;
@@ -188,9 +193,11 @@ export type {
     blog,
     vehicle,driver,
     staff_data,
-   notification, AdminsDisplay,
+    notification, 
+    AdminsDisplay,
     addCategories,
     FileInfo,
+    Payment
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype, };

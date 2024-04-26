@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { RootState } from './app/store';
 import { RootState } from './assets/dto/data.type';
 import { resetState } from './redux/roleSlice';
+import AddNotification from './components/AddNotification';
+import AddNotificationDetails from './components/AddNotificationDetails';
 
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
@@ -28,8 +30,8 @@ const StaffManagement = lazy(() => import('./components/Staff'));
 const AdminAdd = lazy(() => import('./components/AdminAdd'));
 const Role_management = lazy(() => import('./components/Role_management'));
 const DriverTable = lazy(() => import('./components/DriverTable'))
-const Notifications = lazy(()=>import('./components/Notifications'))
-const IndividualNotificationDetails = lazy(()=>import('./components/IndividualNotificationDetails'))
+const Notifications = lazy(() => import('./components/Notifications'))
+const IndividualNotificationDetails = lazy(() => import('./components/IndividualNotificationDetails'))
 const Role_data = lazy(() => import('./components/Role_data'));
 // import Staff from './components/Staff';
 // import Role_management from './components/Role_management';
@@ -39,7 +41,7 @@ function App() {
     // console.log(user);
     // const sectionPermission = user.map((role: any) => role.section);
     // const sectionPermission = user.permission ? user.permission.map((role) => role.sectionName) : [];
-      const sectionPermission = rolePermission?.map((role) => role.section);
+    const sectionPermission = rolePermission?.map((role) => role.section);
 
     console.log(sectionPermission);
     const dispatch = useDispatch();
@@ -51,7 +53,7 @@ function App() {
             dispatch(resetState());
             navigate('/login');
         }
-        
+
     }, [dispatch, navigate]);
 
     return (
@@ -94,19 +96,11 @@ function App() {
                         {sectionPermission?.includes('addAdmin') && (
                             <Route path="/staff-management/role-management/add" element={<Role_data />}></Route>
                         )}
-                        <Route path="/delivery-partner" element={<Delivery_partner />} />
-                        <Route path="/categories" element={<CategoriePage />} />
-                        <Route path="/categories/:id" element={<SubCategory />} />
-                        <Route path="/city" element={<City />} />
-                        <Route path="/coupon" element={<Coupon />} />
-                        <Route path="/show_edit_delete" element={<Show_blog />} />
-                        <Route path="/vehicle" element={<Vehicle />} />
-                        <Route path="/staff-management" element={<StaffManagement />} />
-                        <Route path="/staff-management/role-management" element={<Role_management />} />
-                        <Route path="/staff-management/add" element={<AdminAdd />}></Route>
-                        <Route path='/drivers' element={<DriverTable/>}></Route>
-                        <Route path='/notifications' element={<Notifications/>}></Route>
-                        <Route path='/notifications/:id' element={<IndividualNotificationDetails/>}></Route>
+
+                        <Route path='/drivers' element={<DriverTable />}></Route>
+                        {sectionPermission?.includes('notification') && <Route path='/notifications' element={<Notifications />}></Route>}
+                        {sectionPermission?.includes('notification') && <Route path='/notifications/:id' element={<IndividualNotificationDetails />}></Route>}
+                        <Route path='/add-notification' element={<AddNotificationDetails/>}></Route>
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

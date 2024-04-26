@@ -1,3 +1,5 @@
+import { Role } from '../../redux/roleSlice';
+
 interface DataType {
     key: React.Key;
     orderid: string;
@@ -148,19 +150,21 @@ interface addUsers {
     password: string;
 }
 
-interface Role {
-    section: string;
-    permission: { section: string; permission: string[] }[];
-}
-interface RolePermissionState {
-    roles: Role[];
-}
-
 interface RootState {
-    rolePermission: RolePermissionState;
+    rolePermission: Role;
 }
 interface FileInfo {
     file: File;
+}
+
+interface PaymentInformation {
+    index: number;
+    id: string;
+    amount: string | number;
+    payment_date: string | number;
+    payment_status: string ;
+    payment_type: string;
+    align? : AlignType | string;
 }
 
 export type {
@@ -178,6 +182,7 @@ export type {
     addCategories,
     FileInfo,
     addUsers,
+    PaymentInformation,
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

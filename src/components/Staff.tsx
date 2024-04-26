@@ -21,17 +21,16 @@ function VIewAdmin() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
 
-    const hasEditPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'categories' && role.permission.includes('write')
-    );
+    console.log(rolePermission);
+    const allowedPermission = (section: string, permissionType: string) => {
+        return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+    };
+    const hasEditPermission = allowedPermission('staff management', 'write');
+  
+    const hasDeletePermission = allowedPermission('staff management', 'delete');
 
-    const hasDeletePermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'categories' && role.permission.includes('delete')
-    );
 
     const admin_col: ColumnProps<AdminsDisplay>[] = [
         ...ADMIN_COL(currentPage, 10),
@@ -46,6 +45,19 @@ function VIewAdmin() {
                         className={`${record.status === 'active' ? 'text-[#25a55e]  p-3 w-28  rounded-[5px]  bg-[#F2FCF7] border' : 'text-red-500 p-3 w-28  rounded-[5px]  bg-[#FDF4F5]'}  `}
                     >
                         {record.status}
+                    </div>
+                </div>
+            ),
+        },
+        {
+            title: 'Role',
+            key: 'role',
+            dataIndex: 'role',
+            align: 'center',
+            render: (_, record) => (
+                <div className="flex justify-center">
+                    <div className={`text-blue-500  p-3 w-28  rounded-[5px]  border border-blue-500`}>
+                        {record.role}
                     </div>
                 </div>
             ),
@@ -121,7 +133,7 @@ function VIewAdmin() {
         }
     }, []);
     useEffect(() => {
-        dispatch(setPage('Admin'));
+        dispatch(setPage('Roles Management'));
         void fetchData(currentPage);
     }, [dispatch, fetchData, currentPage]);
 
@@ -140,7 +152,7 @@ function VIewAdmin() {
                         </div>
                     </div>
 
-                    <Card title="Staff Management" className="m-2">
+                    <Card  className="m-2">
                         <Table
                             rowClassName="text-center"
                             dataSource={adminData}

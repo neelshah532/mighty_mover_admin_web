@@ -22,3 +22,41 @@ body {
     background-color: #2967ff;
     border-radius: 8px;
 }
+
+/* Add this CSS to your global CSS file or a component-specific CSS file */
+
+/* @keyframes truckMovement {
+    0% {
+        left: -80px;
+    }
+
+    100% {
+        left: calc(100vw + 100px);
+    }
+}
+
+.animate-truck {
+    animation: truckMovement 10s linear infinite;
+} */
+
+@keyframes move-truck {
+    0% {
+        transform: translateX(-100%);
+    }
+    25%{
+        transform: translateX(-50%);
+    }
+    50% {
+        transform: translateX(0%);
+    }
+    75% {
+        transform: translateX(50%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.animate-truck {
+    animation: move-truck 2s linear infinite;
+}

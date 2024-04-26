@@ -59,6 +59,7 @@ export default function HeaderPage({
             console.log(logoutAdmin);
             navigate('/login');
             dispatch(Adminlogout());
+            
             setIsLoading(true);
         } catch (error) {
             if (axios.isAxiosError(error)) {

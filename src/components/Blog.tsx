@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Button, Form, type FormProps, Input } from 'antd';
 import { BLOG_SETTINGS_STRING } from '../assets/constant/constant';
 import { IoMdSettings } from 'react-icons/io';
@@ -9,28 +10,27 @@ import { useForm } from 'antd/es/form/Form';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import formhttp from '../http/Form_data';
-import http from '../http/http';
-import { useState } from 'react';
-interface valueinterface {
-    title: string;
-    description: string;
-    author_name: string;
-    documentId: string;
-}
-interface FieldType {
-    label?: string;
-    name?: string;
-    message?: string;
-    placeholder?: string;
-}
-
+import http from "../http/http"
 export default function Blog() {
-    const [data] = useForm();
-    const [value, setValue] = useState<valueinterface>({ title: '', description: '', author_name: '', documentId: '' });
-    const [imgid, setimgid] = useState('');
-    console.log(value);
+    interface valueinterface{
+        title:string;
+        description:string;
+        author_name:string;
+        documentId:string;
 
-    const onFinish: FormProps<valueinterface>['onFinish'] = async (values) => {
+    }
+    const [data] = useForm();
+    const [value, setValue] = useState<valueinterface>({title:"",description:"",author_name:"",documentId:""});
+    const [imgid,setimgid]=useState("")
+    console.log(value)
+    interface FieldType {
+        label?: string;
+        name?: string;
+        message?: string;
+        placeholder?: string;
+    }
+
+    const onFinish: FormProps<valueinterface>['onFinish'] = async(values) => {
         const toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
             ['blockquote', 'code-block'],
@@ -58,17 +58,14 @@ export default function Blog() {
             theme: 'snow',
         });
 
-        console.log(values);
-        try {
-            const response = await http.post('/api/v1/blog', {
-                title: values.title,
-                description: JSON.stringify(quill.getContents()),
-                author_name: values.author_name,
-                document_id: imgid,
-            });
-            toast.success(response.data.message);
-        } catch (error) {
-            message_error(error);
+       
+        console.log(values)
+        try{
+                const response=await http.post("/api/v1/blog",{"title":values.title,"description":JSON.stringify(quill.getContents()),"author_name":values.author_name,"document_id":imgid})
+                toast.success(response.data.message)
+        }
+        catch(error){
+            message_error(error)
         }
         data.resetFields();
     };
@@ -86,11 +83,12 @@ export default function Blog() {
         formData.append('image', fileData);
         try {
             const response = await formhttp.post('/api/v1/document', formData);
-            setimgid(response.data.data.document_id);
+            setimgid(response.data.data.document_id)
         } catch (error) {
             message_error(error);
         }
     };
+
 
     const message_error = (error: any) => {
         if (axios.isAxiosError(error)) {
@@ -128,7 +126,7 @@ export default function Blog() {
                         // labelCol={{ span: 16 }}
                         // wrapperCol={{ span: 16 }}
                         onFinish={onFinish}
-                        onFinishFailed={() => onFinishFailed}
+                        onFinishFailed={onFinishFailed}
                         autoComplete="off"
                         layout="vertical"
                     >
@@ -136,18 +134,7 @@ export default function Blog() {
                             {BLOG_SETTINGS_STRING.settings.map((item) => (
                                 <Form.Item<FieldType>
                                     label={item.label}
-                                    name={
-                                        item.name as
-                                            | 'name'
-                                            | 'label'
-                                            | 'message'
-                                            | 'placeholder'
-                                            | ['name']
-                                            | ['label']
-                                            | ['message']
-                                            | ['placeholder']
-                                            | undefined
-                                    }
+                                    name={item.name}
                                     rules={[{ required: item.req, message: item.message }]}
                                     className="w-1/2"
                                 >
@@ -178,6 +165,7 @@ export default function Blog() {
                             >
                                 <ReactQuill
                                     theme="snow"
+                                    
                                     className="h-[300px] "
                                     id="quill"
                                     //   modules={{
@@ -201,7 +189,7 @@ export default function Blog() {
                             </Form.Item>
 
                             <Form.Item className="w-1/2 mt-6">
-                                <Button type="primary" htmlType="submit" className="bg-blue-500 w-full">
+                                <Button type="primary" htmlType="submit" className="bg-blue-500 w-full" >
                                     Submit
                                 </Button>
                             </Form.Item>

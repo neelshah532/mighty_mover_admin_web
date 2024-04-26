@@ -175,17 +175,16 @@ export default function Show_blog() {
         setdeletemodal(!deletemodal);
     };
 
-    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
-    console.log(rolePermission);
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
 
-    const hasEditPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'blog' && role.permission.includes('write')
-    );
-    const hasDeletePermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'blog' && role.permission.includes('delete')
-    );
+    const allowedPermission = (section: string, permissionType: string) => {
+        return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+    };
+
+    const hasEditPermission = allowedPermission('blog', 'write');
+    const hasDeletePermission = allowedPermission('blog', 'delete');
+    const addItemPermission = allowedPermission('blog', 'create');
+
     const blogdata: ColumnProps<blog>[] = [...BLOG_DATA(currentPage, 10)];
     if (hasEditPermission || hasDeletePermission) {
         blogdata.push({
@@ -218,10 +217,7 @@ export default function Show_blog() {
             ),
         });
     }
-    const addItemPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'blog' && role.permission.includes('create')
-    );
+
     const navigate = useNavigate();
     const handleAdd = () => {
         navigate('/blog/add');

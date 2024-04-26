@@ -6,7 +6,16 @@ import { AlignType, RootState, User, addUsers } from '../assets/dto/data.type';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { useForm } from 'antd/es/form/Form';
-import { ADD_ITEM, CANCEL, DELETE, DELETE_CONFIRMATION, EDIT_ITEM } from '../assets/constant/model';
+import {
+    ADD_ITEM,
+    ADD_USER,
+    CANCEL,
+    DELETE,
+    DELETE_BUTTON,
+    DELETE_CONFIRMATION,
+    EDIT_BUTTON,
+    EDIT_ITEM,
+} from '../assets/constant/model';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import http from '../http/http';
@@ -41,18 +50,17 @@ function CategoriePage() {
     const [form] = useForm();
     const [addForm] = useForm();
     const dispatch = useDispatch();
-    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
-    // console.log(rolePermission);
-    // const categories_page = Categories_page;
-    const hasEditPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'blog' && role.permission.includes('write')
-    );
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
 
-    const hasDeletePermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'blog' && role.permission.includes('delete')
-    );
+    console.log(rolePermission);
+    const allowedPermission = (section: string, permissionType: string) => {
+        return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+    };
+    const hasEditPermission = allowedPermission('blog', 'write');
+    //    const statusPermission = allowedPermission('city', 'write');
+    const hasDeletePermission = allowedPermission('blog', 'delete');
+    const addItemPermission = allowedPermission('blog', 'write');
+
     const user_data_col: ColumnProps<User>[] = [
         ...USER_DATA_COL(currentPage, 10),
         {
@@ -63,7 +71,7 @@ function CategoriePage() {
             render: (_, record: User) => (
                 <div className="flex justify-center">
                     <div
-                        className={`${record.status === 'active' ? 'text-[#25a55e]  p-3 w-28  rounded-[5px]  bg-[#F2FCF7] border' : 'text-red-500 p-3 w-28  rounded-[5px]  bg-[#FDF4F5]'}  `}
+                        className={`${record.status === 'active' ? 'text-[#25a55e]  p-3 w-24  rounded-[5px]  bg-[#F2FCF7] border' : 'text-red-500 p-3 w-28  rounded-[5px]  bg-[#FDF4F5]'}  `}
                     >
                         {record.status}
                     </div>
@@ -83,7 +91,8 @@ function CategoriePage() {
                         <div>
                             <button
                                 onClick={() => handleEdit(record, record.id)}
-                                className="py-3 px-4 bg-blue-500 text-white rounded"
+                                className="  py-3 px-4 bg-blue-500 text-white  rounded"
+                                // icon={<FaEdit />}
                             >
                                 <FaEdit />
                             </button>
@@ -94,6 +103,7 @@ function CategoriePage() {
                             <button
                                 onClick={() => handleDelete(record.id)}
                                 className="py-3 px-4 bg-red-500 text-white rounded"
+                                // icon={<MdDelete />}
                             >
                                 <MdDelete />
                             </button>
@@ -105,10 +115,6 @@ function CategoriePage() {
     }
 
     // there is a handle addItem Permissions check
-    const addItemPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'blog' && role.permission.includes('create')
-    );
 
     // there is a HandleError component
     const handleError = (error: Error) => {
@@ -284,7 +290,7 @@ function CategoriePage() {
                     <div className="flex justify-end mb-2">
                         {addItemPermission && (
                             <Button onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
-                                +{ADD_ITEM}
+                                +{ADD_USER}
                             </Button>
                         )}
                     </div>

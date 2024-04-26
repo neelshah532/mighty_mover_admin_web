@@ -6,7 +6,7 @@ interface User {
 }
 interface Permission {
     section: null | string;
-    permissions: null | string[];
+    permission: null | string[];
 }
 
 interface initialState {
@@ -25,13 +25,12 @@ const userData = localState && JSON.parse(localState || '');
 
 const initialState: initialState = {
     user: {
-        id: userData.id,
-        first_name: userData.firstname,
-        last_name: userData.lastname,
-        email: userData.email,
-        token: userData.token,
-        permission: userData.permission,
-        
+        id: userData?.id || null,
+        first_name: userData?.first_name || null,
+        last_name: userData?.last_name || null,
+        email: userData?.email || null,
+        token: userData?.token || null,
+        permission: userData?.permission || null,
     },
 };
 const userSlice = createSlice({

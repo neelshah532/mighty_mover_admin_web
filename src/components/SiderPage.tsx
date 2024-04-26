@@ -6,17 +6,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 // import logo from '../assets/Images/Group 1.svg';
 import { useSelector } from 'react-redux';
-interface Role {
-    id: string;
-    name: string;
-    permission: { section: string; permission: string[] }[];
-}
-interface RolePermissionState {
-    roles: Role[];
-}
-
 interface RootState {
-    rolePermission: RolePermissionState;
+    rolePermission: Role;
 }
 
 interface MenuItem {
@@ -25,11 +16,11 @@ interface MenuItem {
     icon: JSX.Element;
 }
 import NavLogo from '../assets/Images/icons/Navlogo';
+import { Role } from '../redux/roleSlice';
 
 export default function SiderPage({ collapse }: { collapse: boolean }) {
     // const data: Order[] = ORDER_TABLE;
     // const [toggle1, settoggle1] = useState(false);
-    
 
     // const [collapse, setcollapse] = useState(false);
     const { rolePermission } = useSelector((state: RootState) => state);
@@ -39,16 +30,15 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
     const location = useLocation();
 
     const filteredMenu: MenuItem[] = SIDE_PANEL.menu.filter((item) => {
-        return rolePermission.roles.some((role: Role) => {
-            return role.permission.some((permission) => {
-                // console.log(role.permission);
-                return permission.section === item.name.toLowerCase();
-            });
+        return rolePermission.permission?.some((permission) => {
+            // console.log(role.permission);
+            return permission.section === item.name.toLowerCase();
         });
     });
+    console.log(filteredMenu);
+
     useEffect(() => {
         window.location.pathname;
-        
     }, []);
     return (
         <div className="h-screen sticky top-0 shadow-lg">
@@ -62,7 +52,6 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                     left: 0,
                     top: 0,
                     bottom: 0,
-                    
                 }}
             >
                 {/* <Flex className="mt-4" gap={collapse ? 0 : 10}> */}
@@ -85,8 +74,7 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                 {/* </Flex> */}
                 <div className="flex justify-center mt-5">
                     <div className="w-8/12">
-                        <NavLogo/>
-
+                        <NavLogo />
                     </div>
                 </div>
                 <Menu
@@ -95,7 +83,7 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                     triggerSubMenuAction="hover"
                     mode="inline"
                     style={{
-                        border: "0px"
+                        border: '0px',
                     }}
                     selectedKeys={[location.pathname]}
                 >

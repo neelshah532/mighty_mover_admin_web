@@ -2,7 +2,7 @@ import axios from 'axios';
 import { FormValues } from '../assets/dto/data.type';
 // import { error } from 'console';
 const config = {
-    baseURL: 'http://192.168.68.53:3000',
+    baseURL: 'http://192.168.68.68:3000',
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ export const blog_admin = async (page:number) => {
 
     return axios.get(`/api/v1/blog/post?limit=10&offset=${skip}`, config);
 };
-export const blog_admin_get_one = async (id: string) => {
+
 export const blog_admin_get_one = async (id: string) => {
     return axios.get(`/api/v1/blog/post/${id}`, config);
 };

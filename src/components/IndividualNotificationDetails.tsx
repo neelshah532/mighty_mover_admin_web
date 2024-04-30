@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { setNotificationPage } from '../redux/notificationSlice';
-import { Card, Image, Form, Input, DatePicker, Button, Select } from 'antd';
+import { Card, Image, Form, Input, DatePicker, Button, Select, DatePickerProps, TimePickerProps } from 'antd';
 import { TimePicker } from 'antd';
 import dayjs from 'dayjs';
 
@@ -12,274 +12,52 @@ import { toast } from 'sonner';
 import { useParams } from 'react-router-dom';
 import { notification } from '../assets/dto/data.type';
 import { useNavigate } from 'react-router-dom';
-import moment from 'moment';
+
 
 dayjs.extend(customParseFormat);
 
-const onTimeChange: TimePickerProps['onChange'] = (time, timeString) => {
-  console.log(time, timeString);
-};
 
 const { TextArea } = Input;
 
-const onDateChange: DatePickerProps<Dayjs[]>['onChange'] = (date, dateString) => {
-  console.log(date, dateString);
-};
-// export default function IndividualNotificationDetails() {
-//   const navigate = useNavigate();
-//   const [indiNoti,setIndiNoti] = useState<notification>()
-//   const [isDisabled, setIsDisabled] = useState<boolean>(false)
-//   const {id} = useParams();
-//   const fetchNotification = async()=>{
-//     try{
-//       const response = await http.get(`api/v1/notifications/${id}`)
-//       toast.success(response.data.message)
-//       setIndiNoti(response.data.data)
-//       response.data.data.notification_status === "published" ? setIsDisabled(true) : setIsDisabled(false)
-//     }catch(err){
-//       console.error(err)
-//     }
-//   }
-  
 
-//   const dispatch = useDispatch();
-//   useEffect(() => {
-//     dispatch(setNotificationPage('SubNotification'));
-//     fetchNotification();
-//   }, []);
-  
-
-//   const patchNotification = async() => { 
-//       try{
-//         const response = await http.patch(`/api/v1/notifications/${id}`,{})
-//         toast.success(response.data.message)
-//         console.log(response)
-//       }catch(err){
-//         console.error("notification cannot be updated",err)
-//       }finally{
-//         // navigate('/notifications')
-//         console.log()
-//       }
-//   }
-
-//   return (
-//     <>
-//       <Card>
-//         <div>
-//           <div className='flex flex-col mb-3'>
-//             <p>Notification Image</p>
-//             <Image
-//               width={100}
-//               height={100}
-//               src="error"
-//             />
-//           </div>
-
-//           <div>
-
-//             <Form
-//               // labelCol={{ span: 4 }}
-//               // wrapperCol={{ span: 14 }}
-//               layout="vertical"
-//             // style={{ maxWidth: 600 }}
-//             >
-//               <div className='grid grid-cols-2 gap-5'>
-//                 <Form.Item
-//                   label="Notification Title"
-//                 >
-//                   <Input className='p-2' value={indiNoti?.title} onChange={(e) => setIndiNoti(prevState => ({ ...prevState, title: e.target.value }))} style={{ color: 'black' }} disabled={isDisabled}/>
-//                 </Form.Item>
-//                 <Form.Item
-//                   label="Status"
-//                 >
-//                   <Input className='p-2' value={indiNoti?.notification_status} style={{ color: 'black' }} disabled={isDisabled}/>
-//                 </Form.Item>
-//               </div>
-//               <div>
-//                 <Form.Item
-//                   label="Notification Text"
-//                 >
-//                   <TextArea rows={4} value={indiNoti?.description} style={{ color: 'black' }} disabled={isDisabled}/>
-//                 </Form.Item>
-//               </div>
-//               <div className='grid grid-cols-2 gap-5'>
-//                 <Form.Item
-//                   label="Date"
-//                 >
-//                   <DatePicker value={indiNoti?.date} onChange={onDateChange}  className='p-2 w-full'  style={{ color: 'black' }} inputReadOnly={true} disabled={isDisabled}/>
-//                 </Form.Item>
-//                 <Form.Item
-//                   label="Time"
-//                 >
-//                   <TimePicker value={indiNoti?.time} format={'HH:mm'} className='p-2 w-full' inputReadOnly={true}  disabled={isDisabled}/>
-//                 </Form.Item>
-//               </div>
-//               <div className='flex gap-5 justify-end'>
-//                 <Button disabled={isDisabled}>Cancel</Button>
-//                 <Button disabled={isDisabled} onClick={patchNotification} htmlType="submit" className='bg-[#2967ff] text-white border-none'>Save Changes</Button>
-//               </div>
-//             </Form>
-//           </div>
-//         </div>
-//       </Card>
-//     </>
-//   )
-// }
-// export default function IndividualNotificationDetails() {
-//   const navigate = useNavigate();
-//   const [indiNoti, setIndiNoti] = useState<notification | undefined>(); // Initialize as undefined to signify no data yet
-//   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-//   const [formData, setFormData] = useState<Partial<notification>>({}); // State to store form data
-
-//   const { id } = useParams();
-
-//   const fetchNotification = async () => {
-//     try {
-//       const response = await http.get(`api/v1/notifications/${id}`);
-//       toast.success(response.data.message);
-//       setIndiNoti(response.data.data);
-//       response.data.data.notification_status === "published"
-//         ? setIsDisabled(true)
-//         : setIsDisabled(false);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-
-//   const dispatch = useDispatch();
-//   useEffect(() => {
-//     dispatch(setNotificationPage('SubNotification'));
-//     fetchNotification();
-//   }, [dispatch, id]); // Include id in the dependencies array
-
-//   const handleInputChange = (key: keyof notification, value: string) => {
-//     setFormData((prevData) => ({
-//       ...prevData,
-//       [key]: value,
-//     }));
-//   };
-
-//   const patchNotification = async () => {
-//     try {
-//       const response = await http.patch(`/api/v1/notifications/${id}`, formData); // Use formData as payload
-//       toast.success(response.data.message);
-//       console.log(response);
-//     } catch (err) {
-//       console.error("notification cannot be updated", err);
-//     } finally {
-//       navigate("/notifications");
-//     }
-//   };
-
-//   return (
-//     <>
-//       <Card>
-//         <div>
-//           <div className="flex flex-col mb-3">
-//             <p>Notification Image</p>
-//             <Image width={100} height={100} src="error" />
-//           </div>
-
-//           <div>
-//             <Form layout="vertical">
-//               <div className="grid grid-cols-2 gap-5">
-//                 <Form.Item label="Notification Title">
-//                   <Input
-//                     className="p-2"
-//                     value={indiNoti?.title}
-//                     onChange={(e) =>
-//                       handleInputChange("title", e.target.value)
-//                     }
-//                     style={{ color: "black" }}
-//                     disabled={isDisabled}
-//                   />
-//                 </Form.Item>
-//                 <Form.Item label="Status">
-//                   <Input
-//                     className="p-2"
-//                     value={indiNoti?.notification_status}
-//                     style={{ color: "black" }}
-//                     disabled={isDisabled}
-//                   />
-//                 </Form.Item>
-//               </div>
-//               <div>
-//                 <Form.Item label="Notification Text">
-//                   <TextArea
-//                     rows={4}
-//                     value={indiNoti?.description}
-//                     style={{ color: "black" }}
-//                     disabled={isDisabled}
-//                   />
-//                 </Form.Item>
-//               </div>
-//               <div className="grid grid-cols-2 gap-5">
-//                 <Form.Item label="Date">
-//                   <DatePicker
-//                     value={indiNoti?.date}
-//                     onChange={onDateChange}
-//                     className="p-2 w-full"
-//                     style={{ color: "black" }}
-//                     inputReadOnly={true}
-//                     disabled={isDisabled}
-//                   />
-//                 </Form.Item>
-//                 <Form.Item label="Time">
-//                   <TimePicker
-//                     value={indiNoti?.time}
-//                     format={"HH:mm"}
-//                     className="p-2 w-full"
-//                     inputReadOnly={true}
-//                     disabled={isDisabled}
-//                   />
-//                 </Form.Item>
-//               </div>
-//               <div className="flex gap-5 justify-end">
-//                 <Button disabled={isDisabled}>Cancel</Button>
-//                 <Button
-//                   disabled={isDisabled}
-//                   onClick={patchNotification}
-//                   htmlType="submit"
-//                   className="bg-[#2967ff] text-white border-none"
-//                 >
-//                   Save Changes
-//                 </Button>
-//               </div>
-//             </Form>
-//           </div>
-//         </div>
-//       </Card>
-//     </>
-//   );
-// }
 export default function IndividualNotificationDetails() {
   const navigate = useNavigate();
-  const [indiNoti, setIndiNoti] = useState<notification>();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(""); 
   const [description, setDescription] = useState<string>(""); 
-  const [date, setDate] = useState<string>(""); 
-  const [time, setTime] = useState<string>(""); 
   const [status, setStatus] = useState<string>("");
-
+  const [scheduledDate, setScheduledDate] = useState<dayjs.Dayjs | null>(null);
+  const [scheduledTime, setScheduledTime] = useState<dayjs.Dayjs | null>(null);
+  
+  const onTimeChange: TimePickerProps['onChange'] = (time, timeString) => {
+    console.log(time, timeString);
+    setScheduledTime(time)
+  };
+  
+  
+  const onDateChange: DatePickerProps<Dayjs>['onChange'] = (date, dateString) => {
+    console.log(date, dateString);
+    setScheduledDate(date)
+  };
   const { id } = useParams();
 
   const fetchNotification = async () => {
+    console.log(id)
     try {
       const response = await http.get(`api/v1/notifications/${id}`);
       toast.success(response.data.message);
-      const dateTime = response.data.data.scheduled_at.split(" ")[4];
-      setTime(dateTime)
       const data = response.data.data;
-      setIndiNoti(data);
-      setTitle(data.title || ""); 
-      setDescription(data.description || ""); 
-      setDate(data.date || ""); 
-      setTime(data.time || ""); 
-      setStatus(data.notification_status || "")
+      setTitle(data.title); 
+      setDescription(data.description); 
+      setStatus(data.notification_status)
       response.data.data.notification_status === "published"
         ? setIsDisabled(true)
         : setIsDisabled(false);
+      if (response.data.data.created_at) {
+        const scheduledAt = dayjs(response.data.data.created_at);
+        setScheduledDate(scheduledAt);
+        setScheduledTime(scheduledAt);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -296,16 +74,18 @@ export default function IndividualNotificationDetails() {
       const payload = {
         title,
         description,
-        date,
-        time,
+        scheduledDate,
+        scheduledTime,
       };
       const response = await http.patch(`/api/v1/notifications/${id}`, payload);
       toast.success(response.data.message);
       console.log(response);
+      navigate('/notifications')
     } catch (err) {
       console.error("notification cannot be updated", err);
     } finally {
-      navigate('/notifications')
+      console.log(scheduledDate)
+      console.log(scheduledTime)
     }
   };
 
@@ -357,8 +137,8 @@ export default function IndividualNotificationDetails() {
               <div className='grid grid-cols-2 gap-5'>
                 <Form.Item label="Date">
                   <DatePicker
-                    value={date ? moment(date, 'YYYY-MM-DD') : null}
-                    onChange={(date, dateString) => setDate(dateString)}
+                    value={scheduledDate}
+                    onChange={onDateChange}
                     className='p-2 w-full'
                     style={{ color: 'black' }}
                     inputReadOnly={true}
@@ -367,13 +147,13 @@ export default function IndividualNotificationDetails() {
                 </Form.Item>
                 <Form.Item label="Time">
                   <TimePicker
-                    value={time ? moment(time, 'HH:mm') : null}
+                    value={scheduledTime}
                     // value={time}
                     format={'HH:mm'}
                     className='p-2 w-full'
                     inputReadOnly={true}
                     disabled={isDisabled}
-                    onChange={(time, timeString) => setTime(timeString)}
+                    onChange={onTimeChange}
                   />
                 </Form.Item>
               </div>

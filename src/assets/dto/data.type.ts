@@ -133,8 +133,9 @@ interface notification {
     id:string,
     description:string,
     title:string,
+    created_at:Date,
     date:string,
-    time:string,
+    time:string | null,
     notification_status:string
 }
 
@@ -215,7 +216,8 @@ export type {
     AdminsDisplay,
     addCategories,
     FileInfo,
-    Payment
+    Payment,
+    RolePermissionState,
     addUsers,
     PaymentInformation,
 };

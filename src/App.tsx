@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { RootState } from './app/store';
 import { RootState } from './assets/dto/data.type';
 import { resetState } from './redux/roleSlice';
-import AddNotification from './components/AddNotification';
+// import AddNotification from './components/AddNotification';
 import AddNotificationDetails from './components/AddNotificationDetails';
 
 const Login = lazy(() => import('./pages/Login'));

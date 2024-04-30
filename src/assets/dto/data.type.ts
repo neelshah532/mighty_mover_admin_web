@@ -1,4 +1,4 @@
-import { Role } from '../../redux/roleSlice';
+
 
 interface DataType {
     key: React.Key;
@@ -19,9 +19,7 @@ enum shipdata {
 }
 enum paymenttype {
     stripe = 'Stripe',
-    credit_debit = 'Credit_Debit',
     cash = 'Cash',
-    upi = 'UPI',
 }
 enum deliverypartner {
     active = 'active',
@@ -130,6 +128,24 @@ interface vehicle {
     vehicle_num: string;
     widht: number;
 }
+
+interface notification {
+    id:string,
+    description:string,
+    title:string,
+    date:string,
+    time:string,
+    notification_status:string
+}
+
+interface driver {
+    id:string,
+    name:string,
+    email:string,
+    contact:string,
+    shift:string
+}
+
 interface staff_data {
     id: string;
     role: string;
@@ -148,6 +164,23 @@ interface addUsers {
     email: string;
     contact: number | string;
     password: string;
+
+}
+
+interface Payment {
+    id:string,
+    type:string,
+    api_key:string,
+    secret_key:string,
+    status:string
+}
+
+interface Role {
+    section: string;
+    permission: { section: string; permission: string[] }[];
+}
+interface RolePermissionState {
+    roles: Role[];
 }
 
 interface RootState {
@@ -183,13 +216,17 @@ export type {
     coupon,
     blog,
     vehicle,
+    driver,
     staff_data,
+    notification,
     AdminsDisplay,
     addCategories,
     FileInfo,
     addUsers,
     PaymentInformation,
     role_data,
+    Payment,
+    RolePermissionState,
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

@@ -25,3 +25,4 @@ export const blog_admin_get_one = async (id: string) => {
 export const createAdmin = async (payload: FormValues) => {
     return axios.post('/api/v1/admin/register', payload, config);
 };
+

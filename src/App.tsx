@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { RootState } from './app/store';
 import { RootState } from './assets/dto/data.type';
 import { resetState } from './redux/roleSlice';
+import AddNotification from './components/AddNotification';
+import AddNotificationDetails from './components/AddNotificationDetails';
 
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
@@ -27,6 +29,9 @@ const Vehicle = lazy(() => import('./components/Vehicle'));
 const StaffManagement = lazy(() => import('./components/Staff'));
 const AdminAdd = lazy(() => import('./components/AdminAdd'));
 const Role_management = lazy(() => import('./components/Role_management'));
+const DriverTable = lazy(() => import('./components/DriverTable'))
+const Notifications = lazy(() => import('./components/Notifications'))
+const IndividualNotificationDetails = lazy(() => import('./components/IndividualNotificationDetails'))
 const Role_data = lazy(() => import('./components/Role_data'));
 const PaymentDisplay = lazy(() => import('./components/paymentDisplay'));
 // import Staff from './components/Staff';
@@ -52,6 +57,7 @@ function App() {
             dispatch(resetState());
             navigate('/login');
         }
+        
     }, [dispatch, navigate]);
 
     return (
@@ -97,6 +103,11 @@ function App() {
                         {sectionPermission?.includes('addAdmin') && (
                             <Route path="/staff-management/role-management/add" element={<Role_data />}></Route>
                         )}
+
+                        <Route path='/drivers' element={<DriverTable />}></Route>
+                        {sectionPermission?.includes('notification') && <Route path='/notifications' element={<Notifications />}></Route>}
+                        {sectionPermission?.includes('notification') && <Route path='/notifications/:id' element={<IndividualNotificationDetails />}></Route>}
+                        <Route path='/add-notification' element={<AddNotificationDetails/>}></Route>
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

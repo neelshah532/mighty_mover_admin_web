@@ -60,14 +60,16 @@ function App() {
                 <Route element={<ProtectedRoutes />}>
                     <Route element={<FixedLayout />}>
                         <Route path="/" element={<Dashboard />} />
-                        <Route path="/paymentDisplay" element={<PaymentDisplay />} />
+                        <Route path="/paymentsDisplay" element={<PaymentDisplay />} />
                         {sectionPermission?.includes('order') && <Route path="/orders" element={<Order_page />} />}
                         {sectionPermission?.includes('payment') && (
                             <Route path="/payments" element={<Payment_page />} />
                         )}
                         <Route path="/settings/order-settings" element={<Settings />} />
-                        <Route path="/blog/add" element={<Blog />} />
-                        <Route path="/settings/user-settings" element={<UserPage />} />
+                        {sectionPermission?.includes('blog') && <Route path="/blog/add" element={<Blog />} />}
+                        {sectionPermission?.includes('user managment') && (
+                            <Route path="/user-management" element={<UserPage />} />
+                        )}
                         {sectionPermission?.includes('delivery partner') && (
                             <Route path="/delivery-partner" element={<Delivery_partner />} />
                         )}

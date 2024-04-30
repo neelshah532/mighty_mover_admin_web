@@ -931,6 +931,11 @@ export const SIDE_PANEL = {
             navigate: '/staff-management',
             icon: <RiUserSettingsLine />,
         },
+        {
+            navigate: 'user-management',
+            icon: <RiUserSettingsFill />,
+            name: 'User Management',
+        },
     ],
     submenu_key: 'settings',
     submenu_title: 'Settings',
@@ -946,10 +951,5 @@ export const SIDE_PANEL = {
         //     icon: <BiSolidMessageEdit />,
         //     name: 'Blog Settings',
         // },
-        {
-            navigate: '/settings/user-settings',
-            icon: <RiUserSettingsFill />,
-            name: 'User Settings',
-        },
     ],
 };

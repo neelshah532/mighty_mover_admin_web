@@ -166,6 +166,13 @@ interface PaymentInformation {
     payment_type: string;
     align? : AlignType | string;
 }
+interface role_data {
+    id: string;
+    role_name: string;
+    description: string;
+    created_at: string;
+    // checkedValues: boolean;
+}
 
 export type {
     Order,
@@ -183,6 +190,7 @@ export type {
     FileInfo,
     addUsers,
     PaymentInformation,
+    role_data,
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

@@ -1,12 +1,13 @@
-    import { Button, Card, Checkbox, Form, Input } from 'antd';
-    import { useState } from 'react';
-import { toast } from 'sonner';
-import http from '../http/http';
-import axios, { AxiosError } from 'axios';
+    import { Button, Card,  Form, Input } from 'antd';
+    // import { useState } from 'react';
+// import { toast } from 'sonner';
+// import http from '../http/http';
+// import axios, { AxiosError } from 'axios';
+// import { role_data } from '../assets/dto/data.type';
 
     export default function RoleManagement() {
         const [form] = Form.useForm();
-        const [permissions, setPermissions] = useState({});
+        // const [permissions, setPermissions] = useState({});
 
         const STAFF_DATA = [
             { section: 'Dashboard' },
@@ -24,60 +25,62 @@ import axios, { AxiosError } from 'axios';
             { section: 'User Settings' },
         ];
 
-        const onFinish = (values) => {
-            const formattedData = {
-                role_name: values.role_name,
-                description: values.description,
-                permissions: Object.entries(permissions).map(([section, permission]) => ({
-                    section,
-                    section_permission: permission,
-                })),
-            };
+        // const onFinish = (values: any) => {
+        //     console.log('Received values of form: ', values);
+        //     const formattedData: role_data = {
+        //         id: '', // Add the missing id property
+        //         created_at: '', // Add the missing created_at property
+        //         role_name: values.role_name,
+        //         description: values.description,
+        //         permissions: Object.entries(permissions).map(([section, permission]) => ({
+        //             section,
+        //             section_permission: permission,
+        //         })),
+        //     };
 
-            console.log('Formatted data:', formattedData);
-            postData(formattedData)
+        //     console.log('Formatted data:', formattedData);
+        //     postData(formattedData);
 
-            
-            form.resetFields();
-            setPermissions({});
-        };
-        const postData=async(formattedData:any)=>{
-            try{
+        //     form.resetFields();
+        //     setPermissions({});
+        // };
+        // const postData=async(formattedData:role_data)=>{
+        //     try{
 
-                const response = await http.post("/api/v1/admin/role",formattedData)
-                toast.success(response.data.message)
-            }
-            catch(error){
-                message_error(error)
-            }
-        }
+        //         const response = await http.post("/api/v1/admin/role",formattedData)
+        //         toast.success(response.data.message)
+        //     }
+        //     catch(error){
+        //         message_error(error as Error)
+        //     }
+        // }
 
-        const handlePermissionChange = (section, permission) => {
-            setPermissions((prevPermissions) => ({
-                ...prevPermissions,
-                [section]: permission,
-            }));
-        };
-        const message_error = (error: any) => {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
-        };
+        // const handlePermissionChange = (section: string, permission: role_data) => {
+        //     setPermissions((prevPermissions) => ({
+        //         ...prevPermissions,
+        //         [section]: permission,
+        //     }));
+        // };
+        // const message_error = (error: Error) => {
+        //     if (axios.isAxiosError(error)) {
+        //         const axiosError = error as AxiosError<{
+        //             status: number;
+        //             message: string;
+        //         }>;
+        //         if (axiosError.response) {
+        //             toast.error(axiosError.response.data.message);
+        //         } else if (axiosError.request) {
+        //             console.log('Request Error', axiosError.request);
+        //         } else {
+        //             console.log('Error', axiosError.message);
+        //         }
+        //     }
+        // };
 
         return (
             <div className="w-full flex justify-center items-center p-4">
                 <Card title="Add New Role" className="w-11/12 ">
-                    <Form form={form} onFinish={onFinish} className="w-full flex flex-col">
+                    <Form form={form}  className="w-full flex flex-col">
                         <Form.Item
                         rules={[{ required: true, message: 'Please add Name' }]}
                         label="Role Name "
@@ -110,7 +113,7 @@ import axios, { AxiosError } from 'axios';
                                             <td className="border-2">
                                                 <div className="flex justify-center">
                                                     <Form.Item className="w-full flex flex-col gap-2 p-2 ">
-                                                    <Checkbox.Group
+                                                    {/* <Checkbox.Group
                                                         onChange={(checkedValues) =>
                                                             handlePermissionChange(item.section, checkedValues)
                                                         }   
@@ -119,7 +122,7 @@ import axios, { AxiosError } from 'axios';
                                                         <Checkbox value="add">Add</Checkbox>
                                                         <Checkbox value="edit">Edit</Checkbox>
                                                         <Checkbox value="delete">Delete</Checkbox>
-                                                    </Checkbox.Group>
+                                                    </Checkbox.Group> */}
                                                     </Form.Item>
                                                 </div>
                                             </td>

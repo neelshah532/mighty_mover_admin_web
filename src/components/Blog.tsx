@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Button, Form, type FormProps, Input } from 'antd';
 import { BLOG_SETTINGS_STRING } from '../assets/constant/constant';
 import { IoMdSettings } from 'react-icons/io';
@@ -10,27 +9,32 @@ import { useForm } from 'antd/es/form/Form';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import formhttp from '../http/Form_data';
-import http from "../http/http"
+import http from '../http/http';
+import { useState } from 'react';
+interface valueinterface {
+    title: string;
+    description: string;
+    author_name: string;
+    documentId: string;
+}
+interface FieldType {
+    label?: string;
+    name?: string;
+    message?: string;
+    placeholder?: string;
+}
+interface FileInfo {
+    file: File;
+    // Add any other properties that might be present in the `info` object
+}
 export default function Blog() {
-    interface valueinterface{
-        title:string;
-        description:string;
-        author_name:string;
-        documentId:string;
+    const [data] = useForm<valueinterface>();
+    const [imgid, setimgid] = useState<string>('');
+    // const [value, setValue] = useState<valueinterface>({title:"",description:"",author_name:"",documentId:""});
 
-    }
-    const [data] = useForm();
-    const [value, setValue] = useState<valueinterface>({title:"",description:"",author_name:"",documentId:""});
-    const [imgid,setimgid]=useState("")
-    console.log(value)
-    interface FieldType {
-        label?: string;
-        name?: string;
-        message?: string;
-        placeholder?: string;
-    }
+    // console.log(value)
 
-    const onFinish: FormProps<valueinterface>['onFinish'] = async(values) => {
+    const onFinish: FormProps<valueinterface>['onFinish'] = async (values: valueinterface) => {
         const toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
             ['blockquote', 'code-block'],
@@ -58,39 +62,40 @@ export default function Blog() {
             theme: 'snow',
         });
 
-       
-        console.log(values)
-        try{
-                const response=await http.post("/api/v1/blog",{"title":values.title,"description":JSON.stringify(quill.getContents()),"author_name":values.author_name,"document_id":imgid})
-                toast.success(response.data.message)
-        }
-        catch(error){
-            message_error(error)
+        console.log(values);
+        try {
+            const response = await http.post('/api/v1/blog', {
+                title: values.title,
+                description: JSON.stringify(quill.getContents()),
+                author_name: values.author_name,
+                document_id: imgid,
+            });
+            toast.success(response.data.message);
+        } catch (error) {
+            message_error(error as Error);
         }
         data.resetFields();
     };
 
     const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        const { values, errorFields, outOfDate } = errorInfo;
+        console.log('Failed:', values, errorFields, outOfDate);
     };
 
-    const handlechange = async (info: any) => {
+    const handlechange = async (info: FileInfo) => {
         const { file } = info;
         const formData = new FormData();
-        const fileData: any = file;
-        console.log(fileData);
         formData.append('type', 'blog');
-        formData.append('image', fileData);
+        formData.append('image', file);
         try {
             const response = await formhttp.post('/api/v1/document', formData);
-            setimgid(response.data.data.document_id)
+            setimgid(response.data.data.document_id);
         } catch (error) {
-            message_error(error);
+            message_error(error as Error);
         }
     };
 
-
-    const message_error = (error: any) => {
+    const message_error = (error: Error) => {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{
                 status: number;
@@ -126,7 +131,7 @@ export default function Blog() {
                         // labelCol={{ span: 16 }}
                         // wrapperCol={{ span: 16 }}
                         onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
+                        onFinishFailed={() => onFinishFailed}
                         autoComplete="off"
                         layout="vertical"
                     >
@@ -134,7 +139,18 @@ export default function Blog() {
                             {BLOG_SETTINGS_STRING.settings.map((item) => (
                                 <Form.Item<FieldType>
                                     label={item.label}
-                                    name={item.name}
+                                    name={
+                                        item.name as
+                                            | 'name'
+                                            | 'label'
+                                            | 'placeholder'
+                                            | 'message'
+                                            | ['name']
+                                            | ['label']
+                                            | ['placeholder']
+                                            | ['message']
+                                            | undefined
+                                    }
                                     rules={[{ required: item.req, message: item.message }]}
                                     className="w-1/2"
                                 >
@@ -150,7 +166,7 @@ export default function Blog() {
                                 <Upload
                                     action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                                     listType="picture"
-                                    customRequest={handlechange}
+                                    customRequest={() => handlechange}
                                 >
                                     <Button icon={<UploadOutlined />}>Upload</Button>
                                 </Upload>
@@ -165,7 +181,6 @@ export default function Blog() {
                             >
                                 <ReactQuill
                                     theme="snow"
-                                    
                                     className="h-[300px] "
                                     id="quill"
                                     //   modules={{
@@ -189,7 +204,7 @@ export default function Blog() {
                             </Form.Item>
 
                             <Form.Item className="w-1/2 mt-6">
-                                <Button type="primary" htmlType="submit" className="bg-blue-500 w-full" >
+                                <Button type="primary" htmlType="submit" className="bg-blue-500 w-full">
                                     Submit
                                 </Button>
                             </Form.Item>

@@ -88,15 +88,16 @@ function App() {
                         {sectionPermission?.includes('staff management') && (
                             <Route path="/staff-management" element={<StaffManagement />} />
                         )}
-                        {sectionPermission?.includes('role-managemnet') && (
-                            <Route path="/staff-management/role-management" element={<Role_management />} />
-                        )}
+                        {/* {sectionPermission?.includes('role-managemnet') && (
+                            
+                        )} */}
                         {sectionPermission?.includes('staff management') && (
                             <Route path="/staff-management/add" element={<AdminAdd />}></Route>
                         )}
                         {sectionPermission?.includes('addAdmin') && (
                             <Route path="/staff-management/role-management/add" element={<Role_data />}></Route>
                         )}
+                        <Route path="/staff-management/role-management" element={<Role_management />} />
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

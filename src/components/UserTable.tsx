@@ -10,11 +10,10 @@ import {
     ADD_ITEM,
     ADD_USER,
     CANCEL,
-    DELETE,
     DELETE_BUTTON,
     DELETE_CONFIRMATION,
+   
     EDIT_BUTTON,
-    EDIT_ITEM,
 } from '../assets/constant/model';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
@@ -395,7 +394,7 @@ function CategoriePage() {
 
                         <div className="flex gap-3 justify-end">
                             <Button onClick={() => setModal2Open(false)}>{CANCEL}</Button>
-                            <Button onClick={handleUpdatedata}>{EDIT_ITEM}</Button>
+                            <Button onClick={handleUpdatedata}>{EDIT_BUTTON}</Button>
                         </div>
                     </Form>
                 </Modal>
@@ -481,7 +480,7 @@ function CategoriePage() {
                     footer={
                         <div className="flex gap-3 justify-end">
                             <Button onClick={handleDeleteModalCancel}>{CANCEL}</Button>
-                            <Button onClick={handleDeleteConfirm}>{DELETE}</Button>
+                            <Button onClick={handleDeleteConfirm}>{DELETE_BUTTON}</Button>
                         </div>
                     }
                 >

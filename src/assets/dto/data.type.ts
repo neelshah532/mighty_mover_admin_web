@@ -157,6 +157,12 @@ interface FileInfo {
     file: File;
 }
 
+interface role_data {
+    id: string;
+    role_name: string;
+    description: string;
+    created_at: string;
+}
 interface PaymentInformation {
     index: number;
     id: string;
@@ -183,6 +189,7 @@ export type {
     FileInfo,
     addUsers,
     PaymentInformation,
+    role_data,
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

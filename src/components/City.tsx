@@ -28,18 +28,17 @@ function City() {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const dispatch = useDispatch();
-    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    // const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
+
     console.log(rolePermission);
-
-    const hasEditPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'city' && role.permission.includes('write')
-    );
-
-    const hasDeletePermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'city' && role.permission.includes('delete')
-    );
+const allowedPermission = (section: string, permissionType: string) => {
+    return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+};
+    const hasEditPermission = allowedPermission("city","write")
+    const statusPermission = allowedPermission('city', 'write');
+    const hasDeletePermission = allowedPermission('city', 'delete');
+    const addItemPermission = allowedPermission('city', 'create');
 
     const crud_city_data: ColumnProps<city>[] = [
         ...CITY_DATA_COL(currentPage, 10),
@@ -49,10 +48,7 @@ function City() {
             dataIndex: 'status',
             align: 'center',
             render: (_, record) => {
-                const statusPermission = rolePermission.some(
-                    (role: { section: string; permission: string[] }) =>
-                        role.section === 'city' && role.permission.includes('write')
-                );
+               
                 if (!statusPermission) {
                     return (
                         <div className="flex justify-center">
@@ -107,10 +103,7 @@ function City() {
             ),
         });
     }
-    const addItemPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'city' && role.permission.includes('create')
-    );
+  
 
     // there is a HandleError component
     const handleError = (error: Error) => {

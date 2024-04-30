@@ -424,7 +424,7 @@ export const PAYMENT_DATA_COL = [
     {
         title: 'Index',
         dataIndex: 'id',
-        render:(_,__,index)=>index+1,
+        render: (_, __, index) => index + 1,
         align: 'center' as AlignType,
         width: '70px'
     },
@@ -436,11 +436,11 @@ export const PAYMENT_DATA_COL = [
         title: 'Image',
         dataIndex: 'payment_type',
         // render:(text:Payment)=>text==="stripe" ? <FaStripe className='w-fit'/> : <FaRupeeSign className='w-fit'/>,
-        align:'center' as AlignType
+        align: 'center' as AlignType
     },
     {
-        title:'Status',
-        dataIndex:'status'
+        title: 'Status',
+        dataIndex: 'status'
     },
 ];
 
@@ -707,100 +707,102 @@ export const BLOG_SETTINGS_STRING = {
 // const[Status, setStatus] = useState('');
 
 
-export const USER_TABLE: User[] = [
-    {
-        index: 1,
-        name: 'Utkarsh',
-        email: 'utkarsh@solguruz.com',
-        number: 9898989898,
-        RegisterDate: '2023-11-24 | 05:30',
-        status: true,
-    },
-    {
-        index: 2,
-        name: 'Rahul',
-        email: 'rahul@solguruz.com',
-        number: 1212121212,
-        RegisterDate: '2023-11-24 | 05:30',
-        status: true,
-    },
-    {
-        index: 3,
-        name: 'Tushar',
-        email: 'tushar@solguruz.com',
-        number: 3535313234,
-        RegisterDate: '2023-11-24 | 05:30',
-        status: true,
-    },
-    {
-        index: 4,
-        name: 'Neel',
-        email: 'neel@solguruz.com',
-        number: 7894561237,
-        RegisterDate: '2023-11-24 | 05:30',
-        status: false,
-    },
-    {
-        index: 5,
-        name: 'Prit',
-        email: 'prit@solguruz.com',
-        number: 1234567891,
-        RegisterDate: '2023-11-24 | 05:30',
-        status: false,
-    },
-    {
-        index: 6,
-        name: 'Ketan',
-        email: 'ketan@solguruz.com',
-        number: 1212121212,
-        RegisterDate: '2023-11-24 | 05:30',
-        status: false,
-    },
-    {
-        index: 7,
-        name: 'Suraj',
-        email: 'suraj@solguruz.com',
-        number: 3535313234,
-        RegisterDate: '2023-11-24 | 05:30',
-        status: false,
-    },
-    {
-        index: 8,
-        name: 'Aayush',
-        email: 'aayush@solguruz.com',
-        number: 7894561237,
-        RegisterDate: '2023-11-24 | 05:30',
-        status: false,
-    },
-];
+// export const USER_TABLE: User[] = [
+//     {
+//         index: 1,
+//         name: 'Utkarsh',
+//         email: 'utkarsh@solguruz.com',
+//         number: 9898989898,
+//         RegisterDate: '2023-11-24 | 05:30',
+//         status: true,
+//     },
+//     {
+//         index: 2,
+//         name: 'Rahul',
+//         email: 'rahul@solguruz.com',
+//         number: 1212121212,
+//         RegisterDate: '2023-11-24 | 05:30',
+//         status: true,
+//     },
+//     {
+//         index: 3,
+//         name: 'Tushar',
+//         email: 'tushar@solguruz.com',
+//         number: 3535313234,
+//         RegisterDate: '2023-11-24 | 05:30',
+//         status: true,
+//     },
+//     {
+//         index: 4,
+//         name: 'Neel',
+//         email: 'neel@solguruz.com',
+//         number: 7894561237,
+//         RegisterDate: '2023-11-24 | 05:30',
+//         status: false,
+//     },
+//     {
+//         index: 5,
+//         name: 'Prit',
+//         email: 'prit@solguruz.com',
+//         number: 1234567891,
+//         RegisterDate: '2023-11-24 | 05:30',
+//         status: false,
+//     },
+//     {
+//         index: 6,
+//         name: 'Ketan',
+//         email: 'ketan@solguruz.com',
+//         number: 1212121212,
+//         RegisterDate: '2023-11-24 | 05:30',
+//         status: false,
+//     },
+//     {
+//         index: 7,
+//         name: 'Suraj',
+//         email: 'suraj@solguruz.com',
+//         number: 3535313234,
+//         RegisterDate: '2023-11-24 | 05:30',
+//         status: false,
+//     },
+//     {
+//         index: 8,
+//         name: 'Aayush',
+//         email: 'aayush@solguruz.com',
+//         number: 7894561237,
+//         RegisterDate: '2023-11-24 | 05:30',
+//         status: false,
+//     },
+// ];
 
 
 
-export const USER_DATA_COL = [
+export const USER_DATA_COL = (currentPage: number, pageSize: number): ColumnProps<User>[] => [
     {
         title: 'Sr no.',
-        dataIndex: 'index',
-        align: 'center' as AlignType
+        dataIndex: 'id',
+        render: (_, __, index: number) => (currentPage - 1) * pageSize + index + 1,
+
+        align: 'center' as AlignType,
     },
     {
         title: 'Name',
-        dataIndex: 'name',
-        align: 'center' as AlignType
+        dataIndex: 'first_name',
+        align: 'center' as AlignType,
     },
     {
         title: 'Email',
         dataIndex: 'email',
-        align: 'center' as AlignType
+        align: 'center' as AlignType,
     },
     {
         title: 'Number',
-        dataIndex: 'number',
-        align: 'center' as AlignType
+        dataIndex: 'contact',
+        align: 'center' as AlignType,
     },
     {
         title: 'Register Date',
-        dataIndex: 'RegisterDate',
-        align: 'center' as AlignType
+        dataIndex: 'created_at',
+        align: 'center' as AlignType,
     },
 ];
 
@@ -857,14 +859,19 @@ export const SIDE_PANEL = {
             icon: <GiSteeringWheel />
         },
         {
-            name: 'Staff Managment',
+            name: 'Staff management',
             navigate: '/staff-management',
             icon: <RiUserSettingsLine />,
         }, {
             name: "Notification",
             navigate: "/notifications",
             icon: < IoIosNotifications />
-        }
+        },
+        {
+            navigate: 'user-management',
+            icon: <RiUserSettingsFill />,
+            name: 'User Management',
+        },
     ],
     submenu_key: 'settings',
     submenu_title: 'Settings',
@@ -880,10 +887,5 @@ export const SIDE_PANEL = {
         //     icon: <BiSolidMessageEdit />,
         //     name: 'Blog Settings',
         // },
-        {
-            navigate: '/settings/user-settings',
-            icon: <RiUserSettingsFill />,
-            name: 'User Settings',
-        },
     ],
 };

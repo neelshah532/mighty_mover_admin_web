@@ -33,27 +33,30 @@ const DriverTable = lazy(() => import('./components/DriverTable'))
 const Notifications = lazy(() => import('./components/Notifications'))
 const IndividualNotificationDetails = lazy(() => import('./components/IndividualNotificationDetails'))
 const Role_data = lazy(() => import('./components/Role_data'));
+const PaymentDisplay = lazy(() => import('./components/paymentDisplay'));
 // import Staff from './components/Staff';
 // import Role_management from './components/Role_management';
 function App() {
     // const user = useSelector((state: RootState) => state.user.user);
-    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
+    console.log('rolePermission', rolePermission);
+
     // console.log(user);
     // const sectionPermission = user.map((role: any) => role.section);
     // const sectionPermission = user.permission ? user.permission.map((role) => role.sectionName) : [];
     const sectionPermission = rolePermission?.map((role) => role.section);
 
-    console.log(sectionPermission);
+    console.log('sectionPermission', sectionPermission);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log('localState');
         const localState = localStorage.getItem('user');
         if (!localState) {
             dispatch(resetState());
             navigate('/login');
         }
-
     }, [dispatch, navigate]);
 
     return (
@@ -62,13 +65,16 @@ function App() {
                 <Route element={<ProtectedRoutes />}>
                     <Route element={<FixedLayout />}>
                         <Route path="/" element={<Dashboard />} />
+                        <Route path="/paymentsDisplay" element={<PaymentDisplay />} />
                         {sectionPermission?.includes('order') && <Route path="/orders" element={<Order_page />} />}
                         {sectionPermission?.includes('payment') && (
                             <Route path="/payments" element={<Payment_page />} />
                         )}
                         <Route path="/settings/order-settings" element={<Settings />} />
-                        <Route path="/blog/add" element={<Blog />} />
-                        <Route path="/settings/user-settings" element={<UserPage />} />
+                        {sectionPermission?.includes('blog') && <Route path="/blog/add" element={<Blog />} />}
+                        {sectionPermission?.includes('user managment') && (
+                            <Route path="/user-management" element={<UserPage />} />
+                        )}
                         {sectionPermission?.includes('delivery partner') && (
                             <Route path="/delivery-partner" element={<Delivery_partner />} />
                         )}
@@ -90,7 +96,7 @@ function App() {
                         {sectionPermission?.includes('role-managemnet') && (
                             <Route path="/staff-management/role-management" element={<Role_management />} />
                         )}
-                        {sectionPermission?.includes('addAdmin') && (
+                        {sectionPermission?.includes('staff management') && (
                             <Route path="/staff-management/add" element={<AdminAdd />}></Route>
                         )}
                         {sectionPermission?.includes('addAdmin') && (

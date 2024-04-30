@@ -32,19 +32,18 @@ const SubCategory = () => {
     const [total, setTotal] = useState(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
+
     console.log(rolePermission);
+    const allowedPermission = (section: string, permissionType: string) => {
+        return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+    };
+    const hasEditPermission = allowedPermission('subcategory', 'write');
+    const statusPermission = allowedPermission('subcategory', 'write');
+    const hasDeletePermission = allowedPermission('subcategory', 'delete');
+    const addItemPermission = allowedPermission('subcategory', 'create');
 
-    // this is subcategorie const is use for perform on status and actions
-    const hasEditPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'subcategory' && role.permission.includes('write')
-    );
-
-    const hasDeletePermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'subcategory' && role.permission.includes('delete')
-    );
+    
     const subcetagories_data_col: ColumnProps<Categories>[] = [
         ...SUBCATEGORIES_DATA_COL(currentPage, 10),
         {
@@ -53,10 +52,6 @@ const SubCategory = () => {
             dataIndex: 'status',
             align: 'center',
             render: (_, record) => {
-                const statusPermission = rolePermission.some(
-                    (role: { section: string; permission: string[] }) =>
-                        role.section === 'subcategory' && role.permission.includes('write')
-                );
                 if (!statusPermission) {
                     return (
                         <div className="flex justify-center">
@@ -113,10 +108,7 @@ const SubCategory = () => {
     }
 
     // there is a handle addItem Permissions check
-    const addItemPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'subcategory' && role.permission.includes('delete')
-    );
+
     //handle status change of subcategories
     const handleEnable = async (id: string, currentStatus: string) => {
         // setStatusId(id);

@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 // import { Navigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import Loader from '../components/Loader';
+import { setRoles } from '../redux/roleSlice';
 // import { AdminAdd } from '../redux/userSlice';
 // interface User {
 //     email: string;
@@ -41,7 +42,7 @@ const Login: React.FC = () => {
                 last_name: response.data.data.last_name,
                 email: response.data.data.email,
                 token: response.data.data.jwt,
-                permissions: response.data.data.permission,
+                permission: response.data.data.permission,
             };
             console.log(obj);
             // console.log(obj);
@@ -50,8 +51,9 @@ const Login: React.FC = () => {
             // console.log(details)
             // console.log(final_details)
             // dispatch(AdminAdd({ email: email, password: password, role: response.data.role }));
-            dispatch(AdminAdd(obj));
             localStorage.setItem('user', JSON.stringify(obj));
+            dispatch(AdminAdd(obj));
+            dispatch(setRoles(obj));
             navigate('/');
         } catch (error) {
             if (axios.isAxiosError(error)) {

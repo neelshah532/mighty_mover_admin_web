@@ -1,5 +1,5 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
-import { Adminlogout } from '../redux/userSlice';
+// import { Adminlogout } from '../redux/userSlice';
 
 // import { userToken } from 'utils'
 

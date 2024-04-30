@@ -1,5 +1,5 @@
-import { Button, Card,  Flex, Form, Input, Modal,  Radio, Spin, Table } from 'antd';
-import  { useCallback, useEffect, useState } from 'react';
+import { Button, Card, Flex, Form, Input, Modal, Radio, Spin, Table } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
 import { AlignType, Categories, RootState, addCategories } from '../assets/dto/data.type';
 import { CETAGORIES_DATA_COL } from '../assets/constant/categories';
@@ -37,9 +37,17 @@ function CategoriePage() {
     const [form] = useForm();
     const [addForm] = useForm();
     const dispatch = useDispatch();
-    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
     console.log(rolePermission);
     // const categories_page = Categories_page;
+   const allowedPermission = (section: string, permissionType: string) => {
+       return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+   };
+      const hasEditPermission = allowedPermission('categories', 'write');
+      const statusPermission = allowedPermission('categories', 'write');
+      const hasDeletePermission = allowedPermission('categories', 'delete');
+      const addItemPermission = allowedPermission('categories', 'create');
+    console.log(hasDeletePermission);
     const cetagories_data_col: ColumnProps<Categories>[] = [
         ...CETAGORIES_DATA_COL(currentPage, 10),
         {
@@ -48,10 +56,7 @@ function CategoriePage() {
             dataIndex: 'status',
             align: 'center',
             render: (_, record) => {
-                const statusPermission = rolePermission.some(
-                    (role: { section: string; permission: string[] }) =>
-                        role.section === 'categories' && role.permission.includes('write')
-                );
+                
                 if (!statusPermission) {
                     return (
                         <div className="flex justify-center">
@@ -63,7 +68,7 @@ function CategoriePage() {
                         </div>
                     );
                 }
-               
+
                 return (
                     <Button
                         onClick={() => handleEnable(record.id, String(record.status))}
@@ -74,56 +79,47 @@ function CategoriePage() {
                 );
             },
         },
-        {
+    ];
+
+    if (hasEditPermission || hasDeletePermission) {
+        cetagories_data_col.push({
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
-            render: (_, record: Categories) => {
-                const editPermission = rolePermission.some(
-                    (role: { section: string; permission: string[] }) =>
-                        role.section === 'categories' && role.permission.includes('write')
-                );
-
-                console.log(editPermission);
-                const deletePermission = rolePermission.some(
-                    (role: { section: string; permission: string[] }) =>
-                        role.section === 'categories' && role.permission.includes('delete')
-                );
-                return (
-                    <div className="flex gap-2 justify-center">
+            render: (_, record: Categories) => (
+                <div className="flex gap-2 justify-center">
+                    {hasEditPermission && (
                         <div>
                             <button
                                 onClick={() => handleEdit(record, record.id)}
-                                disabled={!editPermission}
-                                className={`py-3 px-4 rounded ${editPermission ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500'}`}
+                                className="py-3 px-4 bg-blue-500 text-white rounded"
                             >
                                 <FaEdit />
                             </button>
                         </div>
-                        
-
+                    )}
+                    {hasDeletePermission && (
                         <div>
                             <button
                                 onClick={() => handleDelete(record.id)}
-                                disabled={!deletePermission}
                                 className="py-3 px-4 bg-red-500 text-white rounded"
                             >
                                 <MdDelete />
                             </button>
                         </div>
-                    </div>
-                );
-            },
-        },
-    ];
+                    )}
+                </div>
+            ),
+        });
+    }
 
-// there is a handle addItem Permissions check
-  const addItemPermission = rolePermission.some(
-      (role: { section: string; permission: string[] }) =>
-          role.section === 'categories' && role.permission.includes('delete')
-  );
+    // there is a handle addItem Permissions check
+    // const addItemPermission = rolePermission?.some(
+    //     (role) =>
+    //         role.section === 'categories' && role.permission?.includes('create')
+    // );
 
-// there is a HandleError component
+    // there is a HandleError component
     const handleError = (error: Error) => {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{
@@ -262,24 +258,12 @@ function CategoriePage() {
                 setCategoriesData(response.data.data);
                 // console.log(total);
                 setCurrentPage(page);
+                toast.success(response.data.message);
 
                 setTotal(response.data.total);
                 setLoading(false);
             } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    const axiosError = error as AxiosError<{
-                        status: number;
-                        message: string;
-                    }>;
-                    if (axiosError.response) {
-                        console.log('Response Error', axiosError.response);
-                        toast.error(axiosError.response.data.message);
-                    } else if (axiosError.request) {
-                        console.log('Request Error', axiosError.request);
-                    } else {
-                        console.log('Error', axiosError.message);
-                    }
-                }
+                handleError(error as Error);
             } finally {
                 setLoading(false);
             }
@@ -287,38 +271,10 @@ function CategoriePage() {
         [currentPage]
     );
 
-    // const HandlePagination = async (page: number) => {
-    //     console.log(page);
-    //     try {
-    //         const skip = (page - 1) * 10;
-    //         console.log(skip);
-    //         const response = await http.get(`/api/v1/Categories?limit=10&offset=${skip}`);
-    //         setCategoriesData(response.data.data);
-    //         setTotal(response.data.total);
-    //         setCurrentPage(page);
-    //         // fetchData();
-    //     } catch (error) {
-    //         if (axios.isAxiosError(error)) {
-    //             const axiosError = error as AxiosError<{
-    //                 status: number;
-    //                 message: string;
-    //             }>;
-    //             if (axiosError.response) {
-    //                 console.log('Response Error', axiosError.response);
-    //                 toast.error(axiosError.response.data.message);
-    //             } else if (axiosError.request) {
-    //                 console.log('Request Error', axiosError.request);
-    //             } else {
-    //                 console.log('Error', axiosError.message);
-    //             }
-    //         }
-    //     }
-    // };
     useEffect(() => {
         dispatch(setPage('Category'));
         void fetchData(currentPage);
     }, [dispatch, fetchData, currentPage]);
-
 
     return (
         <>
@@ -329,11 +285,12 @@ function CategoriePage() {
                     </Flex>
                 ) : ( */}
                 <>
-                    
                     <div className="flex justify-end mb-2">
-                        <Button disabled={!addItemPermission} onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
-                            +{ADD_ITEM}
-                        </Button>
+                        {addItemPermission && (
+                            <Button onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
+                                +{ADD_ITEM}
+                            </Button>
+                        )}
                     </div>
                     {loading ? (
                         <Flex gap="middle" className="w-full h-full justify-center ">

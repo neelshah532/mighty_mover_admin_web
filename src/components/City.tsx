@@ -3,13 +3,13 @@ import http from '../http/http';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useCallback, useEffect, useState } from 'react';
-import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
+import { ADD_ITEM, CANCEL, DELETE, DELETE_CONFIRMATION } from '../assets/constant/model';
 import { useForm } from 'antd/es/form/Form';
-import { AlignType, city } from '../assets/dto/data.type';
+import { AlignType, RootState, city } from '../assets/dto/data.type';
 import { CITY_DATA_COL } from '../assets/constant/city';
 import { MdDelete } from 'react-icons/md';
 import { FaEdit } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
 import { ColumnProps } from 'antd/es/table';
 
@@ -25,7 +25,103 @@ function City() {
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
     const [loading, setloading] = useState(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
+    const dispatch = useDispatch();
+    // const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
+
+    console.log(rolePermission);
+const allowedPermission = (section: string, permissionType: string) => {
+    return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+};
+    const hasEditPermission = allowedPermission("city","write")
+    const statusPermission = allowedPermission('city', 'write');
+    const hasDeletePermission = allowedPermission('city', 'delete');
+    const addItemPermission = allowedPermission('city', 'create');
+
+    const crud_city_data: ColumnProps<city>[] = [
+        ...CITY_DATA_COL(currentPage, 10),
+        {
+            title: 'Status',
+            key: 'status',
+            dataIndex: 'status',
+            align: 'center',
+            render: (_, record) => {
+               
+                if (!statusPermission) {
+                    return (
+                        <div className="flex justify-center">
+                            <div
+                                className={`${record.status === 'active' ? 'text-[#25a55e]  p-3 w-28  rounded-[5px]  bg-[#F2FCF7]' : 'text-red-500 p-3 w-28  rounded-[5px]  bg-[#FDF4F5]'}  `}
+                            >
+                                {record.status}
+                            </div>
+                        </div>
+                    );
+                }
+
+                return (
+                    <Button
+                        onClick={() => handleEnable(record.id)}
+                        className={record.status === 'active' ? 'text-green-500' : 'text-red-500'}
+                    >
+                        {record.status}
+                    </Button>
+                );
+            },
+        },
+    ];
+    if (hasEditPermission || hasDeletePermission) {
+        crud_city_data.push({
+            title: 'Action',
+            key: 'action',
+            align: 'center' as AlignType,
+            render: (_, record: city) => (
+                <div className="flex gap-2 justify-center">
+                    {hasEditPermission && (
+                        <div>
+                            <button
+                                onClick={() => editmodal_function(record, record.id)}
+                                className="py-3 px-4 bg-blue-500 text-white rounded"
+                            >
+                                <FaEdit />
+                            </button>
+                        </div>
+                    )}
+                    {hasDeletePermission && (
+                        <div>
+                            <button
+                                onClick={() => handleDelete(record.id)}
+                                className="py-3 px-4 bg-red-500 text-white rounded"
+                            >
+                                <MdDelete />
+                            </button>
+                        </div>
+                    )}
+                </div>
+            ),
+        });
+    }
+  
+
+    // there is a HandleError component
+    const handleError = (error: Error) => {
+        if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<{
+                status: number;
+                message: string;
+            }>;
+            if (axiosError.response) {
+                console.log('Response Error', axiosError.response);
+                toast.error(axiosError.response.data.message);
+            } else if (axiosError.request) {
+                console.log('Request Error', axiosError.request);
+            } else {
+                console.log('Error', axiosError.message);
+            }
+        }
+    };
     const handleDelete = async (id: string) => {
         showDeleteModal(id);
     };
@@ -47,116 +143,36 @@ function City() {
             console.log(response.data);
             setDeleteModalVisible(false);
 
-            fetchData();
+            fetchData(currentPage);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
 
-    const crud_city_data: ColumnProps<city>[] = [
-        ...CITY_DATA_COL,
-        {
-            title: 'Status',
-            key: 'status',
-            dataIndex: 'status',
-            align: 'center',
-            render: (_, record) => (
-                <Button
-                    onClick={() => handleEnable(record.id)}
-                    className={record.status === 'active' ? 'text-green-500' : 'text-red-500'}
-                >
-                    {record.status}
-                </Button>
-            ),
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            align: 'center' as AlignType,
-            render: (_, record: city) => (
-                <div className="flex gap-2 justify-center">
-                    <div>
-                        <button
-                            className="py-3 px-4 bg-blue-500 text-white rounded"
-                            onClick={() => editmodal_function(record, record.id)}
-                        >
-                            <FaEdit />
-                        </button>
-                    </div>
-                    <div>
-                        <button
-                            className="py-3 px-4 bg-red-500 text-white rounded"
-                            onClick={() => handleDelete(record.id)}
-                        >
-                            <MdDelete />
-                        </button>
-                    </div>
-                </div>
-            ),
-        },
-    ];
-
-    const fetchData = useCallback( async () => {
+    const fetchData = useCallback(async (page: number) => {
         setloading(true);
         try {
-            const response = await http.get(`/api/v1/admin/city`);
+            const skip = (page - 1) * 10;
+            const response = await http.get(`/api/v1/admin/city?limit=10&offset=${skip}`);
             setcitydata(response.data.data);
+            setCurrentPage(page);
             settotal(response.data.total);
             setloading(false);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         } finally {
             setloading(false);
         }
-    },[]);
+    }, []);
     const handleEnable = async (id: string) => {
         try {
             const response = await http.patch(`/api/v1/admin/city/status/${id}`);
             console.log(response.data);
 
-            fetchData();
+            fetchData(currentPage);
             toast.success(response.data.message);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
     const openmodal = () => {
@@ -175,29 +191,15 @@ function City() {
             console.log(response.data);
             seteditId('');
             seteditmodal(false);
-            fetchData();
+            fetchData(currentPage);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
-    const dispatch=useDispatch()
     useEffect(() => {
-        dispatch(setPage("City"))
-        void fetchData();
-    }, [dispatch, fetchData]);
+        dispatch(setPage('City'));
+        void fetchData(currentPage);
+    }, [dispatch, fetchData, currentPage]);
 
     const add_city = async () => {
         console.log(form);
@@ -206,31 +208,20 @@ function City() {
             toast.success(add_city_response.data.message);
             form.resetFields();
             openmodal();
-            fetchData();
+            fetchData(currentPage);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{
-                    status: number;
-                    message: string;
-                }>;
-                if (axiosError.response) {
-                    console.log('Response Error', axiosError.response);
-                    toast.error(axiosError.response.data.message);
-                } else if (axiosError.request) {
-                    console.log('Request Error', axiosError.request);
-                } else {
-                    console.log('Error', axiosError.message);
-                }
-            }
+            handleError(error as Error);
         }
     };
     return (
         <div>
-            <div className="flex justify-end mb-2">
-                <Button style={{ backgroundColor: '#ffffff', color: '#2967ff' }} onClick={openmodal}>
-                    + Add City
-                </Button>
-            </div>
+            {addItemPermission && (
+                <div className="flex justify-end mb-2">
+                    <Button style={{ backgroundColor: '#ffffff', color: '#2967ff' }} onClick={openmodal}>
+                        + Add City
+                    </Button>
+                </div>
+            )}
             {loading ? (
                 <Flex gap="middle" className="w-full h-full justify-center ">
                     <Spin size="large" />
@@ -241,10 +232,16 @@ function City() {
                         <Table
                             rowClassName="text-center"
                             dataSource={citydata}
-                            pagination={{ pageSize: 10, total: total }}
+                            pagination={{
+                                pageSize: 10,
+                                total: total,
+                                current: currentPage,
+                                onChange: (page) => {
+                                    fetchData(page);
+                                },
+                            }}
                             columns={crud_city_data}
-                            onChange={(pagination) => setPage(pagination.current || 1)}
-                            bordered
+                            // bordered
                             sticky
                             className="w-full"
                         ></Table>
@@ -258,13 +255,8 @@ function City() {
                 footer={
                     <div className="flex gap-3 justify-end">
                         <Button onClick={openmodal}>{CANCEL}</Button>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            onClick={add_city}
-                            style={{ backgroundColor: '#2967ff' }}
-                        >
-                            {OK}
+                        <Button htmlType="submit" onClick={add_city} style={{ backgroundColor: '#2967ff' }}>
+                            {ADD_ITEM}
                         </Button>
                     </div>
                 }
@@ -320,9 +312,7 @@ function City() {
                 footer={
                     <div className="flex gap-3 justify-end">
                         <Button onClick={handleDeleteModalCancel}>{CANCEL}</Button>
-                        <Button type="primary" htmlType="submit" onClick={handleDeleteConfirm}>
-                            {OK}
-                        </Button>
+                        <Button onClick={handleDeleteConfirm}>{DELETE}</Button>
                     </div>
                 }
             >

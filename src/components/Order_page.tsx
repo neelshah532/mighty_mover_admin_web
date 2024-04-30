@@ -1,5 +1,5 @@
-import { Empty,Card,Table } from 'antd';
-import { ORDER_TABLE,DATA_COL } from '../assets/constant/constant';
+import { Empty, Card, Table } from 'antd';
+import { ORDER_TABLE, DATA_COL } from '../assets/constant/constant';
 import { Order } from '../assets/dto/data.type';
 import { ColumnProps } from 'antd/es/table';
 import { useDispatch } from 'react-redux';

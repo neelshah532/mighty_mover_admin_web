@@ -32,11 +32,18 @@ const SubCategory = () => {
     const [total, setTotal] = useState(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
+    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
+
     console.log(rolePermission);
+    const allowedPermission = (section: string, permissionType: string) => {
+        return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+    };
+    const hasEditPermission = allowedPermission('subcategory', 'write');
+    const statusPermission = allowedPermission('subcategory', 'write');
+    const hasDeletePermission = allowedPermission('subcategory', 'delete');
+    const addItemPermission = allowedPermission('subcategory', 'create');
 
-    // this is subcategorie const is use for perform on status and actions
-
+    
     const subcetagories_data_col: ColumnProps<Categories>[] = [
         ...SUBCATEGORIES_DATA_COL(currentPage, 10),
         {
@@ -45,10 +52,6 @@ const SubCategory = () => {
             dataIndex: 'status',
             align: 'center',
             render: (_, record) => {
-                const statusPermission = rolePermission.some(
-                    (role: { section: string; permission: string[] }) =>
-                        role.section === 'subcategory' && role.permission.includes('write')
-                );
                 if (!statusPermission) {
                     return (
                         <div className="flex justify-center">
@@ -71,57 +74,48 @@ const SubCategory = () => {
                 );
             },
         },
-        {
+    ];
+    if (hasEditPermission || hasDeletePermission) {
+        subcetagories_data_col.push({
             title: 'Action',
             key: 'action',
             align: 'center' as AlignType,
-            render: (_, record: Categories) => {
-                const editPermission = rolePermission.some(
-                    (role: { section: string; permission: string[] }) =>
-                        role.section === 'categories' && role.permission.includes('write')
-                );
-
-                console.log(editPermission);
-                const deletePermission = rolePermission.some(
-                    (role: { section: string; permission: string[] }) =>
-                        role.section === 'categories' && role.permission.includes('delete')
-                );
-                return (
-                    <div className="flex gap-2 justify-center">
+            render: (_, record: Categories) => (
+                <div className="flex gap-2 justify-center">
+                    {hasEditPermission && (
                         <div>
                             <button
                                 onClick={() => handleEdit(record, record.id)}
-                                disabled={!editPermission}
-                                className={`py-3 px-4 rounded ${editPermission ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-500'}`}
+                                className="py-3 px-4 bg-blue-500 text-white rounded"
                             >
                                 <FaEdit />
                             </button>
                         </div>
-
+                    )}
+                    {hasDeletePermission && (
                         <div>
                             <button
                                 onClick={() => handleDelete(record.id)}
-                                disabled={!deletePermission}
                                 className="py-3 px-4 bg-red-500 text-white rounded"
                             >
                                 <MdDelete />
                             </button>
                         </div>
-                    </div>
-                );
-            },
-        },
-    ];
+                    )}
+                </div>
+            ),
+        });
+    }
+
     // there is a handle addItem Permissions check
-    const addItemPermission = rolePermission.some(
-        (role: { section: string; permission: string[] }) =>
-            role.section === 'categories' && role.permission.includes('delete')
-    );
+
     //handle status change of subcategories
     const handleEnable = async (id: string, currentStatus: string) => {
         // setStatusId(id);
         try {
             const changeStatus = currentStatus === 'active' ? 1 : 0;
+            console.log('changed status:', changeStatus);
+            console.log('Sending value:', changeStatus);
             const statusUpdate = await http.patch(`/api/v1/subcategories/${id}/?category_id=${params.id}`, {
                 status: changeStatus,
             });
@@ -296,7 +290,10 @@ const SubCategory = () => {
         async (page: number) => {
             // setLoading(true);
             try {
-                const response = await http.get(`api/v1/subcategories/?category_id=${params.id}`);
+                const skip = (page - 1) * 10;
+                const response = await http.get(
+                    `api/v1/subcategories/?category_id=${params.id}&limit=10&offset=${skip}`
+                );
                 // const data = await response.json();
                 // console.log(response);
                 setCategoriesData(response.data.data);
@@ -344,7 +341,7 @@ const SubCategory = () => {
             <div className="flex justify-end mb-4 gap-5">
                 <div className=" ">
                     <Button
-                        type="primary"
+                       
                         onClick={handleBack}
                         style={{ color: '#2967ff', backgroundColor: '#ffffff' }}
                     >
@@ -352,14 +349,11 @@ const SubCategory = () => {
                     </Button>
                 </div>
                 <div className="">
-                    <Button
-                        disabled={!addItemPermission}
-                        type="primary"
-                        onClick={handleAdd}
-                        style={{ color: '#2967ff', backgroundColor: '#ffffff' }}
-                    >
-                        +{ADD_ITEM}
-                    </Button>
+                    {addItemPermission && (
+                        <Button onClick={handleAdd}  style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
+                            +{ADD_ITEM}
+                        </Button>
+                    )}
                 </div>
             </div>
 

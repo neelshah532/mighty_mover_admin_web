@@ -14,7 +14,7 @@ export const CETAGORIES_DATA_COL = (currentPage: number, pageSize: number): Colu
         title: 'Sr.No.',
         dataIndex: 'id',
         render: (_, __, index) => (currentPage - 1) * pageSize + index + 1,
-      
+
         align: 'center' as AlignType,
     },
     {
@@ -45,7 +45,6 @@ export const SUBCATEGORIES_DATA_COL = (currentPage: number, pageSize: number): C
         title: 'Name',
         dataIndex: 'name',
         align: 'center' as AlignType,
-        render: (_, record: Categories) => <Redirect id={record.id} name={record.name} />,
     },
     {
         title: 'Description',

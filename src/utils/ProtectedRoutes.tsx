@@ -5,7 +5,6 @@ import { RootState } from '../app/store';
 
 const ProtectedRoutes = () => {
     const user = useSelector((state: RootState) => state.user.user);
-    
 
     // const user = localStorage.getItem('user');
     //

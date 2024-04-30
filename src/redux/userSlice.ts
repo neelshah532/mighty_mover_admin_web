@@ -5,14 +5,14 @@ interface User {
     email: string;
 }
 interface Permission {
-    section: string;
-    permissions: string[];
+    section: null | string;
+    permission: null | string[];
 }
 
 interface initialState {
     user: {
         id: null | string;
-        first_name: null | string;
+        first_name: null | User;
         last_name: null | User;
         email: null | User;
         token: null | string;
@@ -25,13 +25,12 @@ const userData = localState && JSON.parse(localState || '');
 
 const initialState: initialState = {
     user: {
-        id: userData.id,
-        first_name: userData.firstname,
-        last_name: userData.lastname,
-        email: userData.email,
-        token: userData.token,
-        permission: userData.permission,
-        
+        id: userData?.id || null,
+        first_name: userData?.first_name || null,
+        last_name: userData?.last_name || null,
+        email: userData?.email || null,
+        token: userData?.token || null,
+        permission: userData?.permission || null,
     },
 };
 const userSlice = createSlice({
@@ -55,6 +54,7 @@ const userSlice = createSlice({
         Categoriedata: (state, action) => {
             state.user = action.payload;
         },
+        // resetState: () => initialState,
     },
 });
 export const { AdminAdd, Adminlogout, Categoriedata } = userSlice.actions;

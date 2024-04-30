@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 // import { store } from '../app/store';
+import '../App.css';
 
 const { Content } = Layout;
 
@@ -20,7 +21,7 @@ const FixedLayout: React.FC = () => {
                 <SiderPage collapse={collapse} />
                 <Layout className="site-layout bg-white">
                     <HeaderPage collapse={collapse} setcollapse={setcollapse} currentPage={currentPage} />
-                    <Content style={{ margin: '0 16px', marginTop: 16 }}>
+                    <Content style={{ margin: '0 10px', marginTop: 10 }}>
                         <div>
                             <Outlet />
                         </div>

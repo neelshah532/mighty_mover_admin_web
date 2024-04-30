@@ -24,7 +24,7 @@ import { ProgressProps } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { setPage } from '../redux/pageSlice';
-import Linechart from './Linechart';
+import Linechart from './linechart';
 export default function Dashboard() {
     const dispatch = useDispatch();
     useEffect(() => {

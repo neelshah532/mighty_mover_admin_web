@@ -64,6 +64,11 @@ interface User {
     align?: AlignType | undefined;
 }
 
+interface adminLogin{
+    email: string;
+    password: string;
+
+}
 interface Categories {
     id: string;
     name: string;
@@ -226,7 +231,8 @@ export type {
     PaymentInformation,
     role_data,
     Payment,
+    adminLogin,
     RolePermissionState,
 };
 export type { DataType, FormValues, RootState };
-export { shipdata, paymenttype, deliverypartner, vehicletype };
+export { shipdata, paymenttype, deliverypartner, vehicletype ,};

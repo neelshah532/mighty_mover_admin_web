@@ -59,9 +59,9 @@ export default function Dashboard() {
     // const color = DASHBOARD_STATS_PROFIT_VAL >= 0 ? '#3f8600' : '#cf1322';
     return (
         <div className="overflow-hidden container">
-            <div className="grid grid-cols-5 gap-2 m-4 w-auto ">
+            <div className="grid grid-cols-5 gap-2 m-4 w-auto  max-md:grid-cols-1 max-md:w-auto ">
                 {/* <div className="w-full h-full"> */}
-                <Card bordered={false} className="w-full bg-blue-50">
+                <Card bordered={false} className="w-full bg-blue-50 max-md:w-auto">
                     <div className="w-full flex-col ">
                         <div className="flex justify-start w-full text-[15px] font-semibold ">
                             {DASHBOARD_STATS_REVENUE}
@@ -75,7 +75,7 @@ export default function Dashboard() {
                 </Card>
                 {/* </div> */}
                 {/* <div className=" w-full h-full"> */}
-                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-50">
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-50 max-md:w-auto">
                     <div className="w-full flex-col ">
                         <div className="flex justify-start w-full text-[15px] font-semibold ">
                             {DASHBOARD_STATS_COSTS_MONEY}
@@ -89,7 +89,7 @@ export default function Dashboard() {
                 </Card>
                 {/* </div> */}
                 {/* <div className=" w-full h-full "> */}
-                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-50">
+                <Card bordered={false} className="w-full flex-1 h-auto flex bg-blue-50 ">
                     <div className="w-full flex-col ">
                         <div className="flex justify-start w-full text-[15px] font-semibold ">
                             {DASHBOARD_STATS_PROFIT}
@@ -144,32 +144,36 @@ export default function Dashboard() {
                 {/* </div> */}
             </div>
             <div className="w-auto">
-                <Flex gap="small" className="m-4">
-                    <Card className="w-full border border-slate-400">
+                <div className="m-4 flex gap-4 max-md:flex-col max-lg:flex-col max-lg:w-auto">
+                    <Card className="w-full border border-slate-400 max-lg:w-full ">
                         <div className="flex justify-center w-full">
-                            <div className="w-full">
-                                <span className="font-semibold text-lg">Line Chart</span>
+                            <div className="w-full ">
+                                <div className="w-full max-lg:text-center">
+                                    <span className="font-semibold text-lg ">Line Chart</span>
+                                </div>
                                 <div style={{ width: '100%', height: '100%' }}>
                                     <Linechart />
                                 </div>
                             </div>
                         </div>
                     </Card>
-                    <Card className="w-full border border-slate-400 flex flex-col items-center justify-center">
-                        <div className="w-full">
-                            <span className="font-semibold text-lg">Pie Chart</span>
-                        </div>
-                        <div className="flex justify-center items-center">
-                            <div style={{ width: '100%', height: '100%' }}>
-                                <DoughnutChart />
+                    <Card className="w-full border border-slate-400 flex flex-col items-center justify-center max-lg:w-full">
+                        <div className="w-auto h-auto">
+                            <div className="w-full max-lg:text-center">
+                                <span className="font-semibold text-lg ">Pie Chart</span>
+                            </div>
+                            <div className="w-auto flex justify-center items-center ">
+                                <div>
+                                    <DoughnutChart />
+                                </div>
                             </div>
                         </div>
                     </Card>
-                </Flex>
+                </div>
             </div>
 
-            <div className="max-w-[1176px] m-4 flex gap-2">
-                <div >
+            <div className="max-w-full m-4 flex gap-2 max-md:flex-col max-md:w-auto">
+                <div className="max-md:grid-cols-1 max-md:w-full">
                     <Card bordered={false} className="w-full flex-1 h-full border border-slate-400 ">
                         <div className="flex flex-col justify-center items-center gap-4 ">
                             <div className="text-xl font-bold text-center"> {MONTHLY_TARGET}</div>
@@ -184,7 +188,7 @@ export default function Dashboard() {
                     </Card>
                 </div>
                 <div className="w-full ">
-                    <div className="grid grid-cols-4 flex-wrap w-full h-auto gap-2 ">
+                    <div className="grid grid-cols-4 flex-wrap w-full h-auto gap-2 max-md:grid-cols-2 max-md:w-full ">
                         {DASHBOARD_CONTENT.map((item, index) => (
                             <>
                                 <div key={index} className="h-auto">
@@ -202,8 +206,8 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            <div className="w-full m-4 ">
-                <div className="w-[30%] border border-slate-400 rounded-lg">
+            <div className="w-full m-4 max-md:w-auto">
+                <div className="w-[30%] border border-slate-400 rounded-lg  max-md:w-auto">
                     <div className="  w-full h-full">
                         <Card className="w-full flex-1" title={PURCHASE_ORDER_STATUS}>
                             <div className="flex gap-2 ">

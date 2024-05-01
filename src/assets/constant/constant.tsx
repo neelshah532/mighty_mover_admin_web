@@ -13,6 +13,7 @@ import { GiSteeringWheel } from "react-icons/gi";
 
 import { FaMotorcycle } from "react-icons/fa6";
 import { RiUserSettingsLine } from "react-icons/ri";
+import { ImPriceTag } from 'react-icons/im';
 
 export const DASHBOARD_CONTENT = [
     {
@@ -887,5 +888,20 @@ export const SIDE_PANEL = {
         //     icon: <BiSolidMessageEdit />,
         //     name: 'Blog Settings',
         // },
+    ],
+    submenu1_key: 'vehicle',
+    submenu1_title: 'vehicle',
+    icon1: <IoMdSettings />,
+    submenu1: [
+        {
+            name: 'Vehicle',
+            navigate: '/vehicle',
+            icon: <FaMotorcycle />,
+        },
+        {
+            navigate: '/vehicle-prices',
+            icon: <ImPriceTag />,
+            name: 'Vehicle Prices',
+        },
     ],
 };

@@ -129,6 +129,15 @@ interface vehicle {
     widht: number;
 }
 
+interface vehicle_prices {
+    id:string,
+    vehicle_type:string,
+    max_weight:string,
+    per_km_charge:string,
+    length:string,
+    height:string
+}
+
 interface notification {
     id:string,
     description:string,
@@ -220,6 +229,7 @@ export type {
     RolePermissionState,
     addUsers,
     PaymentInformation,
+    vehicle_prices
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

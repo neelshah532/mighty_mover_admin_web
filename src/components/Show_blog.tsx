@@ -2,7 +2,7 @@ import { Button, Card, Flex, Form, FormProps, Image, Input, Modal, Spin, Table, 
 import { BLOG_DATA } from '../assets/constant/blog_constant';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-import { AlignType, FileInfo, RootState, blog } from '../assets/dto/data.type';
+import { AlignType, FileInfo, RootState, blog, valueinterface } from '../assets/dto/data.type';
 import { useCallback, useEffect, useState } from 'react';
 import http from '../http/http';
 import { toast } from 'sonner';
@@ -40,13 +40,7 @@ export default function Show_blog() {
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    interface valueinterface {
-        title: string;
-        description: string;
-        author_name: string;
-        documentId: string;
-    }
-
+  
     const onFinish: FormProps<valueinterface>['onFinish'] = async (values) => {
         const toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons

@@ -6,17 +6,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 // import logo from '../assets/Images/Group 1.svg';
 import { useSelector } from 'react-redux';
-interface RootState {
-    rolePermission: Role;
-}
 
-interface MenuItem {
-    name: string;
-    navigate: string;
-    icon: JSX.Element;
-}
+
 import NavLogo from '../assets/Images/icons/Navlogo';
-import { Role } from '../redux/roleSlice';
+
+import { MenuItem, RootState } from '../assets/dto/data.type';
 
 export default function SiderPage({ collapse }: { collapse: boolean }) {
     // const data: Order[] = ORDER_TABLE;

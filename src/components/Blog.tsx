@@ -12,13 +12,9 @@ import { toast } from 'sonner';
 import formhttp from '../http/Form_data';
 import http from '../http/http';
 import { useNavigate } from 'react-router-dom';
+import { valueinterface } from '../assets/dto/data.type';
 export default function Blog() {
-    interface valueinterface {
-        title: string;
-        description: string;
-        author_name: string;
-        documentId: string;
-    }
+    
     const [data] = useForm();
     const [value, setValue] = useState<valueinterface>({ title: '', description: '', author_name: '', documentId: '' });
     const [imgid, setimgid] = useState('');

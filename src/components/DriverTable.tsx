@@ -7,7 +7,7 @@ import axios, { AxiosError } from 'axios';
 import { AlignType, driver } from '../assets/dto/data.type';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
+import { DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 import { useForm } from 'antd/es/form/Form';
 import { DRIVER_DATA_COL } from '../assets/constant/driver_constant';
 

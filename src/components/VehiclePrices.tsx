@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Form, Input, Modal, Radio, Select, Spin, Table } from "antd";
+import { Button, Card, Form, Input, Modal, Radio, Select, Table } from "antd";
 import { ColumnProps } from "antd/es/table";
 import { AlignType, vehicle_prices } from "../assets/dto/data.type";
 import { VEHICLE_PRICES_DATA_COL } from "../assets/constant/VehiclePrices";
@@ -29,7 +29,7 @@ export default function VehiclePrices() {
     };
 
     
-    const handleInputChange = (e, index) => {
+    const handleInputChange = (e, index:number) => {
         const { value } = e.target;
         setPerKm(value)
         setVehicle((prevVehicle) => {
@@ -38,7 +38,7 @@ export default function VehiclePrices() {
             return updatedVehicle;
         });
         };
-        const saveEdit = async (id) => {
+        const saveEdit = async (id:string) => {
             try{
                 const response = await http.patch(`/api/v1/vehicle/${id}`, { "per_km_charge": perkm })
                 toast.success(response.data.message)
@@ -52,10 +52,9 @@ export default function VehiclePrices() {
         fetchData();
     }, []);
 
-    const handleStatus = async (record) => {
+    const handleStatus = async (record:vehicle_prices) => {
         try{
-            const statusEnum = record.status === "active" ? 1 : 0;
-            const response = await http.patch(`/api/v1/vehicle/${record.id}`,{"status":statusEnum}) 
+            const response = await http.patch(`/api/v1/vehicle/${record.id}`,{"status":record.status === "active" ? 1 : 0}) 
             fetchData();
             console.log(response)
         }catch(err){
@@ -110,7 +109,7 @@ export default function VehiclePrices() {
         length: "",
         height: "",
         per_km_charge: "",
-        status: 0 // Assuming default status is active
+        status: 0
     });
 
     const showModal = () => {
@@ -142,7 +141,7 @@ export default function VehiclePrices() {
     return (
         <div>
             <div className="flex justify-end p-2">
-                <Button onClick={showModal}>+Add New Vehicle</Button>
+                <Button onClick={showModal}>+Add New Vehicle Type</Button>
             </div>
             <Card title="Vehicle Prices" className="m-2">
                 <Table
@@ -155,7 +154,7 @@ export default function VehiclePrices() {
                     className="w-full"
                 />
             </Card>
-            <Modal title="Add New Vehicle" open={isModalOpen} onOk={handleOk}  onCancel={handleCancel}>
+            <Modal title="Add New Vehicle Type" open={isModalOpen} onOk={handleOk}  onCancel={handleCancel}>
                 <Form>
                     <Form.Item label="Vehicle Type">
                         <Select
@@ -164,7 +163,6 @@ export default function VehiclePrices() {
                         >
                             <Select.Option value={0}>Tata Ace</Select.Option>
                             <Select.Option value={1}>bolero</Select.Option>
-                            {/* Add more options as needed */}
                         </Select>
                     </Form.Item>
                     <Form.Item label="Max Weight">

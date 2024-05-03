@@ -151,7 +151,8 @@ interface vehicle_prices {
     max_weight:string,
     per_km_charge:string,
     length:string,
-    height:string
+    height:string,
+    status:string
 }
 
 interface notification {

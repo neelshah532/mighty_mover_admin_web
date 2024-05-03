@@ -2,7 +2,7 @@ import axios from 'axios';
 import { FormValues, adminLogin } from '../assets/dto/data.type';
 // import { error } from 'console';
 const config = {
-    baseURL: 'http://192.168.68.95:3000',
+    baseURL: 'http://192.168.68.79:3000',
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

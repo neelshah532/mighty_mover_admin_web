@@ -8,7 +8,6 @@ import { RootState } from './assets/dto/data.type';
 import { resetState } from './redux/roleSlice';
 // import AddNotification from './components/AddNotification';
 import AddNotificationDetails from './components/AddNotificationDetails';
-import VehiclePrices from './components/VehiclePrices';
 
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
@@ -35,6 +34,7 @@ const Notifications = lazy(() => import('./components/Notifications'))
 const IndividualNotificationDetails = lazy(() => import('./components/IndividualNotificationDetails'))
 const Role_data = lazy(() => import('./components/Role_data'));
 const PaymentDisplay = lazy(() => import('./components/paymentDisplay'));
+const VehiclePrices = lazy(()=>import('./components/VehiclePrices'))
 // import Staff from './components/Staff';
 // import Role_management from './components/Role_management';
 function App() {
@@ -112,7 +112,8 @@ function App() {
                         {sectionPermission?.includes('notification') && (
                             <Route path="/notifications/:id" element={<IndividualNotificationDetails />}></Route>
                         )}
-                        <Route path="/add-notification/details" element={<AddNotificationDetails />}></Route>
+                        <Route path="/add-notification" element={<AddNotificationDetails />}></Route>
+                        <Route path='vehicle-prices' element={<VehiclePrices/>}></Route>
                         {/* <Route path="/add-notification" element={<AddNotification />}></Route> */}
                     </Route>
                 </Route>

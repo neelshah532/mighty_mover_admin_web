@@ -432,16 +432,13 @@ export const PAYMENT_DATA_COL = [
     {
         title: 'Type',
         dataIndex: 'payment_type',
+        align:'center' as AlignType
     },
     {
         title: 'Image',
         dataIndex: 'payment_type',
         // render:(text:Payment)=>text==="stripe" ? <FaStripe className='w-fit'/> : <FaRupeeSign className='w-fit'/>,
         align: 'center' as AlignType
-    },
-    {
-        title: 'Status',
-        dataIndex: 'status'
     },
 ];
 

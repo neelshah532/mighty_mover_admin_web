@@ -1,7 +1,7 @@
-import { FaStripe, FaHome, FaRegUserCircle, FaRupeeSign } from 'react-icons/fa';
-import { MdOutlineCategory, MdOutlineContactPage, MdOutlinePayment, MdSpeakerPhone } from 'react-icons/md';
+import {  FaHome, FaRegUserCircle, } from 'react-icons/fa';
+import { MdOutlineCategory, MdOutlineContactPage, MdOutlinePayment } from 'react-icons/md';
 import { ColumnProps } from 'antd/es/table';
-import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User, AlignType, Payment } from '../dto/data.type';
+import { Order, DeliveryPartner, shipdata, paymenttype, deliverypartner, vehicletype, User, AlignType } from '../dto/data.type';
 import { IoMdSettings } from 'react-icons/io';
 import { BiSolidMessageEdit } from 'react-icons/bi';
 import { RiUserSettingsFill } from 'react-icons/ri';
@@ -853,6 +853,11 @@ export const SIDE_PANEL = {
             name: 'Vehicle',
             navigate: '/vehicle',
             icon: <FaMotorcycle />,
+        },
+        {
+            name: "Driver",
+            navigate: "/drivers",
+            icon: <GiSteeringWheel />
         },
         {
             name: "Driver",

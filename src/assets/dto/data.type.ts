@@ -1,4 +1,4 @@
-import { Role } from '../../redux/roleSlice';
+
 
 interface DataType {
     key: React.Key;
@@ -11,6 +11,17 @@ interface DataType {
     isapproved: boolean;
     title: string;
 }
+ interface valueinterface {
+     title: string;
+     description: string;
+     author_name: string;
+     documentId: string;
+ }
+ interface MenuItem {
+     name: string;
+     navigate: string;
+     icon: JSX.Element;
+ }
 enum shipdata {
     'cancel',
     'inprogess',
@@ -64,6 +75,11 @@ interface User {
     align?: AlignType | undefined;
 }
 
+interface adminLogin{
+    email: string;
+    password: string;
+
+}
 interface Categories {
     id: string;
     name: string;
@@ -169,6 +185,14 @@ interface addCategories {
     status: string | boolean;
 
 }
+interface addUsers {
+    first_name: string;
+    last_name: string;
+    email: string;
+    contact: number | string;
+    password: string;
+
+}
 
 interface Payment {
     id:string,
@@ -200,6 +224,12 @@ interface FileInfo {
     file: File;
 }
 
+interface role_data {
+    id: string;
+    role_name: string;
+    description: string;
+    created_at: string;
+}
 interface PaymentInformation {
     index: number;
     id: string;
@@ -209,9 +239,14 @@ interface PaymentInformation {
     payment_type: string;
     align? : AlignType | string;
 }
+interface StringValues {
+    [key: string]: string;
+}
+
 
 export type {
     Order,
+    StringValues,
     DeliveryPartner,
     User,
     Categories,
@@ -219,17 +254,23 @@ export type {
     UpdateCity,
     coupon,
     blog,
-    vehicle,driver,
+    vehicle,
+    driver,
     staff_data,
-    notification, 
+    notification,
     AdminsDisplay,
     addCategories,
     FileInfo,
-    Payment,
-    RolePermissionState,
+   
     addUsers,
     PaymentInformation,
+    role_data,
+    Payment,
+    adminLogin,
+    RolePermissionState,
+    valueinterface,
+    MenuItem,
     vehicle_prices
 };
 export type { DataType, FormValues, RootState };
-export { shipdata, paymenttype, deliverypartner, vehicletype };
+export { shipdata, paymenttype, deliverypartner, vehicletype ,};

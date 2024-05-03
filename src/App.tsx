@@ -58,6 +58,7 @@ function App() {
             dispatch(resetState());
             navigate('/login');
         }
+        
     }, [dispatch, navigate]);
 
     return (
@@ -88,7 +89,7 @@ function App() {
                         {sectionPermission?.includes('city') && <Route path="/city" element={<City />} />}
                         {sectionPermission?.includes('coupon') && <Route path="/coupon" element={<Coupon />} />}
                         {sectionPermission?.includes('blog') && (
-                            <Route path="/show_edit_delete" element={<Show_blog />} />
+                            <Route path="/blog" element={<Show_blog />} />
                         )}
                         {sectionPermission?.includes('vehicle') && <Route path="/vehicle" element={<Vehicle />} />}
                         {sectionPermission?.includes('staff management') && (
@@ -104,11 +105,15 @@ function App() {
                             <Route path="/staff-management/role-management/add" element={<Role_data />}></Route>
                         )}
 
-                        <Route path='/drivers' element={<DriverTable />}></Route>
-                        <Route path='/vehicle-prices' element={<VehiclePrices />}></Route>
-                        {sectionPermission?.includes('notification') && <Route path='/notifications' element={<Notifications />}></Route>}
-                        {sectionPermission?.includes('notification') && <Route path='/notifications/:id' element={<IndividualNotificationDetails />}></Route>}
-                        <Route path='/add-notification' element={<AddNotificationDetails/>}></Route>
+                        <Route path="/drivers" element={<DriverTable />}></Route>
+                        {sectionPermission?.includes('notification') && (
+                            <Route path="/notifications" element={<Notifications />}></Route>
+                        )}
+                        {sectionPermission?.includes('notification') && (
+                            <Route path="/notifications/:id" element={<IndividualNotificationDetails />}></Route>
+                        )}
+                        <Route path="/add-notification/details" element={<AddNotificationDetails />}></Route>
+                        {/* <Route path="/add-notification" element={<AddNotification />}></Route> */}
                     </Route>
                 </Route>
                 <Route element={<PublicRoute />}>

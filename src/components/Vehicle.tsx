@@ -4,7 +4,7 @@
     import { toast } from 'sonner';
     import axios, { AxiosError } from 'axios';
     import { VEHICLE_DATA_COL } from '../assets/constant/vehicle';
-    import { AlignType, vehicle } from '../assets/dto/data.type';
+    import { AlignType, StringValues, vehicle } from '../assets/dto/data.type';
     import { FaEdit } from 'react-icons/fa';
     import { MdDelete } from 'react-icons/md';
     import {  DELETE_CONFIRMATION, OK } from '../assets/constant/model';
@@ -12,9 +12,7 @@
 import { setPage } from '../redux/pageSlice';
 import { useDispatch } from 'react-redux';
 import { ColumnProps } from 'antd/es/table';
-interface StringValues {
-    [key: string]: string;
-}
+
     export default function Vehicle() {
         const [loading, setLoading] = useState(false);
         const [vehicledata, setvehicledata] = useState([]);

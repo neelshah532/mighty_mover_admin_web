@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Form, Input, Modal, Radio, Spin, Table } from 'antd';
+import { Button, Card, Flex, Form, Input, Modal, Pagination, Radio, Spin, Table } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
 import { AlignType, Categories, RootState, addCategories } from '../assets/dto/data.type';
@@ -34,20 +34,22 @@ function CategoriePage() {
     const [CurrentEditValue, setCurrentEditValue] = useState('');
     const [loading, setLoading] = useState(false);
     // const [radioValue, setRadioValue] = useState<number>(0);
+    const [search, setSearch] = useState('');
+
     const [form] = useForm();
     const [addForm] = useForm();
     const dispatch = useDispatch();
     const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
     console.log(rolePermission);
     // const categories_page = Categories_page;
-   const allowedPermission = (section: string, permissionType: string) => {
-       return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
-   };
-      const hasEditPermission = allowedPermission('categories', 'write');
-      const statusPermission = allowedPermission('categories', 'write');
-      const hasDeletePermission = allowedPermission('categories', 'delete');
-      const addItemPermission = allowedPermission('categories', 'create');
-    console.log(hasDeletePermission);
+    const allowedPermission = (section: string, permissionType: string) => {
+        return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+    };
+    const hasEditPermission = allowedPermission('categories', 'write');
+    const statusPermission = allowedPermission('categories', 'write');
+    const hasDeletePermission = allowedPermission('categories', 'delete');
+    const addItemPermission = allowedPermission('categories', 'create');
+    // console.log(hasDeletePermission);
     const cetagories_data_col: ColumnProps<Categories>[] = [
         ...CETAGORIES_DATA_COL(currentPage, 10),
         {
@@ -55,8 +57,20 @@ function CategoriePage() {
             key: 'status',
             dataIndex: 'status',
             align: 'center',
+            // filters: [
+            //     { text: 'active', value: 'active' },
+            //     { text: 'inactive', value: 'inactive' },
+            // ],
+            // onFilter: (value: React.Key | boolean | undefined, record: Categories) => {
+            //     if (value === undefined) {
+            //         console.log(value)
+            //         return true;
+            //     }
+            //     console.log(record.status === value);
+            //     return record.status === value;
+            // },
+
             render: (_, record) => {
-                
                 if (!statusPermission) {
                     return (
                         <div className="flex justify-center">
@@ -276,6 +290,21 @@ function CategoriePage() {
         void fetchData(currentPage);
     }, [dispatch, fetchData, currentPage]);
 
+    // this is for search data
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
+        setSearch(e.target.value);
+    };
+
+    const filteredData = search
+        ? categoriesData.filter((searchdata) => {
+              const { name } = searchdata;
+              const query = search.toLowerCase();
+              return name.toLowerCase().includes(query);
+          })
+        : categoriesData;
+
     return (
         <>
             <div>
@@ -286,6 +315,9 @@ function CategoriePage() {
                 ) : ( */}
                 <>
                     <div className="flex justify-end mb-2">
+                        <div>
+                            <Input.Search placeholder="Search By Name" onChange={handleSearch} style={{ width: 300 }} />
+                        </div>
                         {addItemPermission && (
                             <Button onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
                                 +{ADD_ITEM}
@@ -301,7 +333,7 @@ function CategoriePage() {
                             <Card title="Categories page" className="m-2">
                                 <Table
                                     rowClassName="text-center"
-                                    dataSource={categoriesData}
+                                    dataSource={filteredData}
                                     pagination={{
                                         pageSize: 10,
                                         total: total,
@@ -318,7 +350,7 @@ function CategoriePage() {
                                 ></Table>
                                 {/* <Pagination
                                     current={currentPage}
-                                    onChange={(page) => HandlePagination(page)}
+                                    onChange={(page) => fetchData(page)}
                                     total={total}
                                     pageSize={10}
                                 /> */}

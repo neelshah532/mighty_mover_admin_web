@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { FormValues } from '../assets/dto/data.type';
+import { FormValues, adminLogin } from '../assets/dto/data.type';
 // import { error } from 'console';
 const config = {
-    baseURL: 'http://192.168.68.89:3000',
+    baseURL: 'http://192.168.68.95:3000',
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ const config = {
     },
 };
 
-export const adminAuthLogin = async (payload: any) => {
+export const adminAuthLogin = async (payload: adminLogin) => {
     return axios.post('/api/v1/admin/login', payload, config);
 };
 export const blog_admin = async (page:number) => {

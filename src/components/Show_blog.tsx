@@ -2,7 +2,7 @@ import { Button, Card, Flex, Form, FormProps, Image, Input, Modal, Spin, Table, 
 import { BLOG_DATA } from '../assets/constant/blog_constant';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-import { AlignType, FileInfo, RootState, blog } from '../assets/dto/data.type';
+import { AlignType, FileInfo, RootState, blog, valueinterface } from '../assets/dto/data.type';
 import { useCallback, useEffect, useState } from 'react';
 import http from '../http/http';
 import { toast } from 'sonner';
@@ -21,10 +21,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
 import { ColumnProps } from 'antd/es/table';
 import { useNavigate } from 'react-router-dom';
+import { BiSearch } from 'react-icons/bi';
 
 export default function Show_blog() {
     const [loading, setloading] = useState(false);
-    const [AllBlogData, setAllBlogData] = useState([]);
+    const [AllBlogData, setAllBlogData] = useState<blog[]>([]);
     const [deletemodal, setdeletemodal] = useState(false);
     const [deleteid, setdeleteid] = useState('');
     const [openeditmodal, seteditmodal] = useState(false);
@@ -36,16 +37,10 @@ export default function Show_blog() {
     const [imgurl, setimgurl] = useState('');
     const [fk_document, setfk_document] = useState('');
     const [total, setTotal] = useState(0);
-
+    const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    interface valueinterface {
-        title: string;
-        description: string;
-        author_name: string;
-        documentId: string;
-    }
-
+  
     const onFinish: FormProps<valueinterface>['onFinish'] = async (values) => {
         const toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -217,14 +212,28 @@ export default function Show_blog() {
             ),
         });
     }
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
+        setSearch(e.target.value);
+    };
 
+    const filteredData = search
+        ? AllBlogData.filter((searchdata) => {
+              const { title, author_name  } = searchdata;
+              const query = search.toLowerCase();
+              return title.toLowerCase().includes(query) || author_name.toLowerCase().includes(query) ;
+          })
+        : AllBlogData;
     const navigate = useNavigate();
     const handleAdd = () => {
         navigate('/blog/add');
     };
     return (
         <div>
-            <div className="flex justify-end mb-2">
+            <div className="flex justify-end mb-2 gap-4 p-2">
+                <div>
+                    <Input prefix={<BiSearch    />} placeholder="Search By Title And Author Name" onChange={handleSearch} style={{ width: 300 }} />
+                </div>
                 {addItemPermission && (
                     <Button onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
                         +{ADD_ITEM}
@@ -240,7 +249,7 @@ export default function Show_blog() {
                     <Card title="Blogs" className="m-2">
                         <Table
                             rowClassName="text-center"
-                            dataSource={AllBlogData}
+                            dataSource={filteredData}
                             pagination={{
                                 pageSize: 10,
                                 total: total,

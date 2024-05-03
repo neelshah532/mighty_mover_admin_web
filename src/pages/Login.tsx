@@ -12,12 +12,7 @@ import { useDispatch } from 'react-redux';
 import axios, { AxiosError } from 'axios';
 import Loader from '../components/Loader';
 import { setRoles } from '../redux/roleSlice';
-// import { AdminAdd } from '../redux/userSlice';
-// interface User {
-//     email: string;
-//     password: string;
-//     role: string;
-// }
+
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
@@ -27,7 +22,7 @@ const Login: React.FC = () => {
 
     // const user = useSelector((state) => state);
 
-    // dispatch(AdminAdd({
+   
 
     const [loading, setLoading] = useState(false);
     const onFinish = async () => {

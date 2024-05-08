@@ -17,6 +17,7 @@ interface initialState {
         email: null | User;
         token: null | string;
         permission: null | Permission[];
+        is_super_admin: string | boolean;
     };
 }
 
@@ -31,6 +32,7 @@ const initialState: initialState = {
         email: userData?.email || null,
         token: userData?.token || null,
         permission: userData?.permission || null,
+        is_super_admin: userData?.is_super_admin || null,
     },
 };
 const userSlice = createSlice({
@@ -48,6 +50,7 @@ const userSlice = createSlice({
                 email: null,
                 token: null,
                 permission: null,
+                is_super_admin: false,
             };
             localStorage.clear();
         },

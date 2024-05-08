@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 // import logo from '../assets/Images/Group 1.svg';
 import { useSelector } from 'react-redux';
 
-
 import NavLogo from '../assets/Images/icons/Navlogo';
 
 import { MenuItem, RootState } from '../assets/dto/data.type';
@@ -19,6 +18,8 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
     // const [collapse, setcollapse] = useState(false);
     const { rolePermission } = useSelector((state: RootState) => state);
     // console.log(rolePermission);
+    const superadminPermission = useSelector((state) => state.user.user.is_super_admin);
+    console.log('superadminPermission', superadminPermission);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -81,11 +82,24 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                     }}
                     selectedKeys={[location.pathname]}
                 >
-                    {filteredMenu.map((item) => (
-                        <Menu.Item key={item.navigate} icon={item.icon} onClick={() => navigate(item.navigate)}>
-                            {item.name}
-                        </Menu.Item>
-                    ))}
+                    {superadminPermission ? (
+                        <>
+                            {SIDE_PANEL.menu.map((item) => (
+                                <Menu.Item key={item.navigate} icon={item.icon} onClick={() => navigate(item.navigate)}>
+                                    {item.name}
+                                </Menu.Item>
+                            ))}
+                        </>
+                    ) : (
+                        <>
+                            {filteredMenu.map((item) => (
+                                <Menu.Item key={item.navigate} icon={item.icon} onClick={() => navigate(item.navigate)}>
+                                    {item.name}
+                                </Menu.Item>
+                            ))}
+                        </>
+                    )}
+
                     <Menu.SubMenu key={SIDE_PANEL.submenu_key} title={SIDE_PANEL.submenu_title} icon={SIDE_PANEL.icon}>
                         {SIDE_PANEL.submenu.map((item) => (
                             <Menu.Item key={item.navigate} icon={item.icon} onClick={() => navigate(item.navigate)}>

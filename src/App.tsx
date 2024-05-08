@@ -29,9 +29,9 @@ const Vehicle = lazy(() => import('./components/Vehicle'));
 const StaffManagement = lazy(() => import('./components/Staff'));
 const AdminAdd = lazy(() => import('./components/AdminAdd'));
 const Role_management = lazy(() => import('./components/Role_management'));
-const DriverTable = lazy(() => import('./components/DriverTable'))
-const Notifications = lazy(() => import('./components/Notifications'))
-const IndividualNotificationDetails = lazy(() => import('./components/IndividualNotificationDetails'))
+const DriverTable = lazy(() => import('./components/DriverTable'));
+const Notifications = lazy(() => import('./components/Notifications'));
+const IndividualNotificationDetails = lazy(() => import('./components/IndividualNotificationDetails'));
 const Role_data = lazy(() => import('./components/Role_data'));
 const PaymentDisplay = lazy(() => import('./components/paymentDisplay'));
 // import Staff from './components/Staff';
@@ -45,10 +45,12 @@ function App() {
     // const sectionPermission = user.map((role: any) => role.section);
     // const sectionPermission = user.permission ? user.permission.map((role) => role.sectionName) : [];
     const sectionPermission = rolePermission?.map((role) => role.section);
-
-    console.log('sectionPermission', sectionPermission);
+    // console.log('sectionPermission', sectionPermission);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    // const [superadmin,setSuperAdmin] = useState(false)
+    const superadminPermission = useSelector((state) => state.user.user.is_super_admin);
+    console.log('superadminPermission', superadminPermission);
 
     useEffect(() => {
         console.log('localState');
@@ -57,14 +59,111 @@ function App() {
             dispatch(resetState());
             navigate('/login');
         }
-        
     }, [dispatch, navigate]);
 
     return (
         <Suspense fallback={<Loader />}>
             <Routes>
                 <Route element={<ProtectedRoutes />}>
-                    <Route element={<FixedLayout />}>
+                    {superadminPermission ? (
+                        <>
+                            <Route element={<FixedLayout />}>
+                                <Route path="/" element={<Dashboard />} />
+                                <Route path="/paymentsDisplay" element={<PaymentDisplay />} />
+
+                                <Route path="/orders" element={<Order_page />} />
+
+                                <Route path="/payments" element={<Payment_page />} />
+
+                                <Route path="/settings/order-settings" element={<Settings />} />
+
+                                <Route path="/user-management" element={<UserPage />} />
+
+                                <Route path="/delivery-partner" element={<Delivery_partner />} />
+
+                                <Route path="/categories" element={<CategoriePage />} />
+                                <Route path="/categories/:id" element={<SubCategory />} />
+                                <Route path="/city" element={<City />} />
+                                <Route path="/coupon" element={<Coupon />} />
+                                <Route path="/blog" element={<Show_blog />} />
+                                <Route path="/vehicle" element={<Vehicle />} />
+
+                                <Route path="/staff-management" element={<StaffManagement />} />
+
+                                <Route path="/staff-management/role-management" element={<Role_management />} />
+
+                                <Route path="/staff-management/add" element={<AdminAdd />} />
+                                <Route path="/staff-management/role-management/add" element={<Role_data />} />
+
+                                <Route path="/drivers" element={<DriverTable />}></Route>
+                                <Route path="/notifications" element={<Notifications />}></Route>
+
+                                <Route path="/notifications/:id" element={<IndividualNotificationDetails />}></Route>
+
+                                <Route path="/add-notification" element={<AddNotificationDetails />}></Route>
+                                {/* <Route path="/add-notification" element={<AddNotification />}></Route> */}
+                            </Route>
+                        </>
+                    ) : (
+                        <>
+                            <Route element={<FixedLayout />}>
+                                <Route path="/" element={<Dashboard />} />
+                                <Route path="/paymentsDisplay" element={<PaymentDisplay />} />
+                                {sectionPermission?.includes('order') && (
+                                    <Route path="/orders" element={<Order_page />} />
+                                )}
+                                {sectionPermission?.includes('payment') && (
+                                    <Route path="/payments" element={<Payment_page />} />
+                                )}
+                                <Route path="/settings/order-settings" element={<Settings />} />
+                                {sectionPermission?.includes('blog') && <Route path="/blog/add" element={<Blog />} />}
+                                {sectionPermission?.includes('user managment') && (
+                                    <Route path="/user-management" element={<UserPage />} />
+                                )}
+                                {sectionPermission?.includes('delivery partner') && (
+                                    <Route path="/delivery-partner" element={<Delivery_partner />} />
+                                )}
+                                {sectionPermission?.includes('categories') && (
+                                    <Route path="/categories" element={<CategoriePage />} />
+                                )}
+                                {sectionPermission?.includes('subcategory') && (
+                                    <Route path="/categories/:id" element={<SubCategory />} />
+                                )}
+                                {sectionPermission?.includes('city') && <Route path="/city" element={<City />} />}
+                                {sectionPermission?.includes('coupon') && <Route path="/coupon" element={<Coupon />} />}
+                                {sectionPermission?.includes('blog') && <Route path="/blog" element={<Show_blog />} />}
+                                {sectionPermission?.includes('vehicle') && (
+                                    <Route path="/vehicle" element={<Vehicle />} />
+                                )}
+                                {sectionPermission?.includes('staff management') && (
+                                    <Route path="/staff-management" element={<StaffManagement />} />
+                                )}
+                                {sectionPermission?.includes('role-managemnet') && (
+                                    <Route path="/staff-management/role-management" element={<Role_management />} />
+                                )}
+                                {sectionPermission?.includes('staff management') && (
+                                    <Route path="/staff-management/add" element={<AdminAdd />}></Route>
+                                )}
+                                {sectionPermission?.includes('addAdmin') && (
+                                    <Route path="/staff-management/role-management/add" element={<Role_data />}></Route>
+                                )}
+
+                                <Route path="/drivers" element={<DriverTable />}></Route>
+                                {sectionPermission?.includes('notification') && (
+                                    <Route path="/notifications" element={<Notifications />}></Route>
+                                )}
+                                {sectionPermission?.includes('notification') && (
+                                    <Route
+                                        path="/notifications/:id"
+                                        element={<IndividualNotificationDetails />}
+                                    ></Route>
+                                )}
+                                <Route path="/add-notification/details" element={<AddNotificationDetails />}></Route>
+                                {/* <Route path="/add-notification" element={<AddNotification />}></Route> */}
+                            </Route>
+                        </>
+                    )}
+                    {/* <Route element={<FixedLayout />}>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/paymentsDisplay" element={<PaymentDisplay />} />
                         {sectionPermission?.includes('order') && <Route path="/orders" element={<Order_page />} />}
@@ -87,9 +186,7 @@ function App() {
                         )}
                         {sectionPermission?.includes('city') && <Route path="/city" element={<City />} />}
                         {sectionPermission?.includes('coupon') && <Route path="/coupon" element={<Coupon />} />}
-                        {sectionPermission?.includes('blog') && (
-                            <Route path="/blog" element={<Show_blog />} />
-                        )}
+                        {sectionPermission?.includes('blog') && <Route path="/blog" element={<Show_blog />} />}
                         {sectionPermission?.includes('vehicle') && <Route path="/vehicle" element={<Vehicle />} />}
                         {sectionPermission?.includes('staff management') && (
                             <Route path="/staff-management" element={<StaffManagement />} />
@@ -112,8 +209,8 @@ function App() {
                             <Route path="/notifications/:id" element={<IndividualNotificationDetails />}></Route>
                         )}
                         <Route path="/add-notification/details" element={<AddNotificationDetails />}></Route>
-                        {/* <Route path="/add-notification" element={<AddNotification />}></Route> */}
-                    </Route>
+                        <Route path="/add-notification" element={<AddNotification />}></Route>
+                    </Route> */}
                 </Route>
                 <Route element={<PublicRoute />}>
                     <Route path="/login" element={<Login />} />

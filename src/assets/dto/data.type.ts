@@ -1,3 +1,4 @@
+import { Permission } from "../../redux/roleSlice";
 
 
 interface DataType {
@@ -205,6 +206,15 @@ interface RootState {
 interface FileInfo {
     file: File;
 }
+interface is_super_admin {
+    id: null | string;
+    first_name: null | User;
+    last_name: null | User;
+    email: null | User;
+    token: null | string;
+    permission: null | Permission[];
+    is_super_admin: string | boolean;
+}
 
 interface role_data {
     id: string;
@@ -251,6 +261,7 @@ export type {
     RolePermissionState,
     valueinterface,
     MenuItem,
+    is_super_admin,
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype ,};

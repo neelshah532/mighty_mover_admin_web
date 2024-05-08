@@ -222,7 +222,7 @@ export default function Role_data() {
                                                             handlePermissionChange(item.section, checkedValues)
                                                         }
                                                     >
-                                                        <Checkbox value="view">View</Checkbox>
+                                                        <Checkbox value="view">view</Checkbox>
                                                         <Checkbox value="add">Add</Checkbox>
                                                         <Checkbox value="edit">Edit</Checkbox>
                                                         <Checkbox value="delete">Delete</Checkbox>

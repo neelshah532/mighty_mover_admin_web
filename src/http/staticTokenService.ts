@@ -19,6 +19,7 @@ export const blog_admin = async (page:number) => {
 
     return axios.get(`/api/v1/blog/post?limit=10&offset=${skip}`, config);
 };
+
 export const blog_admin_get_one = async (id: string) => {
     return axios.get(`/api/v1/blog/post/${id}`, config);
 };

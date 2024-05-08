@@ -146,12 +146,22 @@ interface vehicle {
     widht: number;
 }
 
+interface vehicle_prices {
+    id:string,
+    vehicle_type:string,
+    max_weight:string,
+    per_km_charge:string,
+    length:string,
+    height:string
+}
+
 interface notification {
     id:string,
     description:string,
     title:string,
+    created_at:Date,
     date:string,
-    time:string,
+    time:string | null,
     notification_status:string
 }
 
@@ -174,6 +184,7 @@ interface addCategories {
     name: string;
     description: string;
     status: string | boolean;
+
 }
 interface addUsers {
     first_name: string;
@@ -198,6 +209,13 @@ interface Role {
 }
 interface RolePermissionState {
     roles: Role[];
+}
+interface addUsers {
+    first_name: string;
+    last_name: string;
+    email: string;
+    contact: number | string;
+    password: string;
 }
 
 interface RootState {
@@ -253,6 +271,7 @@ export type {
     AdminsDisplay,
     addCategories,
     FileInfo,
+   
     addUsers,
     PaymentInformation,
     role_data,
@@ -262,6 +281,7 @@ export type {
     valueinterface,
     MenuItem,
     is_super_admin,
+    vehicle_prices
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype ,};

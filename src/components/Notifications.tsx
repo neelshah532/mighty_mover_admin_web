@@ -17,8 +17,6 @@ function Notifications() {
 
     const handleChange = async (record: notification) => {
         try {
-            const individualNotification = await http.get(`/api/v1/notifications/${record.id}`);
-            console.log(individualNotification.data)
             navigate(`/notifications/${record.id}`);
         } catch (error) {
             console.error('Error fetching individual notification:', error);

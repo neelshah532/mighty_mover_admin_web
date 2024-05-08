@@ -13,6 +13,7 @@ import { GiSteeringWheel } from "react-icons/gi";
 
 import { FaMotorcycle } from "react-icons/fa6";
 import { RiUserSettingsLine } from "react-icons/ri";
+import { ImPriceTag } from 'react-icons/im';
 
 export const DASHBOARD_CONTENT = [
     {
@@ -424,7 +425,7 @@ export const PAYMENT_DATA_COL = [
     {
         title: 'Index',
         dataIndex: 'id',
-        render:(_,__,index)=>index+1,
+        render: (_, __, index) => index + 1,
         align: 'center' as AlignType,
         width: '70px'
     },
@@ -436,11 +437,11 @@ export const PAYMENT_DATA_COL = [
         title: 'Image',
         dataIndex: 'payment_type',
         // render:(text:Payment)=>text==="stripe" ? <FaStripe className='w-fit'/> : <FaRupeeSign className='w-fit'/>,
-        align:'center' as AlignType
+        align: 'center' as AlignType
     },
     {
-        title:'Status',
-        dataIndex:'status'
+        title: 'Status',
+        dataIndex: 'status'
     },
 ];
 
@@ -780,8 +781,8 @@ export const USER_DATA_COL = (currentPage: number, pageSize: number): ColumnProp
     {
         title: 'Sr no.',
         dataIndex: 'id',
-        render:(_,__,index:number) =>(currentPage - 1) * pageSize + index +1,
-        
+        render: (_, __, index: number) => (currentPage - 1) * pageSize + index + 1,
+
         align: 'center' as AlignType,
     },
     {
@@ -892,5 +893,20 @@ export const SIDE_PANEL = {
         //     icon: <BiSolidMessageEdit />,
         //     name: 'Blog Settings',
         // },
+    ],
+    submenu1_key: 'vehicle',
+    submenu1_title: 'vehicle',
+    icon1: <IoMdSettings />,
+    submenu1: [
+        {
+            name: 'Vehicle',
+            navigate: '/vehicle',
+            icon: <FaMotorcycle />,
+        },
+        {
+            navigate: '/vehicle-prices',
+            icon: <ImPriceTag />,
+            name: 'Vehicle Prices',
+        },
     ],
 };

@@ -107,6 +107,14 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                             </Menu.Item>
                         ))}
                     </Menu.SubMenu>
+                    <Menu.SubMenu key={SIDE_PANEL.submenu1_key} title={SIDE_PANEL.submenu1_title} icon={SIDE_PANEL.icon1}>
+                        {SIDE_PANEL.submenu1.map((item) => (
+                            <Menu.Item key={item.navigate} icon={item.icon} onClick={() => navigate(item.navigate)}>
+                                {item.name}
+                            </Menu.Item>
+                        ))}
+                    </Menu.SubMenu>
+
                 </Menu>
             </Sider>
         </div>

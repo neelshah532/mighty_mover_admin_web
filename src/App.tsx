@@ -8,6 +8,7 @@ import { RootState } from './assets/dto/data.type';
 import { resetState } from './redux/roleSlice';
 // import AddNotification from './components/AddNotification';
 import AddNotificationDetails from './components/AddNotificationDetails';
+import VehiclePrices from './components/VehiclePrices';
 
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));

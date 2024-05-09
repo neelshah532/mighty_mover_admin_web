@@ -17,7 +17,7 @@ const generateRequestToken = (config: InternalAxiosRequestConfig) => {
 
 // Create instance of axios
 const http = axios.create({
-    baseURL: 'http://192.168.68.103:3000',
+    baseURL: 'http://192.168.68.81:3000',
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -57,8 +57,8 @@ http.interceptors.response.use(
     async (error: AxiosError<ApiErrorData>) => {
         if (axios.isAxiosError(error) && error.response) {
             if (error?.response.status === 422) {
-                localStorage.clear()
-                window.location.reload()
+                // localStorage.clear()
+                // window.location.reload()
                 // Adminlogout();
                
                 return '';

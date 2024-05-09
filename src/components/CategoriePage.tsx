@@ -45,10 +45,14 @@ function CategoriePage() {
     const allowedPermission = (section: string, permissionType: string) => {
         return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
     };
-    const hasEditPermission = allowedPermission('categories', 'write');
-    const statusPermission = allowedPermission('categories', 'write');
-    const hasDeletePermission = allowedPermission('categories', 'delete');
-    const addItemPermission = allowedPermission('categories', 'create');
+
+    const superadminPermission = useSelector((state) => state.user.user.is_super_admin);
+    console.log('superadminPermission', superadminPermission);
+
+    const hasEditPermission = superadminPermission || allowedPermission('categories', 'write');
+    const statusPermission = superadminPermission || allowedPermission('categories', 'write');
+    const hasDeletePermission = superadminPermission || allowedPermission('categories', 'delete');
+    const addItemPermission = superadminPermission || allowedPermission('categories', 'create');
     // console.log(hasDeletePermission);
     const cetagories_data_col: ColumnProps<Categories>[] = [
         ...CETAGORIES_DATA_COL(currentPage, 10),

@@ -7,9 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './assets/dto/data.type';
 import { resetState } from './redux/roleSlice';
 // import AddNotification from './components/AddNotification';
-import AddNotificationDetails from './components/AddNotificationDetails';
-import VehiclePrices from './components/VehiclePrices';
+// import AddNotificationDetails from './components/AddNotificationDetails';
 
+const VehiclePrices = lazy(() => import('./components/VehiclePrices'));
+const AddNotificationDetails = lazy(() => import('./components/AddNotificationDetails'));
 const Login = lazy(() => import('./pages/Login'));
 const ProtectedRoutes = lazy(() => import('./utils/ProtectedRoutes'));
 const PublicRoute = lazy(() => import('./utils/PublicRoute'));
@@ -91,10 +92,10 @@ function App() {
 
                                 <Route path="/staff-management" element={<StaffManagement />} />
 
-                                <Route path="/staff-management/role-management" element={<Role_management />} />
+                                <Route path="/staff-management/role-management/add" element={<Role_management />} />
 
                                 <Route path="/staff-management/add" element={<AdminAdd />} />
-                                <Route path="/staff-management/role-management/add" element={<Role_data />} />
+                                <Route path="/staff-management/role-management" element={<Role_data />} />
 
                                 <Route path="/drivers" element={<DriverTable />}></Route>
                                 <Route path="/notifications" element={<Notifications />}></Route>
@@ -102,6 +103,8 @@ function App() {
                                 <Route path="/notifications/:id" element={<IndividualNotificationDetails />}></Route>
 
                                 <Route path="/add-notification" element={<AddNotificationDetails />}></Route>
+                                <Route path="/vehicle-prices" element={<VehiclePrices />}></Route>
+
                                 {/* <Route path="/add-notification" element={<AddNotification />}></Route> */}
                             </Route>
                         </>
@@ -140,13 +143,13 @@ function App() {
                                     <Route path="/staff-management" element={<StaffManagement />} />
                                 )}
                                 {sectionPermission?.includes('role-managemnet') && (
-                                    <Route path="/staff-management/role-management" element={<Role_management />} />
+                                    <Route path="/staff-management/role-management/add" element={<Role_management />} />
                                 )}
                                 {sectionPermission?.includes('staff management') && (
                                     <Route path="/staff-management/add" element={<AdminAdd />}></Route>
                                 )}
                                 {sectionPermission?.includes('addAdmin') && (
-                                    <Route path="/staff-management/role-management/add" element={<Role_data />}></Route>
+                                    <Route path="/staff-management/role-management" element={<Role_data />}></Route>
                                 )}
 
                                 <Route path="/drivers" element={<DriverTable />}></Route>
@@ -160,7 +163,7 @@ function App() {
                                     ></Route>
                                 )}
                                 <Route path="/add-notification/details" element={<AddNotificationDetails />}></Route>
-                                {/* <Route path="/add-notification" element={<AddNotification />}></Route> */}
+                                <Route path="/vehicle-prices" element={<VehiclePrices />}></Route>
                             </Route>
                         </>
                     )}

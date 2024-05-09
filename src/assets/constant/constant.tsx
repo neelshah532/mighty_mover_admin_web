@@ -846,32 +846,41 @@ export const SIDE_PANEL = {
         },
         {
             name: 'Blog',
-            navigate: '/show_edit_delete',
+            navigate: '/blog',
             icon: <BiSolidMessageEdit />,
         },
         {
             name: 'Vehicle',
             navigate: '/vehicle',
-            icon: <FaMotorcycle />,
+            icon: <IoMdSettings />,
+            submenu: [
+                {
+                    name: 'Vehicle',
+                    navigate: '/vehicle',
+                    icon: <FaMotorcycle />,
+                },
+                {
+                    navigate: '/vehicle-prices',
+                    icon: <ImPriceTag />,
+                    name: 'Vehicle Prices',
+                },
+            ],
         },
+
         {
-            name: "Driver",
-            navigate: "/drivers",
-            icon: <GiSteeringWheel />
-        },
-        {
-            name: "Driver",
-            navigate: "/drivers",
-            icon: <GiSteeringWheel />
+            name: 'Driver',
+            navigate: '/drivers',
+            icon: <GiSteeringWheel />,
         },
         {
             name: 'Staff management',
             navigate: '/staff-management',
             icon: <RiUserSettingsLine />,
-        }, {
-            name: "Notification",
-            navigate: "/notifications",
-            icon: < IoIosNotifications />
+        },
+        {
+            name: 'Notification',
+            navigate: '/notifications',
+            icon: <IoIosNotifications />,
         },
         {
             navigate: 'user-management',
@@ -894,19 +903,19 @@ export const SIDE_PANEL = {
         //     name: 'Blog Settings',
         // },
     ],
-    submenu1_key: 'vehicle',
-    submenu1_title: 'vehicle',
-    icon1: <IoMdSettings />,
-    submenu1: [
-        {
-            name: 'Vehicle',
-            navigate: '/vehicle',
-            icon: <FaMotorcycle />,
-        },
-        {
-            navigate: '/vehicle-prices',
-            icon: <ImPriceTag />,
-            name: 'Vehicle Prices',
-        },
-    ],
+    // submenu1_key: 'vehicle',
+    // submenu1_title: 'vehicle',
+    // icon1: <IoMdSettings />,
+    // submenu1: [
+    //     {
+    //         name: 'Vehicle',
+    //         navigate: '/vehicle',
+    //         icon: <FaMotorcycle />,
+    //     },
+    //     {
+    //         navigate: '/vehicle-prices',
+    //         icon: <ImPriceTag />,
+    //         name: 'Vehicle Prices',
+    //     },
+    // ],
 };

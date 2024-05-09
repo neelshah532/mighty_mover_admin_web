@@ -19,19 +19,19 @@ export const ROLE_DATA_COL: ColumnProps<role_data>[] = [
         dataIndex: 'description',
         align: 'center' as AlignType,
     },
-    {
-        title: 'Created At',
-        dataIndex: 'created_at',
-        align: 'center' as AlignType,
-        render:(created_at:string)=>{
-            return(
-                <>
-                <div>
-                    {created_at.substring(0,10)}
-                </div>
-                </>
-            )
-        }
-    },
+    // {
+    //     title: 'Created At',
+    //     dataIndex: 'created_at',
+    //     align: 'center' as AlignType,
+    //     render:(created_at:string)=>{
+    //         return(
+    //             <>
+    //             <div>
+    //                 {created_at.substring(0,10)}
+    //             </div>
+    //             </>
+    //         )
+    //     }
+    // },
   
 ];

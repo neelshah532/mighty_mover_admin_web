@@ -1,5 +1,4 @@
-import { Permission } from "../../redux/roleSlice";
-
+import { Permission } from '../../redux/roleSlice';
 
 interface DataType {
     key: React.Key;
@@ -12,17 +11,18 @@ interface DataType {
     isapproved: boolean;
     title: string;
 }
- interface valueinterface {
-     title: string;
-     description: string;
-     author_name: string;
-     documentId: string;
- }
- interface MenuItem {
-     name: string;
-     navigate: string;
-     icon: JSX.Element;
- }
+interface valueinterface {
+    title: string;
+    description: string;
+    author_name: string;
+    documentId: string;
+}
+interface MenuItem {
+    name: string;
+    navigate: string;
+    icon: JSX.Element;
+    submenu: MenuItem[];
+}
 enum shipdata {
     'cancel',
     'inprogess',
@@ -76,10 +76,9 @@ interface User {
     align?: AlignType | undefined;
 }
 
-interface adminLogin{
+interface adminLogin {
     email: string;
     password: string;
-
 }
 interface Categories {
     id: string;
@@ -147,30 +146,30 @@ interface vehicle {
 }
 
 interface vehicle_prices {
-    id:string,
-    vehicle_type:string,
-    max_weight:string,
-    per_km_charge:string,
-    length:string,
-    height:string
+    id: string;
+    vehicle_type: string;
+    max_weight: string;
+    per_km_charge: string;
+    length: string;
+    height: string;
 }
 
 interface notification {
-    id:string,
-    description:string,
-    title:string,
-    created_at:Date,
-    date:string,
-    time:string | null,
-    notification_status:string
+    id: string;
+    description: string;
+    title: string;
+    created_at: Date;
+    date: string;
+    time: string | null;
+    notification_status: string;
 }
 
 interface driver {
-    id:string,
-    name:string,
-    email:string,
-    contact:string,
-    shift:string
+    id: string;
+    name: string;
+    email: string;
+    contact: string;
+    shift: string;
 }
 
 interface staff_data {
@@ -184,7 +183,6 @@ interface addCategories {
     name: string;
     description: string;
     status: string | boolean;
-
 }
 interface addUsers {
     first_name: string;
@@ -192,15 +190,14 @@ interface addUsers {
     email: string;
     contact: number | string;
     password: string;
-
 }
 
 interface Payment {
-    id:string,
-    type:string,
-    api_key:string,
-    secret_key:string,
-    status:string
+    id: string;
+    type: string;
+    api_key: string;
+    secret_key: string;
+    status: string;
 }
 
 interface Role {
@@ -245,14 +242,13 @@ interface PaymentInformation {
     id: string;
     amount: string | number;
     payment_date: string | number;
-    payment_status: string ;
+    payment_status: string;
     payment_type: string;
-    align? : AlignType | string;
+    align?: AlignType | string;
 }
 interface StringValues {
     [key: string]: string;
 }
-
 
 export type {
     Order,
@@ -271,7 +267,6 @@ export type {
     AdminsDisplay,
     addCategories,
     FileInfo,
-   
     addUsers,
     PaymentInformation,
     role_data,
@@ -281,7 +276,7 @@ export type {
     valueinterface,
     MenuItem,
     is_super_admin,
-    vehicle_prices
+    vehicle_prices,
 };
 export type { DataType, FormValues, RootState };
-export { shipdata, paymenttype, deliverypartner, vehicletype ,};
+export { shipdata, paymenttype, deliverypartner, vehicletype };

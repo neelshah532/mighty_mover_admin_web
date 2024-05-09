@@ -29,8 +29,32 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
             // console.log(role.permission);
             return permission.section === item.name.toLowerCase();
         });
-    });
+    }) as MenuItem[];
     console.log(filteredMenu);
+    const renderMenuItemOrSubMenu = (menuItem: MenuItem) => {
+        console.log(menuItem);
+        if (menuItem.submenu && menuItem.submenu.length > 0) {
+            return (
+                <Menu.SubMenu key={menuItem.name} title={menuItem.name} icon={menuItem.icon}>
+                    {menuItem.submenu.map((subItem) => (
+                        <Menu.Item
+                            key={subItem.navigate}
+                            icon={subItem.icon}
+                            onClick={() => navigate(subItem.navigate)}
+                        >
+                            {subItem.name}
+                        </Menu.Item>
+                    ))}
+                </Menu.SubMenu>
+            );
+        } else {
+            return (
+                <Menu.Item key={menuItem.navigate} icon={menuItem.icon} onClick={() => navigate(menuItem.navigate)}>
+                    {menuItem.name}
+                </Menu.Item>
+            );
+        }
+    };
 
     useEffect(() => {
         window.location.pathname;
@@ -82,23 +106,9 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                     }}
                     selectedKeys={[location.pathname]}
                 >
-                    {superadminPermission ? (
-                        <>
-                            {SIDE_PANEL.menu.map((item) => (
-                                <Menu.Item key={item.navigate} icon={item.icon} onClick={() => navigate(item.navigate)}>
-                                    {item.name}
-                                </Menu.Item>
-                            ))}
-                        </>
-                    ) : (
-                        <>
-                            {filteredMenu.map((item) => (
-                                <Menu.Item key={item.navigate} icon={item.icon} onClick={() => navigate(item.navigate)}>
-                                    {item.name}
-                                </Menu.Item>
-                            ))}
-                        </>
-                    )}
+                    {superadminPermission
+                        ? SIDE_PANEL.menu.map((item) => renderMenuItemOrSubMenu(item))
+                        : filteredMenu.map((item) => renderMenuItemOrSubMenu(item))}
 
                     <Menu.SubMenu key={SIDE_PANEL.submenu_key} title={SIDE_PANEL.submenu_title} icon={SIDE_PANEL.icon}>
                         {SIDE_PANEL.submenu.map((item) => (
@@ -107,14 +117,17 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
                             </Menu.Item>
                         ))}
                     </Menu.SubMenu>
-                    <Menu.SubMenu key={SIDE_PANEL.submenu1_key} title={SIDE_PANEL.submenu1_title} icon={SIDE_PANEL.icon1}>
+                    {/* <Menu.SubMenu
+                        key={SIDE_PANEL.submenu1_key}
+                        title={SIDE_PANEL.submenu1_title}
+                        icon={SIDE_PANEL.icon1}
+                    >
                         {SIDE_PANEL.submenu1.map((item) => (
                             <Menu.Item key={item.navigate} icon={item.icon} onClick={() => navigate(item.navigate)}>
                                 {item.name}
                             </Menu.Item>
                         ))}
-                    </Menu.SubMenu>
-
+                    </Menu.SubMenu> */}
                 </Menu>
             </Sider>
         </div>

@@ -76,6 +76,16 @@ interface User {
     align?: AlignType | undefined;
 }
 
+interface userRedux {
+    id: null | string;
+    first_name: null | User;
+    last_name: null | User;
+    email: null | User;
+    token: null | string;
+    permission: null | Permission[];
+    is_super_admin: string | boolean;
+}
+
 interface adminLogin {
     email: string;
     password: string;
@@ -277,6 +287,7 @@ export type {
     MenuItem,
     is_super_admin,
     vehicle_prices,
+    userRedux,
 };
 export type { DataType, FormValues, RootState };
 export { shipdata, paymenttype, deliverypartner, vehicletype };

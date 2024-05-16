@@ -19,7 +19,6 @@ const Dashboard = lazy(() => import('./components/Dashboard'));
 const Order_page = lazy(() => import('./components/Order_page'));
 const Payment_page = lazy(() => import('./components/Payment_page'));
 const Blog = lazy(() => import('./components/Blog'));
-const Delivery_partner = lazy(() => import('./components/Delivery_partner'));
 const FixedLayout = lazy(() => import('./components/Layout'));
 const UserPage = lazy(() => import('./components/UserTable'));
 const CategoriePage = lazy(() => import('./components/CategoriePage'));
@@ -36,21 +35,16 @@ const Notifications = lazy(() => import('./components/Notifications'));
 const IndividualNotificationDetails = lazy(() => import('./components/IndividualNotificationDetails'));
 const Role_data = lazy(() => import('./components/Role_data'));
 const PaymentDisplay = lazy(() => import('./components/paymentDisplay'));
-// import Staff from './components/Staff';
-// import Role_management from './components/Role_management';
 function App() {
     // const user = useSelector((state: RootState) => state.user.user);
     const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
     console.log('rolePermission', rolePermission);
-
-    // console.log(user);
     // const sectionPermission = user.map((role: any) => role.section);
     // const sectionPermission = user.permission ? user.permission.map((role) => role.sectionName) : [];
     const sectionPermission = rolePermission?.map((role) => role.section);
     // console.log('sectionPermission', sectionPermission);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const [superadmin,setSuperAdmin] = useState(false)
     const superadminPermission = useSelector((state) => state.user.user.is_super_admin);
     console.log('superadminPermission', superadminPermission);
 
@@ -81,7 +75,7 @@ function App() {
 
                                 <Route path="/user-management" element={<UserPage />} />
 
-                                <Route path="/delivery-partner" element={<Delivery_partner />} />
+                               
 
                                 <Route path="/categories" element={<CategoriePage />} />
                                 <Route path="/categories/:id" element={<SubCategory />} />
@@ -124,9 +118,7 @@ function App() {
                                 {sectionPermission?.includes('user managment') && (
                                     <Route path="/user-management" element={<UserPage />} />
                                 )}
-                                {sectionPermission?.includes('delivery partner') && (
-                                    <Route path="/delivery-partner" element={<Delivery_partner />} />
-                                )}
+                               
                                 {sectionPermission?.includes('categories') && (
                                     <Route path="/categories" element={<CategoriePage />} />
                                 )}

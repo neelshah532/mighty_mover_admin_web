@@ -17,12 +17,13 @@ import { ROLE_DATA_COL } from '../assets/constant/role_data';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { AlignType } from '../assets/dto/data.type';
-import { Card, Checkbox, Form, Input, Modal } from 'antd';
+import { Button, Card, Checkbox, Form, Input, Modal } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import http from '../http/http';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useForm } from 'antd/es/form/Form';
+import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
 
 // export default function Role_data() {
 //     const [roledata, setroledata] = useState([]);
@@ -309,13 +310,40 @@ import { useForm } from 'antd/es/form/Form';
 //         </div>
 //     );
 // }
+// const renderPermissionsCheckboxes = (permissions: any[]) => {
+//     const permissionCheckboxes = ['read', 'write', 'create', 'delete'];
+
+//     return permissions.map((permission) => (
+//         <div key={permission.section}>
+//             <div className="w-full flex flex-row border border-black gap-3">
+//                 <div className="w-auto ">
+//                     <h1 className="font-semibold">{permission.section}</h1>
+//                 </div>
+//                 <div className="w-auto ">
+//                     {permissionCheckboxes.map((action) => (
+//                         <Checkbox
+//                             key={`${permission.section}-${action}`}
+//                             defaultChecked={permission.permission.includes(action)}
+//                         >
+//                             {action}
+//                         </Checkbox>
+//                     ))}
+//                 </div>
+//             </div>
+//         </div>
+//     ));
+// };
 
 // import React from 'react'
 
 function Role_data() {
     const [roledata, setroledata] = useState<role_data[]>([]);
     const [editmodal, setEditmodal] = useState(false);
-    const [CurrentEditValue, setCurrentEditValue] = useState([]);
+    const [editmodelId, setEditmodalID] = useState('');
+    const [deleteid, setdeletedid] = useState('');
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
+    // const [CurrentEditValue, setCurrentEditValue] = useState([]);
     const [form] = useForm();
     // const dummy_data = [
     //     {
@@ -353,7 +381,7 @@ function Role_data() {
                     <div>
                         <button
                             className="py-3 px-4 bg-red-500 text-white rounded"
-                            // onClick={() => handledelete(record.id)}
+                            onClick={() => handledelete(record.id)}
                         >
                             <MdDelete />
                         </button>
@@ -376,35 +404,44 @@ function Role_data() {
             // setloading(false);
         }
     }, []);
-
+    const handledelete = (id: string) => {
+        setDeleteModalVisible(true);
+        setdeletedid(id);
+    };
+    const delete_role_api = async () => {
+        try {
+            const response = await http.delete(`/api/v1/admin/role/${deleteid}`);
+            toast.success(response.data.message);
+        } catch (error) {
+            message_error(error as Error);
+        }
+    };
     const handleEdit = (record: role_data, id: string) => {
         setEditmodal(true);
         form.setFieldsValue(record);
         handleDisplayEditdata(id);
+        setEditmodalID(id);
     };
     const handleDisplayEditdata = async (id: string) => {
         // console.log(setCurrentEditValue);
         // setEditmodal(false);
+        console.log(id);
         try {
             const updateRecord = await http.get(`/api/v1/admin/role/${id}`);
             form.setFieldsValue({
                 role_name: updateRecord.data.data.name,
                 description: updateRecord.data.data.description,
-                permission: updateRecord.data.data.permission,
+                permissions: updateRecord.data.data.permissions,
             });
             console.log(form.getFieldsValue());
             console.log(updateRecord.data.data);
-            setCurrentEditValue(updateRecord.data.data.permission);
-            // toast.success(updateRecord.data.message);
-            // setCurrentEditValue('');
+            // setCurrentEditValue(updateRecord.data.data.permission);
+
             fetchData();
         } catch (error) {
             message_error(error as Error);
         }
     };
-    // const handleDisplayEditdata = (id: string) => {
-    //     console.log(id);
-    // };
 
     const message_error = (error: Error) => {
         if (axios.isAxiosError(error)) {
@@ -421,31 +458,16 @@ function Role_data() {
             }
         }
     };
-    // const renderPermissionsCheckboxes = (permissions: any[]) => {
-    //     const permissionCheckboxes = ['read', 'write', 'create', 'delete'];
 
-    //     return permissions.map((permission) => (
-    //         <div key={permission.section}>
-    //             <div className="w-full flex flex-row border border-black gap-3">
-    //                 <div className="w-auto ">
-    //                     <h1 className="font-semibold">{permission.section}</h1>
-    //                 </div>
-    //                 <div className="w-auto ">
-    //                     {permissionCheckboxes.map((action) => (
-    //                         <Checkbox
-    //                             key={`${permission.section}-${action}`}
-    //                             defaultChecked={permission.permission.includes(action)}
-    //                         >
-    //                             {action}
-    //                         </Checkbox>
-    //                     ))}
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     ));
-    // };
-    const handleSubmit = (data) => {
-        console.log(data);
+    const handleSubmit = async () => {
+        console.log(editmodelId);
+        try {
+            const formData = form.getFieldsValue();
+            const response = await http.patch(`/api/v1/admin/role/${editmodelId}`, formData);
+            console.log(response.data.data);
+        } catch (error) {
+            message_error(error as Error);
+        }
     };
     useEffect(() => {
         fetchData();
@@ -489,27 +511,40 @@ function Role_data() {
                                     placeholder="Add Role Description"
                                 />
                             </Form.Item>
-                            <Form.List name="permission">
+                            <Form.List name="permissions">
                                 {(fields) => (
                                     <>
-                                        {fields.map((field) => (
+                                        {fields.map((field, index) => (
                                             <>
-                                                {/* {console.log(field)} */}
-                                                <Form.Item
-                                                    className="w-full flex flex-col gap-2"
-                                                    label="permission"
-                                                    name={[field.name, 'permission']}
-                                                >
-                                                    <Checkbox.Group
-                                                        options={[
-                                                            { label: 'read', value: 'read' },
-                                                            { label: 'write', value: 'write' },
-                                                            { label: 'create', value: 'create' },
-                                                            { label: 'delete', value: 'delete' },
-                                                        ]}
-                                                        // defaultValue={['read', 'write', 'create', 'delete']}
-                                                    />
-                                                </Form.Item>
+                                                <div className="w-full p-2 m-2" key={field.key}>
+                                                    {/* <div key={field.key} className='grid grid-cols-2 gap-3 p-2 m-2 justify-items-center'> */}
+                                                    {/* {console.log(field)} */}
+                                                    <div className="w-full flex flex-row  gap-3">
+                                                        <div className="w-auto ">
+                                                            <Form.Item {...field} name={[field.name, 'section']}>
+                                                                {<Input readOnly />}
+                                                            </Form.Item>
+                                                        </div>
+                                                        <div className="w-auto ">
+                                                            <Form.Item
+                                                                // className="w-full flex flex-col gap-2"
+                                                                // label="permission"
+                                                                name={[field.name, 'section_permission']}
+                                                            >
+                                                                <Checkbox.Group
+                                                                    options={[
+                                                                        { label: 'read', value: 'read' },
+                                                                        { label: 'write', value: 'write' },
+                                                                        { label: 'create', value: 'create' },
+                                                                        { label: 'delete', value: 'delete' },
+                                                                    ]}
+                                                                    // defaultValue={['read', 'write', 'create', 'delete']}
+                                                                />
+                                                            </Form.Item>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {/* </div> */}
                                             </>
                                         ))}
                                     </>
@@ -533,6 +568,21 @@ function Role_data() {
                                 </div> */}
                             {/* </Form.Item> */}
                         </Form>
+                    </Modal>
+                    <Modal
+                        title="Confirm Deletion"
+                        open={deleteModalVisible}
+                        onCancel={() => setDeleteModalVisible(false)}
+                        footer={
+                            <div className="flex gap-3 justify-end">
+                                <Button onClick={() => setDeleteModalVisible(false)}>{CANCEL}</Button>
+                                <Button type="primary" htmlType="submit" onClick={delete_role_api}>
+                                    {OK}
+                                </Button>
+                            </div>
+                        }
+                    >
+                        <p>{DELETE_CONFIRMATION}</p>
                     </Modal>
                 </div>
             </div>

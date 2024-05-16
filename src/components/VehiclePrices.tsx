@@ -162,9 +162,9 @@ export default function VehiclePrices() {
                             value={formData.vehicle_type}
                             onChange={(value) => setFormData({ ...formData, vehicle_type: value })}
                         >
-                            <Select.Option value={0}>Tata Ace</Select.Option>
-                            <Select.Option value={1}>bolero</Select.Option>
-                            {/* Add more options as needed */}
+                            <Select.Option value={3}>Tata Ace</Select.Option>
+                            <Select.Option value={6}>bolero</Select.Option>
+                           
                         </Select>
                     </Form.Item>
                     <Form.Item label="Max Weight">

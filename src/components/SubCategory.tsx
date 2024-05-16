@@ -38,12 +38,14 @@ const SubCategory = () => {
     const allowedPermission = (section: string, permissionType: string) => {
         return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
     };
-    const hasEditPermission = allowedPermission('subcategory', 'write');
-    const statusPermission = allowedPermission('subcategory', 'write');
-    const hasDeletePermission = allowedPermission('subcategory', 'delete');
-    const addItemPermission = allowedPermission('subcategory', 'create');
-
+    const superadminPermission = useSelector((state) => state.user.user.is_super_admin);
+    console.log('superadminPermission', superadminPermission);
     
+    const hasEditPermission = superadminPermission || allowedPermission('categories', 'write');
+    const statusPermission = superadminPermission || allowedPermission('categories', 'write');
+    const hasDeletePermission = superadminPermission || allowedPermission('categories', 'delete');
+    const addItemPermission = superadminPermission || allowedPermission('categories', 'create');
+
     const subcetagories_data_col: ColumnProps<Categories>[] = [
         ...SUBCATEGORIES_DATA_COL(currentPage, 10),
         {
@@ -340,17 +342,13 @@ const SubCategory = () => {
             {/* <Card title="SubCategory page" className="m-2"> */}
             <div className="flex justify-end mb-4 gap-5">
                 <div className=" ">
-                    <Button
-                       
-                        onClick={handleBack}
-                        style={{ color: '#2967ff', backgroundColor: '#ffffff' }}
-                    >
+                    <Button onClick={handleBack} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
                         {BACK_BUTTON}
                     </Button>
                 </div>
                 <div className="">
                     {addItemPermission && (
-                        <Button onClick={handleAdd}  style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
+                        <Button onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>
                             +{ADD_ITEM}
                         </Button>
                     )}

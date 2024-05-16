@@ -37,7 +37,7 @@ const Login: React.FC = () => {
                 last_name: response.data.data.last_name,
                 email: response.data.data.email,
                 token: response.data.data.jwt,
-                permission: response.data.data.permission,
+                permission: response.data.data.permissions,
                 is_super_admin: response.data.data.is_super_admin,
             };
             console.log(obj);

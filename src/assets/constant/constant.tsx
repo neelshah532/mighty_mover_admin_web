@@ -820,11 +820,6 @@ export const SIDE_PANEL = {
             icon: <MdOutlineContactPage />,
         },
         {
-            name: 'Delivery Partner',
-            navigate: '/delivery-partner',
-            icon: <FaRegUserCircle />,
-        },
-        {
             name: 'Payment',
             navigate: '/payments',
             icon: <MdOutlinePayment />,

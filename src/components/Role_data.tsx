@@ -475,9 +475,15 @@ function Role_data() {
     return (
         <>
             <div>
+                <div className="flex justify-end mb-2">
+                   
+                    <Button style={{ backgroundColor: '#ffffff', color: '#2967ff' }} onClick={handlenav}>
+                         + Add New Role 
+                    </Button>
+                    
+                </div>
                 <div>
                     <Card title="Cities" className="m-2">
-                        //{' '}
                         <Table
                             rowClassName="text-center"
                             dataSource={roledata}

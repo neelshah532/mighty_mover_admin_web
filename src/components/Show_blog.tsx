@@ -40,7 +40,6 @@ export default function Show_blog() {
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-  
     const onFinish: FormProps<valueinterface>['onFinish'] = async (values) => {
         const toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -171,14 +170,14 @@ export default function Show_blog() {
     };
 
     const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
-
+    const superadminPermission = useSelector((state) => state.user.user.is_super_admin);
     const allowedPermission = (section: string, permissionType: string) => {
         return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
     };
 
-    const hasEditPermission = allowedPermission('blog', 'write');
-    const hasDeletePermission = allowedPermission('blog', 'delete');
-    const addItemPermission = allowedPermission('blog', 'create');
+    const hasEditPermission = superadminPermission || allowedPermission('blog', 'write');
+    const hasDeletePermission = superadminPermission || allowedPermission('blog', 'delete');
+    const addItemPermission = superadminPermission || allowedPermission('blog', 'create');
 
     const blogdata: ColumnProps<blog>[] = [...BLOG_DATA(currentPage, 10)];
     if (hasEditPermission || hasDeletePermission) {
@@ -219,9 +218,9 @@ export default function Show_blog() {
 
     const filteredData = search
         ? AllBlogData.filter((searchdata) => {
-              const { title, author_name  } = searchdata;
+              const { title, author_name } = searchdata;
               const query = search.toLowerCase();
-              return title.toLowerCase().includes(query) || author_name.toLowerCase().includes(query) ;
+              return title.toLowerCase().includes(query) || author_name.toLowerCase().includes(query);
           })
         : AllBlogData;
     const navigate = useNavigate();
@@ -232,7 +231,12 @@ export default function Show_blog() {
         <div>
             <div className="flex justify-end mb-2 gap-4 p-2">
                 <div>
-                    <Input prefix={<BiSearch    />} placeholder="Search By Title And Author Name" onChange={handleSearch} style={{ width: 300 }} />
+                    <Input
+                        prefix={<BiSearch />}
+                        placeholder="Search By Title And Author Name"
+                        onChange={handleSearch}
+                        style={{ width: 300 }}
+                    />
                 </div>
                 {addItemPermission && (
                     <Button onClick={handleAdd} style={{ color: '#2967ff', backgroundColor: '#ffffff' }}>

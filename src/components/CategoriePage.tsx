@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Form, Input, Modal, Pagination, Radio, Spin, Table } from 'antd';
+import { Button, Card, Flex, Form, Input, Modal, Radio, Spin, Table } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
 import { AlignType, Categories, RootState, addCategories } from '../assets/dto/data.type';
@@ -10,9 +10,10 @@ import { ADD_ITEM, CANCEL, DELETE, DELETE_CONFIRMATION, EDIT_ITEM } from '../ass
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import http from '../http/http';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
-// import Loader from './Loader';
+import usePermission from '../hook/usePermission';
+
 type FieldType = {
     id: number;
     name?: string;
@@ -21,39 +22,25 @@ type FieldType = {
 };
 
 function CategoriePage() {
-    //use redux to display name of page
-
+    const { hasEditPermission, statusPermission, hasDeletePermission, addItemPermission } = usePermission('categories');
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [deleteItemId, setDeleteItemId] = useState('');
-    //we have use useForm hook to get and set form value
+
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState(0);
-    // const [enable, setEnable] = useState<boolean[]>([]);
+
     const [modal2Open, setModal2Open] = useState(false);
     const [addItem, setAddItem] = useState(false);
     const [CurrentEditValue, setCurrentEditValue] = useState('');
     const [loading, setLoading] = useState(false);
-    // const [radioValue, setRadioValue] = useState<number>(0);
     const [search, setSearch] = useState('');
 
     const [form] = useForm();
     const [addForm] = useForm();
     const dispatch = useDispatch();
-    const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
-    console.log(rolePermission);
-    // const categories_page = Categories_page;
-    const allowedPermission = (section: string, permissionType: string) => {
-        return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
-    };
 
-    const superadminPermission = useSelector((state) => state.user.user.is_super_admin);
-    console.log('superadminPermission', superadminPermission);
-
-    const hasEditPermission = superadminPermission || allowedPermission('categories', 'write');
-    const statusPermission = superadminPermission || allowedPermission('categories', 'write');
-    const hasDeletePermission = superadminPermission || allowedPermission('categories', 'delete');
-    const addItemPermission = superadminPermission || allowedPermission('categories', 'create');
-    // console.log(hasDeletePermission);
+    const [categoriesData, setCategoriesData] = useState<Categories[]>([]);
+    console.log('hasEditPermission', hasEditPermission);
     const cetagories_data_col: ColumnProps<Categories>[] = [
         ...CETAGORIES_DATA_COL(currentPage, 10),
         {
@@ -61,18 +48,6 @@ function CategoriePage() {
             key: 'status',
             dataIndex: 'status',
             align: 'center',
-            // filters: [
-            //     { text: 'active', value: 'active' },
-            //     { text: 'inactive', value: 'inactive' },
-            // ],
-            // onFilter: (value: React.Key | boolean | undefined, record: Categories) => {
-            //     if (value === undefined) {
-            //         console.log(value)
-            //         return true;
-            //     }
-            //     console.log(record.status === value);
-            //     return record.status === value;
-            // },
 
             render: (_, record) => {
                 if (!statusPermission) {
@@ -97,12 +72,10 @@ function CategoriePage() {
                 );
             },
         },
-    ];
-
-    if (hasEditPermission || hasDeletePermission) {
-        cetagories_data_col.push({
+        {
             title: 'Action',
             key: 'action',
+            hidden: !hasEditPermission && !hasDeletePermission,
             align: 'center' as AlignType,
             render: (_, record: Categories) => (
                 <div className="flex gap-2 justify-center">
@@ -128,8 +101,10 @@ function CategoriePage() {
                     )}
                 </div>
             ),
-        });
-    }
+        },
+    ];
+
+    // cetagories_data_col.push();
 
     // there is a handle addItem Permissions check
     // const addItemPermission = rolePermission?.some(
@@ -262,7 +237,6 @@ function CategoriePage() {
     };
 
     // their is a section where fetch data of categorie items using useState
-    const [categoriesData, setCategoriesData] = useState<Categories[]>([]);
 
     // api calling section
     const fetchData = useCallback(
@@ -271,7 +245,7 @@ function CategoriePage() {
             try {
                 const skip = (page - 1) * 10;
                 const response = await http.get(`/api/v1/Categories?limit=10&offset=${skip}`);
-                console.log(currentPage);
+                // console.log(currentPage);
                 // console.log(response.data.data);
                 setCategoriesData(response.data.data);
                 // console.log(total);
@@ -318,7 +292,7 @@ function CategoriePage() {
                     </Flex>
                 ) : ( */}
                 <>
-                    <div className="flex justify-end mb-2">
+                    <div className="w-full flex justify-end mb-2 gap-2">
                         <div>
                             <Input.Search placeholder="Search By Name" onChange={handleSearch} style={{ width: 300 }} />
                         </div>

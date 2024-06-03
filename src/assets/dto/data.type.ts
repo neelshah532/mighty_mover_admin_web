@@ -212,7 +212,7 @@ interface Payment {
 
 interface Role {
     section: string;
-    permission: { section: string; permission: string[] }[];
+    permission: { section: string; section_permission: string[] }[];
 }
 interface RolePermissionState {
     roles: Role[];

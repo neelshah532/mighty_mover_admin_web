@@ -59,7 +59,7 @@ export default function HeaderPage({
             console.log(logoutAdmin);
             navigate('/login');
             dispatch(Adminlogout());
-            
+
             setIsLoading(true);
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -144,13 +144,13 @@ export default function HeaderPage({
     };
 
     const handleChangePassword = async () => {
+        const token = JSON.parse(localStorage.getItem('user') as string).token;
         if (newPassword !== confirmPassword) {
             toast.error('New password and confirm password do not match.');
             return;
         }
         try {
-            const changePassword = await http.patch('api/v1/admin/password', {
-                old_password: oldPassword,
+            const changePassword = await http.patch(`/api/v1/user/resetPassword/${token}`, {
                 new_password: newPassword,
             });
 

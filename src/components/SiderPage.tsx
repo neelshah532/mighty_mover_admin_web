@@ -12,7 +12,6 @@ import NavLogo from '../assets/Images/icons/Navlogo';
 import { MenuItem, RootState } from '../assets/dto/data.type';
 
 export default function SiderPage({ collapse }: { collapse: boolean }) {
-    // const data: Order[] = ORDER_TABLE;
     // const [toggle1, settoggle1] = useState(false);
 
     // const [collapse, setcollapse] = useState(false);
@@ -20,7 +19,6 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
     // console.log(rolePermission);
     const superadminPermission = useSelector((state) => state.user.user.is_super_admin);
     // console.log('superadminPermission', superadminPermission);
-
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -32,7 +30,6 @@ export default function SiderPage({ collapse }: { collapse: boolean }) {
     }) as MenuItem[];
     // console.log(filteredMenu);
     const renderMenuItemOrSubMenu = (menuItem: MenuItem) => {
-        // console.log(menuItem);
         if (menuItem.submenu && menuItem.submenu.length > 0) {
             return (
                 <Menu.SubMenu key={menuItem.name} title={menuItem.name} icon={menuItem.icon}>

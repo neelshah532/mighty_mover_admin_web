@@ -12,8 +12,10 @@ import { FaEdit } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPage } from '../redux/pageSlice';
 import { ColumnProps } from 'antd/es/table';
+// import usePermission from '../hook/usePermission';
 
 function City() {
+    // const { hasEditPermission, statusPermission, hasDeletePermission, addItemPermission } = usePermission('categories');
     const [citydata, setcitydata] = useState<city[]>([]);
     const [total, settotal] = useState(0);
     const [modal, setmodal] = useState(false);
@@ -30,16 +32,17 @@ function City() {
     const dispatch = useDispatch();
     // const rolePermission = useSelector((state: RootState) => state.rolePermission.roles[0].permission);
     const rolePermission = useSelector((state: RootState) => state.rolePermission.permission);
+    console.log('rolePermission', rolePermission);
 
-    console.log(rolePermission);
-const allowedPermission = (section: string, permissionType: string) => {
-    return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
-};
-    const hasEditPermission = allowedPermission("city","write")
-    const statusPermission = allowedPermission('city', 'write');
-    const hasDeletePermission = allowedPermission('city', 'delete');
-    const addItemPermission = allowedPermission('city', 'create');
-
+    const superadminPermission = useSelector((state: any) => state.user.user.is_super_admin);
+    const allowedPermission = (section: string, permissionType: string) => {
+        return rolePermission?.some((role) => role.section === section && role.permission?.includes(permissionType));
+    };
+    const hasEditPermission = superadminPermission || allowedPermission('city', 'write');
+    const statusPermission = superadminPermission || allowedPermission('city', 'write');
+    const hasDeletePermission = superadminPermission || allowedPermission('city', 'delete');
+    const addItemPermission = superadminPermission || allowedPermission('city', 'create');
+    console.log('addItemPermission', addItemPermission);
     const crud_city_data: ColumnProps<city>[] = [
         ...CITY_DATA_COL(currentPage, 10),
         {
@@ -48,7 +51,6 @@ const allowedPermission = (section: string, permissionType: string) => {
             dataIndex: 'status',
             align: 'center',
             render: (_, record) => {
-               
                 if (!statusPermission) {
                     return (
                         <div className="flex justify-center">
@@ -103,7 +105,6 @@ const allowedPermission = (section: string, permissionType: string) => {
             ),
         });
     }
-  
 
     // there is a HandleError component
     const handleError = (error: Error) => {

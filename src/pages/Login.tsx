@@ -13,7 +13,6 @@ import axios, { AxiosError } from 'axios';
 import Loader from '../components/Loader';
 import { setRoles } from '../redux/roleSlice';
 
-
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -21,8 +20,6 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState('');
 
     // const user = useSelector((state) => state);
-
-   
 
     const [loading, setLoading] = useState(false);
     const onFinish = async () => {
@@ -40,14 +37,14 @@ const Login: React.FC = () => {
                 permission: response.data.data.permissions,
                 is_super_admin: response.data.data.is_super_admin,
             };
-            console.log(obj);
             // console.log(obj);
             // const details = JSON.stringify(obj.permissions,obj.token)
             // const final_details = details + JSON.stringify(obj.token)
             // console.log(details)
             // console.log(final_details)
             // dispatch(AdminAdd({ email: email, password: password, role: response.data.role }));
-            localStorage.setItem('user', JSON.stringify(obj));
+            localStorage.setItem('user', JSON.stringify(obj).toLowerCase());
+            // console.log(obj);
             dispatch(AdminAdd(obj));
             dispatch(setRoles(obj));
             navigate('/');

@@ -35,7 +35,7 @@ const Login: React.FC = () => {
                 is_super_admin: response.data.data.is_super_admin,
             };
 
-            localStorage.setItem('user', JSON.stringify(obj).toLowerCase());
+            localStorage.setItem('user', JSON.stringify(obj));
 
             dispatch(AdminAdd(obj));
             dispatch(setRoles(obj));

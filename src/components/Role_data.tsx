@@ -1,16 +1,3 @@
-// import { Button, Card, Checkbox, Flex, Input, Modal, Spin, Table, Form } from 'antd';
-// import { useEffect, useState } from 'react';
-// import http from '../http/http';
-// import { toast } from 'sonner';
-// import axios, { AxiosError } from 'axios';
-// import { ROLE_DATA_COL } from '../assets/constant/role_data';
-// import { AlignType } from '../assets/dto/data.type';
-// import { MdDelete } from 'react-icons/md';
-// import { FaEdit } from 'react-icons/fa';
-// import { useNavigate } from 'react-router-dom';
-// import { useForm } from 'antd/es/form/Form';
-// import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
-
 import Table, { ColumnProps } from 'antd/es/table';
 import { role_data } from '../assets/dto/data.type';
 import { ROLE_DATA_COL } from '../assets/constant/role_data';
@@ -24,6 +11,7 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useForm } from 'antd/es/form/Form';
 import { CANCEL, DELETE_CONFIRMATION, OK } from '../assets/constant/model';
+import { useNavigate } from 'react-router-dom';
 
 // export default function Role_data() {
 //     const [roledata, setroledata] = useState([]);
@@ -422,6 +410,10 @@ function Role_data() {
         handleDisplayEditdata(id);
         setEditmodalID(id);
     };
+    const navigate = useNavigate();
+    const handlenav = () => {
+        navigate('/staff-management/role-management/add');
+    };
     const handleDisplayEditdata = async (id: string) => {
         // console.log(setCurrentEditValue);
         // setEditmodal(false);
@@ -476,11 +468,9 @@ function Role_data() {
         <>
             <div>
                 <div className="flex justify-end mb-2">
-                   
                     <Button style={{ backgroundColor: '#ffffff', color: '#2967ff' }} onClick={handlenav}>
-                         + Add New Role 
+                        + Add New Role
                     </Button>
-                    
                 </div>
                 <div>
                     <Card title="Cities" className="m-2">

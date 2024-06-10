@@ -14,7 +14,6 @@ import http from '../http/http';
 import { useNavigate } from 'react-router-dom';
 import { valueinterface } from '../assets/dto/data.type';
 export default function Blog() {
-    
     const [data] = useForm();
     const [value, setValue] = useState<valueinterface>({ title: '', description: '', author_name: '', documentId: '' });
     const [imgid, setimgid] = useState('');
@@ -81,7 +80,11 @@ export default function Blog() {
         formData.append('type', 'blog');
         formData.append('image', fileData);
         try {
-            const response = await formhttp.post('/api/v1/document', formData);
+            const response = await http.post('/api/v1/document', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             setimgid(response.data.data.document_id);
         } catch (error) {
             message_error(error);

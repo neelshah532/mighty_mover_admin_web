@@ -1,7 +1,7 @@
 import { Button, Card, Flex, Form, Input, Modal, Radio, Spin, Table } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
-import { AlignType, Categories, RootState, addCategories } from '../assets/dto/data.type';
+import { AlignType, Categories,  addCategories } from '../assets/dto/data.type';
 import { CETAGORIES_DATA_COL } from '../assets/constant/categories';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
@@ -260,7 +260,7 @@ function CategoriePage() {
                 setLoading(false);
             }
         },
-        [currentPage]
+        []
     );
 
     useEffect(() => {

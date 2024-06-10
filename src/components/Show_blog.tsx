@@ -90,7 +90,11 @@ export default function Show_blog() {
         formData.append('type', 'blog');
         formData.append('image', file);
         try {
-            const response = await formhttp.patch(`/api/v1/document/update/${fk_document}`, formData);
+            const response = await http.patch(`/api/v1/document/update/${fk_document}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             setimgid(response.data.data.document_id);
             setimgurl(response.data.data.document);
         } catch (error) {
